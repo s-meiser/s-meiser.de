@@ -17,8 +17,10 @@ jobs:
         working-directory: ./app
     steps:
       # get branch
-      - name: Get main Branch
-        uses: actions/checkout@v3
+      - name: Get production Branch
+      - uses: actions/checkout@v3
+        with:
+          ref: production
 
       # build Assets
       - name: Build Aseets

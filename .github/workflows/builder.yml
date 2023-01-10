@@ -1,5 +1,6 @@
-name: Build assets and push to production branch
+name: Build assets and push to staging branch
 
+# start job manuel
 on:
   workflow_dispatch:
     inputs:
@@ -7,66 +8,67 @@ on:
         description: Git Ref (Optional)
         required: false
 
+# start jobs auto on push
+#on:
+#  push:
+#    branches:
+#      - main
+
 jobs:
   pushToBranch:
-    needs: build-assets
     runs-on: ubuntu-latest
+    name: Build
+    defaults:
+      run:
+        working-directory: ./app
     steps:
+      # checkout default branch
       - uses: actions/checkout@v3
 
-#      - name: check if production branch exist
-#        run: |
-#          _check_branch=$(git ls-remote --heads origin production)
-#          if [[ ${_check_branch} ]]
-#          then
-#            git push origin --delete production
-#          fi
-#
-#      - uses: actions/checkout@v3
-#      - name: Get main branch
-#        run: |
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          git checkout -b production main
-#
-#      - name: push branch
-#        run: |
-#          git push --set-upstream origin production
-
-      - name: check if production branch exist
+      # check if staging branch exist
+      # If yes -> remove branch and create staging branch
+      # If not -> create staging branch
+      - name: check if staging branch exist
         run: |
-          _check_branch=$(git ls-remote --heads origin production)
+          _check_branch=$(git ls-remote --heads origin staging)
           if [[ ${_check_branch} ]]
           then
-            # git push origin --delete production
-            echo 'branch exist'
+            # remove branch
+            git push origin --delete staging
+
+            # create branch
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git checkout -b staging main
+            git push --set-upstream origin staging
           else
             # create branch
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
-            git checkout -b production main
-            git push --set-upstream origin production
+            git checkout -b staging main
+            git push --set-upstream origin staging
           fi
 
+      # checkout branch staging
       - uses: actions/checkout@v3
         with:
-          ref: production
+          ref: staging
 
-      - name: build assets
+      # build js/css files
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
       - run: yarn install
       - run: yarn encore production
-      - uses: actions/upload-artifact@v2
-        with:
-          name: assets
-          path: app/public/build
 
-      - name: Create commit and push
+      # Git add commit and push
+      - name: git add -> commit -> push
         run: |
-          git add -f app/public/build
-          git commit -a -m "Add artifact"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -f public/build
+          git commit -m "Add artifact" -a
+          git push
 
 #      - name: clanup production branch
 #        run: |

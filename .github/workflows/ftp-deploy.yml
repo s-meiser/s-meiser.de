@@ -9,75 +9,76 @@ on:
 
 jobs:
   web-deploy:
-    environment: ftp-deploy
-    name: Deploy
     runs-on: ubuntu-latest
+    name: Deploy
+    environment: ftp-deploy
     defaults:
       run:
         working-directory: ./app
     steps:
       # get branch
-      - name: Get production Branch
       - uses: actions/checkout@v3
-        with:
-          ref: production
+#      - name: Get production Branch
+#      - uses: actions/checkout@v3
+#        with:
+#          ref: production
+#
+#      # build Assets
+#      - uses: actions/setup-node@v1
+#        with:
+#          node-version: 14.x
+#      - run: yarn install
+#      - run: yarn encore production
+#
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: assets
+#          path: app/public/build
 
-      # build Assets
-      - name: Build Aseets
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: yarn install
-      - run: yarn encore production
-      - uses: actions/upload-artifact@v2
-        with:
-          name: assets
-          path: app/public/build
-
-      # install php
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          coverage: none
-          tools: composer:v2
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
-        env:
-          update: true
-      - name: Check PHP Version
-        run: php -v
-
-      # composer install
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache composer dependencies
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install Composer dependencies
-        run: composer install
-
-      # Prepare .env file for production
-      - name: Make production envfile
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_APP_ENV: prod
-          envkey_APP_DEBUG: false
-          envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
-          file_name: .env
-
-      # install lftp
-      - name: Install lftp
-        run: apt-get update && apt-get install -y lftp
-
-      # Sync files
-      - name: Sync files
-        run: lftp -c "open ${{ secrets.HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." /var/www/html
-        env:
-          FTP_USER: ${{ secrets.USER }}
-          FTP_PASS: ${{ secrets.PASS }}
+#      # install php
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: '8.0'
+#          coverage: none
+#          tools: composer:v2
+#          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+#        env:
+#          update: true
+#      - name: Check PHP Version
+#        run: php -v
+#
+#      # composer install
+#      - name: Validate composer.json and composer.lock
+#        run: composer validate
+#      - name: Get composer cache directory
+#        id: composer-cache
+#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+#      - name: Cache composer dependencies
+#        uses: actions/cache@v1
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: ${{ runner.os }}-composer-
+#      - name: Install Composer dependencies
+#        run: composer install
+#
+#      # Prepare .env file for production
+#      - name: Make production envfile
+#        uses: SpicyPizza/create-envfile@v1
+#        with:
+#          envkey_APP_ENV: prod
+#          envkey_APP_DEBUG: false
+#          envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
+#          file_name: .env
+#
+#      # install lftp
+#      - name: Install lftp
+#        run: apt-get update && apt-get install -y lftp
+#
+#      # Sync files
+#      - name: Sync files
+#        run: lftp -c "open ${{ secrets.HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." /var/www/html
+#        env:
+#          FTP_USER: ${{ secrets.USER }}
+#          FTP_PASS: ${{ secrets.PASS }}

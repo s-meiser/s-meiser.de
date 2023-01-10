@@ -1,0 +1,4 @@
+# .symfony.local.yaml
+workers:
+  yarn_encore_watch:
+      cmd: ['npm', 'install', '&', 'yarn', 'encore', 'dev', '--watch']

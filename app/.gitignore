@@ -1,0 +1,18 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/vendor/
+/var/cache/prod/*
+/var/log/*
+/var/cache/*
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

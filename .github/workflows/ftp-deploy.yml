@@ -1,0 +1,40 @@
+name: Deploy website
+
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      git-ref:
+#        description: Git Ref (Optional)
+#        required: false
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    environment: ftp-deploy
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get main Branch
+        uses: actions/checkout@v3
+
+      # build Assets
+
+      # install php
+
+      # composer install
+
+
+
+      - name: Install lftp
+        run: apt-get update && apt-get install -y lftp
+
+      # Sync files
+      - name: Sync files
+        run: lftp -c "open ${{ secrets.FTP_HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." /var/www/html
+        env:
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}

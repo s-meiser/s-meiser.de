@@ -1,0 +1,34 @@
+name: Build assets
+
+on:
+  workflow_call:
+
+jobs:
+  setupPHP:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        coverage: none
+        tools: composer:v2
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+      env:
+        update: true
+
+    - name: Check PHP Version
+      run: php -v
+
+  runComposerInstall:
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+    - name: Install Composer dependencies
+      run: composer install

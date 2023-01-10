@@ -1,0 +1,76 @@
+name: Production Deployment
+on:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)
+        required: false
+#on:
+#  push:
+#    branches:
+#      - main
+
+jobs:
+  build-assets:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: yarn install
+      - run: yarn encore production
+      - uses: actions/upload-artifact@v2
+        with:
+          name: assets
+          path: app/public/build
+
+  pushToBranch:
+    needs: build-assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: check if production branch exist
+        run: |
+          _check_branch=$(git ls-remote --heads origin production)
+          if [[ ${_check_branch} ]]
+          then
+            git push origin --delete production
+          fi
+
+      - uses: actions/checkout@v3
+      - name: Get main branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -b production main
+
+      - name: push branch
+        run: |
+          git push --set-upstream origin production
+
+      - uses: actions/checkout@v3
+        with:
+          ref: production
+
+      - uses: actions/download-artifact@v3
+        id: download
+        with:
+          name: assets
+          path: app/public/build
+
+      - name: Create commit and push
+        run: |
+          git add -f app/public/build
+          git commit -m "Add artifact"
+
+      - name: clanup production branch
+        run: |
+          rm -rf docker .github .gitignore README.md docker-compose.yml
+          rm -rf app/assets app/.gitignore app/.gitignore
+          git commit -m "clanup staging branch" -a
+          git push

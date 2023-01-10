@@ -1,0 +1,43 @@
+.toolbar {
+  background-color: #1e1e1e;
+  .toolbar-inner {
+    height: 40px;
+  }
+}
+
+.mini-menu {
+  font-size: rem(28px);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  * {
+    padding-left: 10px;
+    padding-right: 10px;
+    &:hover {
+      color: #fcb51e;
+      cursor: pointer;
+    }
+  }
+  &:last-child{
+    font-size: rem(18px);
+  }
+  span.material-icons {
+    color: #c7c7c7;
+    &:hover {
+      color: #fcb51e;
+      cursor: pointer;
+    }
+    &:before {
+      content: "\f064";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 600;
+      position: absolute;
+      font-size: 48px;
+      margin-left: -50px;
+      margin-top: 20px;
+      transform: rotate(326deg);
+      color: #fcb51e;
+    }
+  }
+}

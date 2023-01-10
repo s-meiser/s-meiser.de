@@ -1,0 +1,213 @@
+@import "~@fontsource/roboto/100.css";
+@import "~@fontsource/roboto/300.css";
+@import "~@fontsource/roboto/400.css";
+@import "~@fontsource/roboto/500.css";
+@import "~@fontsource/roboto/700.css";
+@import "~@fontsource/roboto/900.css";
+
+$background-color: #222;
+$fontColor: #FFF;
+$sidebar-bg-color: #0000001c;
+$menu-color-pink: #ff00eb;
+$menu-color-orange: rgba(252, 181, 30, 1);
+$menu-color-orange-75: rgba(252, 181, 30, 0.75);
+$menu-color-grey: rgba(154, 153, 156, 1);
+$nav-border-width: rem(3px);
+$tableColor: #FFF !important;
+
+:root {
+    --bs-border-color: #404040;
+}
+
+body {
+    background-color: $background-color;
+    color: $fontColor;
+    font-family: "Roboto", sans-serif;
+    font-size: rem(14px);
+}
+
+.sidebar {
+    background-color: $sidebar-bg-color;
+
+    .nav-name {
+        left: 0;
+        opacity: 0;
+        font-weight: 400;
+        position: absolute;
+        z-index: 55;
+    }
+
+    &:before {
+        content: ' ';
+        height: calc(100vh - 20px);
+        width: 0;
+        background-color: #1a1a1af5;
+        position: absolute;
+        left: 75px;
+        transition: all .2s;
+        transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        border-radius: 8px;
+        z-index: 50;
+    }
+
+    &:hover {
+        &:before {
+            width: 160px;
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important
+        }
+
+        /* fix flickering */
+        &:after {
+            content: ' ';
+            width: 180px;
+            height: 100vh;
+            position: absolute;
+            z-index: 50;
+            left: 75px;
+            top: 0;
+        }
+
+        .nav-name {
+            left: 75px;
+            width: 175px;
+            padding-left: 20px;
+            opacity: 1;
+            transition-duration: 0.4s;
+            transition-property: left, opacity;
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    }
+}
+
+
+.min-vh-custom{
+  min-height: calc(100vh - 20px) !important;
+}
+
+.menu-border-light {
+    border-color: #404040 !important;
+}
+
+ul.nav, .nav-link {
+    width: 100%;
+}
+.nav-item {
+    border-left: #{$nav-border-width} solid transparent;
+    &:hover {
+        border-left: #{$nav-border-width} solid #{$menu-color-orange};
+        transition: border-left 250ms;
+        i.fas {
+            -webkit-transform: scale(1.5) translate3d(0, 0, 0);
+            transform: scale(1.5) translate3d(0, 0, 0);
+            transition: 250ms;
+        }
+    }
+
+    @include xs {
+        padding-left: 0;
+    }
+}
+.menu-color {
+    color: $menu-color-grey;
+    &:hover {
+        color: $menu-color-orange;
+    }
+    &:focus {
+        color: $menu-color-orange;
+    }
+}
+
+.menu-logo {
+    width: rem(30px);
+    height: rem(30px);
+    background-color: $menu-color-orange;
+    -webkit-mask: url(./../../../images/favicon.svg) no-repeat center / contain;
+    mask: url(./../../../images/favicon.svg) no-repeat center / contain;
+}
+
+.form-control {
+    background-color: transparent;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #375a7f;
+    border-radius: 0;
+    color: #DBDBDB;
+    padding: rem(2px);
+    font-size: rem(13px);
+    &:focus {
+        background-color: transparent;
+        border-bottom: 1px solid $menu-color-orange;
+        color: #DBDBDB;
+        box-shadow: none;
+    }
+
+}
+.form-control-border {
+    background-color: #1e1e1e;
+    border: 1px solid #375a7f;
+    &:focus {
+        background-color: transparent;
+        border: 1px solid $menu-color-orange;
+        color: #DBDBDB;
+        box-shadow: none;
+    }
+}
+
+.floating-label {
+    font-size: rem(12px);
+    color: #878787;
+    padding: 22px 0 0 !important;
+}
+.form-floating {
+    input {
+        padding: 25px 0 0 !important;
+    }
+}
+.input-group-text {
+    background-color: #1e1e1e;
+    border: 1px solid #375a7f;
+    &:hover {
+        i.fas {
+            color: #fcb51e;
+        }
+    }
+    i.fas {
+        color: #9a999c;
+    }
+}
+.btn {
+    background-color: #2c4866;
+    border-color: #2c4866;
+    color: #fff;
+    &:hover {
+        color: #fff;
+        background-color: #31353d;
+    }
+}
+
+table {
+    color: $tableColor;
+}
+
+.dashboard-card, .card {
+    width: 9rem;
+}
+
+.card {
+    background-color: #0000001c;
+    border: 1px solid #375a7f85;
+    height: 9rem;
+    &:hover {
+        transition: 250ms;
+        background-color: #0000003b;
+    }
+
+    .card-title {
+        font-size: rem(14px);
+    }
+    .card-subtitle {
+        font-size: rem(11px);
+    }
+}

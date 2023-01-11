@@ -50,7 +50,9 @@ jobs:
         run: git fetch --all
 
       - name: Rebase main onto staging
-        run: git rebase staging
+        run: |
+          git fetch origin staging
+          git rebase staging
 
       - name: Push changes to main branch
         run: git push origin main --force-with-lease

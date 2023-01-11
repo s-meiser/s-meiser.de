@@ -53,7 +53,10 @@ jobs:
         run: git checkout staging
 
       - name: Merge main into staging
-        run: git merge --allow-unrelated-histories main
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git merge --allow-unrelated-histories main
 
       - name: Push changes to staging branch
         run: git push origin staging

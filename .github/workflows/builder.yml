@@ -53,7 +53,7 @@ jobs:
         run: git checkout staging
 
       - name: Merge main into staging
-        run: git merge --strategy-option=ours main
+        run: git merge --strategy-option=theirs main
 
       - name: Push changes to staging branch
         run: git push origin staging

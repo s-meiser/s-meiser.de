@@ -53,7 +53,7 @@ jobs:
         run: git checkout staging
 
       - name: Merge main into staging
-        run: git merge --strategy=recursive main
+        run: git merge --allow-unrelated-histories main
 
       - name: Push changes to staging branch
         run: git push origin staging

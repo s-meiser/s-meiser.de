@@ -8,7 +8,7 @@ name: Build assets and push to staging branch
 #        description: Git Ref (Optional)
 #        required: false
 
- start jobs auto on push
+# start jobs auto on push
 on:
   push:
     branches:

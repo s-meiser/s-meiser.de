@@ -1,18 +1,18 @@
 name: Build assets and push to staging branch
 
 # start job manuel
-#on:
-#  workflow_dispatch:
-#    inputs:
-#      git-ref:
-#        description: Git Ref (Optional)
-#        required: false
+on:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)
+        required: false
 
 # start jobs auto on push
-on:
-  push:
-    branches:
-      - main
+#on:
+#  push:
+#    branches:
+#      - main
 
 jobs:
   pushToBranch:
@@ -25,7 +25,9 @@ jobs:
       # checkout default branch
       - uses: actions/checkout@v3
 
-      # check if staging branch exist. If not -> create staging branch
+      # check if staging branch exist
+      # If yes -> remove branch and create staging branch
+      # If not -> create staging branch
       - name: check if staging branch exist
         run: |
           _check_branch=$(git ls-remote --heads origin staging)
@@ -46,37 +48,6 @@ jobs:
             git checkout -b staging main
             git push --set-upstream origin staging
           fi
-
-#      - name: Checkout main branch
-#        uses: actions/checkout@v3
-#        with:
-#          ref: main
-#
-#      - name: Fetch all branches
-#        run: git fetch --all
-#
-#      - name: Checkout staging branch
-#        run: git checkout staging
-#
-#      - name: Merge main into staging
-#        run: |
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          git merge --allow-unrelated-histories main
-
-#      - name: Push changes to staging branch
-#        run: git push origin staging
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # merge main branch into staging
-#      - name: Merge main -> staging
-#        uses: devmasx/merge-branch@master
-#        with:
-#          type: now
-#          from_branch: main
-#          target_branch: staging
-#          github_token: ${{ github.token }}
 
       # checkout branch staging
       - uses: actions/checkout@v3

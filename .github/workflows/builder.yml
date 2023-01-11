@@ -49,13 +49,14 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
-      - name: Rebase main onto staging
-        run: |
-          git fetch origin staging
-          git rebase staging
+      - name: Checkout staging branch
+        run: git checkout staging
 
-      - name: Push changes to main branch
-        run: git push origin main --force-with-lease
+      - name: Merge main into staging
+        run: git merge --strategy=recursive main
+
+      - name: Push changes to staging branch
+        run: git push origin staging
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

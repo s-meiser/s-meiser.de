@@ -49,14 +49,11 @@ jobs:
       - name: Fetch all branches
         run: git fetch --all
 
-      - name: Checkout staging branch
-        run: git checkout staging
+      - name: Rebase main onto staging
+        run: git rebase staging
 
-      - name: Merge main into staging
-        run: git merge --strategy-option=theirs main
-
-      - name: Push changes to staging branch
-        run: git push origin staging
+      - name: Push changes to main branch
+        run: git push origin main --force-with-lease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

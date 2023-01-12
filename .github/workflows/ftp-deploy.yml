@@ -83,12 +83,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      # cleanup
+      # TODO: cleanup
 #      - name: Cleanup
 
       # Sync files
-#      - name: Sync files
-#        run: lftp -c "open ${{ secrets.HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." ./
-#        env:
-#          FTP_USER: ${{ secrets.USER }}
-#          FTP_PASS: ${{ secrets.PASS }}
+      - name: Sync files
+        run: lftp -c "open ${{ secrets.HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." ./
+        env:
+          FTP_USER: ${{ secrets.USER }}
+          FTP_PASS: ${{ secrets.PASS }}

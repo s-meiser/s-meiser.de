@@ -83,12 +83,51 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      # TODO: cleanup
+#      # Cleanup
 #      - name: Cleanup
+#        run: |
+#          # single files
+#          sudo rm -rf \
+#            .env \
+#            .gitignore \
+#            .symfony.local.yaml \
+#            composer.json \
+#            composer.lock \
+#            package-lock.json \
+#            package.json \
+#            webpack.config.js \
+#            yarn.lock
+#           directories
+#          sudo rm -rf \
+#            assets \
+#            node_modules
+#
+      # Cleanup
+      - name: Cleanup
+        run: |
+          # single files
+          sudo rm -rf \
+            .env \
+            .gitignore
+          sudo rm -rf node_modules
 
       # Sync files
       - name: Sync files
-        run: lftp -c "open ${{ secrets.HOST }}; user $FTP_USER $FTP_PASS; mirror -R --ignore-time --parallel=10 -v --exclude-glob .git* --exclude .github/ --exclude '*.swp' ." ./
+        run: lftp -e "open $FTP_HOST; user $FTP_USER $FTP_PASS; set ftp:ssl-allow no; mirror -R --ignore-time --parallel=10 -v" /
         env:
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.USER }}
+          FTP_PASS: ${{ secrets.PASS }}
+
+      # Clear cache hack
+      - name: Clear cache hack
+        run: |
+          lftp -u "$FTP_USER","$FTP_PASS" $FTP_HOST <<EOF
+            set ftp:ssl-allow no
+            rm -rf /var/cache/prod
+            quit
+          EOF
+        env:
+          FTP_HOST: ${{ secrets.HOST }}
           FTP_USER: ${{ secrets.USER }}
           FTP_PASS: ${{ secrets.PASS }}

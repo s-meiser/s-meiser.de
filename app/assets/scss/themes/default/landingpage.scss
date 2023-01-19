@@ -5,7 +5,6 @@
 @import "~@fontsource/roboto/700.css";
 @import "~@fontsource/roboto/900.css";
 
-$background-color: #222;
 $fontColor: #FFF;
 $sidebar-bg-color: #0000001c;
 $menu-color-pink: #ff00eb;
@@ -20,10 +19,21 @@ $tableColor: #FFF !important;
 }
 
 body {
-    background-color: $background-color;
     color: $fontColor;
     font-family: "Roboto", sans-serif;
     font-size: rem(14px);
+    background: rgb(109,122,96);
+    background: linear-gradient(145deg, rgba(109,122,96,1) 0%, rgba(55,64,56,1) 50%, rgba(33,41,41,1) 100%);
+}
+
+
+.content-background-color {
+    background-color: rgb(13 16 21 / 80%);
+}
+
+.content-box-shadow {
+    -webkit-box-shadow: 0 80px 100px -10px #000000;
+    box-shadow: 0 80px 100px -10px #000000;
 }
 
 .sidebar {

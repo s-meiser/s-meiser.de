@@ -43,6 +43,8 @@ Encore
      * Frontend Javascript
      */
     .addEntry('app', './assets/app-frontend.js')
+    .addEntry('Landingpage', './assets/Entity/Landingpage.js')
+
     /*.addEntry('app', './assets/app.js')*/
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

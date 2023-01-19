@@ -1,5 +1,12 @@
 {% extends './html_header.html.twig' %}
 
 {% block body %}
+<div data-controller="landingpage">
+	Content
+</div>
+{% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('Landingpage') }}
 {% endblock %}

@@ -1,11 +1,11 @@
 import { startStimulusApp } from '@symfony/stimulus-bridge';
+import landingpage from './../Controller/Landingpage';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
 export const app = startStimulusApp(require.context(
-    '@symfony/stimulus-bridge/lazy-controller-loader!./Controller',
+    '@symfony/stimulus-bridge/lazy-controller-loader!./../Controller',
     true,
-    /\.[jt]sx?$/
+    /\.(j|t)sx?$/
 ));
 
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+app.register('landingpage', landingpage);

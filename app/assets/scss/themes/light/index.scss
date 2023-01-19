@@ -1,9 +1,7 @@
-$border-color: #404040;
-
 // custom scss
 @import './../../component/vars';
 @import './../../component/functions';
 @import './../../component/mixins/media';
 
-@import 'dashboard';
+@import 'landingpage';
 @import 'toolbar';

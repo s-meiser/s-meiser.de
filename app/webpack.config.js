@@ -35,7 +35,7 @@ Encore
     /**
      * SCSS
      */
-    .addEntry('css-libs', './assets/scss/component/component.scss')
+    .addEntry('bootstrap-framework', './assets/scss/component/bootstrap-framework.scss')
     .addEntry('css-theme-default', './assets/scss/themes/default/index.scss')
     .addEntry('css-theme-light', './assets/scss/themes/light/index.scss')
 

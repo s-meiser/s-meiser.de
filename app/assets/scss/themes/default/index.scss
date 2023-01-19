@@ -1,6 +1,8 @@
-@import './../../component/vars';
-@import './../../component/functions';
-@import './../../component/mixins/media';
+// Custom scss
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~material-icons/iconfont/material-icons';
+
+@import '../../component/vars';
+@import '../../component/functions';
 
 @import 'landingpage';
-@import 'toolbar';

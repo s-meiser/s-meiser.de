@@ -44,8 +44,8 @@ Hier das ganze nochmal aus Befehlskette
 Wenn man aber keine Lust hat das per Hand zu machen ...
 - Ich habe hier ein Github Action Workflow erstellt wie man das alles auf einem Webserver deployen kann
 
-![Setup Stating](docs\setup-staging.png)
+![Setup Stating](/docs/setup-staging.png)
 
-![Deploy FTP](docs\deploy-ftp.png)
+![Deploy FTP](/docs/deploy-ftp.png)
 
 *erstellt und designed via https://www.figma.com/*

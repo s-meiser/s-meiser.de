@@ -28,6 +28,8 @@ laufen lassen. Damit generiert ihr eure Assets (Bilder, Javascript Dateien, Css 
 - Hinweis: man kann auch anstelle von `yarn encore` den `webpack-dev-server` verwenden
   - `yarn encore dev-server`
 
+-----
+
 #### How to deploy ?
 Man wissen, was man braucht, um eine Symfony Applikation auszurollen
 - .env Datei in php Dateien umwandeln

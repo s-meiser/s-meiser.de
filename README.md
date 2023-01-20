@@ -28,7 +28,24 @@ laufen lassen. Damit generiert ihr eure Assets (Bilder, Javascript Dateien, Css 
 - Hinweis: man kann auch anstelle von `yarn encore` den `webpack-dev-server` verwenden
   - `yarn encore dev-server`
 
-#### How to deploy
+#### How to deploy ?
+Man wissen, was man braucht, um eine Symfony Applikation auszurollen
+- .env Datei in php Dateien umwandeln
+- javascript und css Dateien für den Produktionsmodus umwandeln 
+- Cache löschen (/var/cache/)
+
+Hier das ganze nochmal aus Befehlskette
+
 - `composer dump-env prod`
 - `composer install --no-dev --optimize-autoloader`
 - `yarn run encore production`
+- `php bin/console cache:clear`
+
+Wenn man aber keine Lust hat das per Hand zu machen ...
+- Ich habe hier ein Github Action Workflow erstellt wie man das alles auf einem Webserver deployen kann
+
+![Setup Stating](E:\WebProject\s-meiser.de\docs\setup-staging.png)
+
+![Deploy FTP](E:\WebProject\s-meiser.de\docs\deploy-ftp.png)
+
+*erstellt und designed via https://www.figma.com/*

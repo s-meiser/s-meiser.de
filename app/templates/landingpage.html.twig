@@ -1,18 +1,8 @@
 {% extends 'html_header.html.twig' %}
 
 {% block body %}
-	<div id="threejscontainer"></div>
-	<div id="menu">
-		<button id="table">TABLE</button>
-		<button id="sphere">SPHERE</button>
-		<button id="helix">HELIX</button>
-		<button id="grid">GRID</button>
-	</div>
 
-	<div class="col-3 cursorasd cursorasd-pointer"
-	 data-controller="landingpage">
-	Content
-</div>
+	<div data-controller="landingpage"></div>
 {% endblock %}
 
 {% block javascripts %}

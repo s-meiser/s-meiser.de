@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus';
-import {overlayTopRight} from "./Animation/overlay-top-right"
+import {overlay} from "./Animation/overlay"
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -7,7 +7,7 @@ export default class extends Controller {
     static targets = [];
 
     connect() {
-        overlayTopRight();
+        overlay();
     }
 
 }

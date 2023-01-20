@@ -9,13 +9,21 @@
 body {
     font-family: "Roboto", sans-serif;
     font-size: rem(14px);
-    background: rgb(109,122,96);
-    background: linear-gradient(145deg, rgba(109,122,96,1) 0%, rgba(55,64,56,1) 50%, rgba(33,41,41,1) 100%);
+    background: #c2c7bf;
+/*    background: rgb(109,122,96);
+    background: linear-gradient(145deg, rgba(109,122,96,1) 0%, rgba(55,64,56,1) 50%, rgba(33,41,41,1) 100%);*/
 }
 
 
 .content-background-color {
-    background-color: rgb(13 16 21 / 80%);
+    /*background-color: rgb(13 16 21 / 80%);*/
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#090d12+0,1c2f35+100 */
+    background: #090d12; /* Old browsers */
+    background: -moz-linear-gradient(27deg,  #090d12 0%, #1c2f35 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(27deg,  #090d12 0%,#1c2f35 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(27deg,  #090d12 0%,#1c2f35 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#090d12', endColorstr='#1c2f35',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
 }
 
 .content-box-shadow {

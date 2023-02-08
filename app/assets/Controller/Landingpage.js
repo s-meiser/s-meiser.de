@@ -1,5 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
-import {overlay} from "./Animation/overlay"
+import {Overlay} from "./Animation/Overlay"
+import {TheaterStage} from "./Animation/TheaterStage";
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -7,7 +8,7 @@ export default class extends Controller {
     static targets = [];
 
     connect() {
-        overlay();
+        const stage = new TheaterStage();
     }
 
 }

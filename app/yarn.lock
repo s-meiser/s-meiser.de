@@ -923,7 +923,7 @@
   "resolved" "https://registry.npmjs.org/@hotwired/stimulus-webpack-helpers/-/stimulus-webpack-helpers-1.0.1.tgz"
   "version" "1.0.1"
 
-"@hotwired/stimulus@^3.0", "@hotwired/stimulus@^3.0.0", "@hotwired/stimulus@>= 3.0":
+"@hotwired/stimulus@^3.0", "@hotwired/stimulus@^3.0.0", "@hotwired/stimulus@^3.2.1", "@hotwired/stimulus@>= 3.0":
   "integrity" "sha512-HGlzDcf9vv/EQrMJ5ZG6VWNs8Z/xMN+1o2OhV1gKiSG6CqZt5MCBB1gRg5ILiN3U0jEAxuDTNPRfBcnZBDmupQ=="
   "resolved" "https://registry.npmjs.org/@hotwired/stimulus/-/stimulus-3.2.1.tgz"
   "version" "3.2.1"
@@ -3976,6 +3976,11 @@
   "integrity" "sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ=="
   "resolved" "https://registry.npmjs.org/statuses/-/statuses-2.0.1.tgz"
   "version" "2.0.1"
+
+"stimulus-content-loader@^4.1.0":
+  "integrity" "sha512-uRbbqz4x+Fekwf1Xig0U3BUfkntVB8mgCyv5dumfcISRAcNJPFKGEQ1e7uUh8nG3MtjkqYftfuakJlQOkX+Kdw=="
+  "resolved" "https://registry.npmjs.org/stimulus-content-loader/-/stimulus-content-loader-4.1.0.tgz"
+  "version" "4.1.0"
 
 "string_decoder@^1.1.1":
   "integrity" "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA=="

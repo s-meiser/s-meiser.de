@@ -1,5 +1,4 @@
 import {Controller} from '@hotwired/stimulus';
-import {Overlay} from "./Animation/Overlay"
 import {TheaterStage} from "./Animation/TheaterStage";
 
 /* stimulusFetch: 'lazy' */

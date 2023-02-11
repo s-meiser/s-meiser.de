@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import {CSS3DObject} from 'three/examples/jsm/renderers/CSS3DRenderer';
 import {Camera} from "./Components/Camera";
-import {addPlane, Scene} from "./Components/Scene";
+import {addPlane, Scene, shadowPlane, spotlight} from "./Components/Scene";
 import {Helper} from "./Components/Helper";
-import {Renderer} from "./Components/Renderer";
-import {Controls} from "./Components/Controls";
+import {Renderer, CSSRenderer} from "./Components/Renderer";
+import {Controls, CSSControls} from "./Components/Controls";
 
 
 class TheaterStage {
@@ -23,6 +23,8 @@ class TheaterStage {
     materials;
     params;
     CSSRenderer;
+    CSSControls;
+    animateContainer;
 
     constructor() {
 
@@ -57,17 +59,29 @@ class TheaterStage {
 
     setScene() {
         this.scene = Scene();
+        spotlight(this.scene);
+        shadowPlane(this.scene);
         addPlane(this.scene);
+    }
+
+    setComponents() {
+
     }
 
     setRenderer() {
         this.renderer = Renderer().renderer;
-        this.CSSRenderer = Renderer().CSSRenderer
+        this.CSSRenderer = CSSRenderer().CSSRenderer
     }
 
     setControls() {
-        this.controls = Controls(this.camera, this.renderer, this.CSSRenderer);
+        //let controls = Controls(this.camera, this.renderer, this.CSSRenderer).controls;
+        //let controlsGizmo = Controls(this.camera, this.renderer, this.CSSRenderer).controlsGizmo
+        //let CSSControls = Controls(this.camera, this.renderer, this.CSSRenderer).CSSControls;
+        //this.controls = {controls, controlsGizmo}
+        //this.CSSControls = CSSControls
 
+        this.controls = Controls(this.camera, this.renderer);
+        this.CSSControls = CSSControls(this.camera, this.CSSRenderer);
     }
 
     setHelper() {
@@ -75,48 +89,24 @@ class TheaterStage {
     }
 
     addToDom() {
+        document.getElementById('mainContainer').appendChild(this.CSSRenderer.domElement);
         document.getElementById('mainContainer').appendChild(this.renderer.domElement);
-        document.getElementById('mainContainer').appendChild(this.controls.controlsGizmo.domElement);
-        document.getElementById( 'mainContainer').appendChild( this.CSSRenderer.domElement );
-
-        let content = '<div>' +
-            '<h1>This is an H1 Element.</h1>' +
-            '<span class="large">Hello Three.js cookbook</span>' +
-            '<textarea> And this is a textarea</textarea>' +
-            '</div>';
-
-        //let cssElement = createCSS3DObject(content);
-
-
-        // convert the string to dome elements
-        let wrapper = document.createElement('div');
-        wrapper.innerHTML = content;
-        let div = wrapper.firstChild;
-
-        // set some values on the div to style it.
-        // normally you do this directly in HTML and
-        // CSS files.
-        div.style.width = '370px';
-        div.id = 'testdiv'
-        div.style.height = '370px';
-        div.style.opacity = 0.7;
-        div.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle();
-
-        // create a CSS3Dobject and return it.
-        let obj =  new CSS3DObject(div);
-        this.scene.add(obj);
-
-
-
-
-
+        document.getElementById('mainContainer').appendChild(this.CSSControls.controlsGizmo.domElement);
     }
 
     animate() {
         requestAnimationFrame(() => { this.animate(); });
         this.renderer.render( this.scene, this.camera );
-        //this.CSSRenderer.render( this.scene, this.camera );
+        this.CSSRenderer.render( this.scene, this.camera );
+        //let css3DTransformMatrix = this.CSSRenderer.domElement.firstChild.style.transform;
 
+        /**
+         * hack to get initial matrix
+         */
+        if (document.getElementsByClassName('animateContainer')[0].style.transform === '') {
+            document.getElementsByClassName('animateContainer')[0].style.transform = this.CSSRenderer.domElement.firstChild.style.transform
+            document.getElementsByClassName('animateContainer')[0].children[0].style.transform = document.getElementById('css3dRenderer').style.transform;
+        }
     }
 
 

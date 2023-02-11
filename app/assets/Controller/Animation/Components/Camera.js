@@ -2,6 +2,27 @@ import * as THREE from 'three';
 
 const Camera = () => {
 
+    /**
+     * Bootstrap Grid Breakpoints
+     *
+     * xs: 0
+     * sm: 576px
+     * md: 768px
+     * lg: 992px
+     * xl: 1200px
+     * xxl: 1400px
+     */
+
+    /**
+     * Desktop:
+     * Full HD Resolution => 1920 x 1080 | 16:9
+     * 2K Resolution => 2.560 x 1.440 | 16:9
+     * UWQHD => 3.440 x 1.440 | 21:9
+     *
+     * Smartphones:
+     */
+
+
     const frustumSize = 1000;
     const aspect = window.innerWidth / window.innerHeight;
 
@@ -14,22 +35,6 @@ const Camera = () => {
         10000
     );
     camera.position.set( 0, 0, 1000 );
-
-/*    const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 200 );
-    camera.position.set( 0, 0, 20 );
-    camera.lookAt( 0, 0, 0 );*/
-
-    // camera.matrixWorldInverse
-    camera.addEventListener('change', function(ev) {
-        // Transformationsdaten aus dem DOM-Element extrahieren
-
-        console.log(ev);
-        //var transform = this.style.transform;
-
-        // Verwenden Sie die Transformationsdaten für Ihre eigenen Div-Boxen
-        // ...
-    });
-
 
     return camera;
 }

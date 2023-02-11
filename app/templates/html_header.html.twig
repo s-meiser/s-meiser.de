@@ -23,50 +23,9 @@
 <body>
 
 <!-- Body content -->
-{#<div class="debugContainer"><h1 class="text-white">test</h1></div>#}
-<div class="container position-absolute">
-	<div class="col-1 row vh-100 rounded-4 content-background-color content-box-shadow">
-		<div class="col-1 text-white">
-			Das ist ein test
-		</div>
-	</div>
-</div>
-
-<div id="mainContainer">
+<div id="mainContainer" data-controller="landingpage">
 	{% block body %}{% endblock %}
-{#	<div id="three-content" class="row h-100 rounded-4 content-background-color content-box-shadow">
-
-	</div>#}
 </div>
-
-<script type="x-shader/x-vertex" id="vertexshader">
-
-			varying vec2 vUv;
-
-			void main() {
-
-				vUv = uv;
-
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-
-			}
-
-		</script>
-
-<script type="x-shader/x-fragment" id="fragmentshader">
-
-			uniform sampler2D baseTexture;
-			uniform sampler2D bloomTexture;
-
-			varying vec2 vUv;
-
-			void main() {
-
-				gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
-
-			}
-
-		</script>
 
 </body>
 </html>

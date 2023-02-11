@@ -17,12 +17,19 @@ const Renderer = () => {
 
 
 
-    const CSSRenderer = new CSS3DRenderer();
-    CSSRenderer.setSize( window.innerWidth, window.innerHeight );
 
-    return {renderer, CSSRenderer};
+
+    return {renderer};
 
 }
 
-export {Renderer};
+const CSSRenderer = () => {
+    const CSSRenderer = new CSS3DRenderer();
+    CSSRenderer.setSize( window.innerWidth, window.innerHeight );
+    CSSRenderer.domElement.style.position = 'absolute'
+    CSSRenderer.domElement.style.top = '0'
+    return {CSSRenderer};
+}
+
+export {Renderer, CSSRenderer};
 

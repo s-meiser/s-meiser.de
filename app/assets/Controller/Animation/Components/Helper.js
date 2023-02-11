@@ -5,6 +5,8 @@ import {ShaderPass} from "three/examples/jsm/postprocessing/ShaderPass";
 import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
 import {UnrealBloomPass} from "../BloomPass/TransparentBackgroundFixedUnrealBloomPass";
 import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
+import {linearGradientMesh, Scene, setGradient} from "./Scene";
+import {linearGradientShader} from "../Materials/LinearGradientShader";
 
 const Helper = (camera, scene, renderer, bloomComposer) => {
 
@@ -24,7 +26,7 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
     //const pointLight = new THREE.PointLight( 0xffffff );
     //camera.add( pointLight );
 
-    const light = new THREE.SpotLight(0xffffff);
+/*    const light = new THREE.SpotLight(0xffffff);
     light.castShadow = true; // default false
     light.position.set( 0, 0, 1200 );
     //light.position.z = 1200;
@@ -49,14 +51,16 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
 
     light.target.position.x = 0
     light.target.position.y = 0
-    light.target.position.z = 0
+    light.target.position.z = 0*/
 
 
+/*
     const sphereSize = 1;
     const pointLightHelper = new THREE.SpotLightHelper( light, sphereSize, '#FF0000' );
     scene.add( pointLightHelper );
+*/
 
-    const planeGeometry = new THREE.PlaneGeometry(
+/*    const planeGeometry = new THREE.PlaneGeometry(
         10000,
         10000
     );
@@ -68,7 +72,7 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
     plane.receiveShadow = true;
     plane.position.y = 400;
     plane.position.z = -10;
-    scene.add(plane);
+    scene.add(plane);*/
 
 
 /*    const box = new THREE.BoxHelper( plane, 0xffff00 );
@@ -140,35 +144,42 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
      * ColorPlane
      * @type {RoundedRectShape}
      */
-    let roundedRectShape = new RoundedRectShape({
+/*    let roundedRectShape = new RoundedRectShape({
         x: -700,
-        y: -250,
+        y: -100,
         width: 1400,
         height: 800,
         rounded: 20
     });
     let rectGeo = roundedRectShape.roundedRectShape();
-    let shape = new THREE.ShapeGeometry(rectGeo);
+    let shape = new THREE.ShapeGeometry(rectGeo);*/
 
-    let mesh = new THREE.Mesh(shape, new THREE.MeshPhongMaterial({
+/*    let hiddenMesh = new THREE.Mesh(shape, new THREE.MeshPhongMaterial({
         color: 0x000000,
         emissive: 0x29abe2,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        opacity: 0
     }));
+    hiddenMesh.position.set( 0, 1800, 99);
+    hiddenMesh.name = 'hiddenMesh'
+    hiddenMesh.castShadow = true; //default is false
+    hiddenMesh.receiveShadow = false; //default
+    scene.add(hiddenMesh);*/
 
-    //plane.position.y = -200;
+
+/*    let mat = linearGradientShader('27.0', '#090d12', '#1c2f35')
+    let mesh = new THREE.Mesh(shape, mat);
     mesh.position.set( 0, 1800, 100);
     mesh.name = 'header'
     mesh.castShadow = true; //default is false
-    mesh.receiveShadow = false; //default
-    //mesh.rotation.x = Math.PI * 0.5;
-    scene.add(mesh);
+    mesh.receiveShadow = true; //default
+    scene.add(mesh);*/
 
-
-
-
+    //var mesh2 = new THREE.Mesh(geometry, material2);
+    //scene.add(mesh2);
 
     // GUI
+/*
     const gui = new GUI();
 
     const params = {
@@ -190,11 +201,12 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
         LightPosZ: light.target.position.z,
         shadows: true
     };
+*/
 
 
 
 
-    gui.add( params, 'LightPosX', -1000, 1000 ).onChange( function ( val ) {
+/*    gui.add( params, 'LightPosX', -1000, 1000 ).onChange( function ( val ) {
         light.target.position.x = val;
         console.log(light.target.position);
     } );
@@ -272,7 +284,7 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
         } );
     } );
 
-    gui.open();
+    gui.open();*/
 }
 
 export {Helper};

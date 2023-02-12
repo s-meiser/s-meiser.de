@@ -1,40 +1,20 @@
 import * as THREE from 'three';
+import Configuration from "./Configuration";
 
 const Camera = () => {
-
-    /**
-     * Bootstrap Grid Breakpoints
-     *
-     * xs: 0
-     * sm: 576px
-     * md: 768px
-     * lg: 992px
-     * xl: 1200px
-     * xxl: 1400px
-     */
-
-    /**
-     * Desktop:
-     * Full HD Resolution => 1920 x 1080 | 16:9
-     * 2K Resolution => 2.560 x 1.440 | 16:9
-     * UWQHD => 3.440 x 1.440 | 21:9
-     *
-     * Smartphones:
-     */
-
-
-    const frustumSize = 1000;
-    const aspect = window.innerWidth / window.innerHeight;
+    const config = new Configuration().camera;
+    const frustumSize = config.frustumSize;
+    const aspect = config.aspect;
 
     let camera = new THREE.OrthographicCamera(
         frustumSize * aspect / -2,
         frustumSize * aspect / 2,
         frustumSize / 2,
         frustumSize / -2,
-        1,
-        10000
+        config.near,
+        config.far
     );
-    camera.position.set( 0, 0, 1000 );
+    camera.position.set( config.position.x, config.position.y, config.position.z );
 
     return camera;
 }

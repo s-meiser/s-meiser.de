@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import {CSS3DObject} from 'three/examples/jsm/renderers/CSS3DRenderer';
 import {Camera} from "./Components/Camera";
-import {addPlane, Scene, shadowPlane, spotlight} from "./Components/Scene";
 import {Helper} from "./Components/Helper";
 import {Renderer, CSSRenderer} from "./Components/Renderer";
 import {Controls, CSSControls} from "./Components/Controls";
+import Scene from "./Components/Scene";
 
 
 class TheaterStage {
@@ -58,14 +58,7 @@ class TheaterStage {
     }
 
     setScene() {
-        this.scene = Scene();
-        spotlight(this.scene);
-        shadowPlane(this.scene);
-        addPlane(this.scene);
-    }
-
-    setComponents() {
-
+        this.scene = new Scene();
     }
 
     setRenderer() {
@@ -74,12 +67,6 @@ class TheaterStage {
     }
 
     setControls() {
-        //let controls = Controls(this.camera, this.renderer, this.CSSRenderer).controls;
-        //let controlsGizmo = Controls(this.camera, this.renderer, this.CSSRenderer).controlsGizmo
-        //let CSSControls = Controls(this.camera, this.renderer, this.CSSRenderer).CSSControls;
-        //this.controls = {controls, controlsGizmo}
-        //this.CSSControls = CSSControls
-
         this.controls = Controls(this.camera, this.renderer);
         this.CSSControls = CSSControls(this.camera, this.CSSRenderer);
     }

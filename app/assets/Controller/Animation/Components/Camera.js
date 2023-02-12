@@ -6,11 +6,12 @@ const Camera = () => {
     const frustumSize = config.frustumSize;
     const aspect = config.aspect;
 
+    // left/right -960 bzw. 960 bei 1920px width
     let camera = new THREE.OrthographicCamera(
-        frustumSize * aspect / -2,
-        frustumSize * aspect / 2,
-        frustumSize / 2,
-        frustumSize / -2,
+        -960,
+        960,
+        window.innerHeight / 2,
+        window.innerHeight / -2,
         config.near,
         config.far
     );

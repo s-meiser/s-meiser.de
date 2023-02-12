@@ -56,3 +56,16 @@ body {
     top: 0;
     touch-action: none;
 }
+
+.debugContainer {
+    width: 1600px;
+    border: 1px solid red;
+    height: 500px;
+    left: 0;
+    right: 0;
+    top: 160px;
+    position: absolute;
+
+    margin-left: auto;
+    margin-right: auto;
+}

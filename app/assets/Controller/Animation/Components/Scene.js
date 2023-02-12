@@ -49,7 +49,6 @@ export default class Scene {
          * hidden Mesh to cast shadow
          * THREE.ShaderMaterial does not support casting shadows out of the box
          */
-
         const shadowShape = roundedRectShape(
             configShape.shadow.position.x,
             configShape.shadow.position.y,

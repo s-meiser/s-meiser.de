@@ -2,17 +2,15 @@ import * as THREE from 'three';
 import {CSS3DObject} from "three/examples/jsm/renderers/CSS3DRenderer";
 import {linearGradientShader} from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
-import Configuration from "./Configuration";
 
 export default class Scene {
 
     configuration;
     newScene;
 
-    constructor() {
-        this.configuration = new Configuration();
+    constructor(configuration) {
+        this.configuration = configuration;
         this.newScene = this.scene();
-        this.addInitialCss3DObjectForRef();
         this.addPlane(this.newScene);
         this.shadowPlane(this.newScene)
         this.spotlight(this.newScene)
@@ -34,12 +32,12 @@ export default class Scene {
         wrapper.innerHTML = content;
         let div = wrapper.firstChild;
         div.id = 'css3dRenderer'
-        let obj =  new CSS3DObject(div);
+        let object =  new CSS3DObject(div);
         /**
          * set initial Position
          */
-        obj.position.set(config.object.position.x, config.object.position.y, config.object.position.z);
-        return obj;
+        object.position.set(config.object.position.x, config.object.position.y, config.object.position.z);
+        return object;
     }
 
     addPlane(scene) {

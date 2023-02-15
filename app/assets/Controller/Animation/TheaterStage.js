@@ -5,6 +5,7 @@ import {Helper} from "./Components/Helper";
 import {Renderer, CSSRenderer} from "./Components/Renderer";
 import {Controls, CSSControls} from "./Components/Controls";
 import Scene from "./Components/Scene";
+import Configuration from "./Components/Configuration";
 
 
 class TheaterStage {
@@ -25,8 +26,12 @@ class TheaterStage {
     CSSRenderer;
     CSSControls;
     animateContainer;
+    config;
 
     constructor() {
+
+        // load config
+        this.config = new Configuration();
 
         /**
          * Components
@@ -54,11 +59,11 @@ class TheaterStage {
     }
 
     setCamera() {
-        this.camera = Camera();
+        this.camera = Camera(this.config);
     }
 
     setScene() {
-        this.scene = new Scene();
+        this.scene = new Scene(this.config);
     }
 
     setRenderer() {
@@ -68,7 +73,7 @@ class TheaterStage {
 
     setControls() {
         this.controls = Controls(this.camera, this.renderer);
-        this.CSSControls = CSSControls(this.camera, this.CSSRenderer);
+        this.CSSControls = CSSControls(this.camera, this.CSSRenderer, this.config);
     }
 
     setHelper() {

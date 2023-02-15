@@ -1,11 +1,14 @@
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {OrbitControlsGizmo} from "./OrbitControlsGizmo.js";
 import {ControlSettings} from "./ControlSettings.js";
+import Configuration from "./Configuration";
 
-const CSSControls = (camera, CSSRenderer) => {
+const CSSControls = (camera, CSSRenderer, configuration) => {
+    const config = configuration.controls
+
     let CSSControls = new OrbitControls(camera, CSSRenderer.domElement);
-    CSSControls.object.position.y = 1700;
-    CSSControls.target.set(0,1700,0);
+    CSSControls.object.position.y = config.position.y;
+    CSSControls.target.set(config.position.x,config.position.y,config.position.z);
     CSSControls.update();
 
     const htmlContainer =  document.getElementsByClassName('animateContainer')[0];
@@ -110,8 +113,8 @@ const CSSControls = (camera, CSSRenderer) => {
      * set ControlsSettings
      */
     const controlsSettings = new ControlSettings(CSSControls);
-    controlsSettings.setPolarAngle()
-    controlsSettings.setAzimuthAngle()
+    //controlsSettings.setPolarAngle()
+    //controlsSettings.setAzimuthAngle()
 
 
 

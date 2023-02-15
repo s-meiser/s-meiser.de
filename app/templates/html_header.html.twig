@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>{% block title %}Sebastian Meiser| Web Developer{% endblock %}</title>
 	<link rel="icon" href="/build/images/favicon.svg">
 
@@ -21,10 +22,10 @@
 	{% endblock %}
 </head>
 <body>
-<div class="debugContainer">
+{#<div class="debugContainer">
 	Das ist ein test<br>
 	<a href="https://www.google.de">Google Link</a>
-</div>
+</div>#}
 <!-- Body content -->
 <div id="mainContainer" data-controller="landingpage">
 	{% block body %}{% endblock %}

@@ -7,27 +7,35 @@ export default class Configuration {
     /**
      *
      */
-    camera(borderContentMargin) {
-        //const calcFrustumSizeToWindowResolution =
+    camera(shapeWidth = null, shapeHeight = null) {
 
         /**
-         * frustum is the space between near and far clipping plan
+         * 1,77777 (16:9) in FullHD => 1920 x 1080
          */
+        const aspect = window.innerWidth / window.innerHeight;
+        const frustumSize = 1000;
+
         return {
             frustumSize: 1000,
             aspect: window.innerWidth / window.innerHeight,
-            near: 1,
-            far: 10000,
             position: {
                 x: 0,
                 y: 0,
                 z: 1000
+            },
+            orthographicCamera: {
+                left: window.innerWidth / -(16/9), // frustumSize * aspect / -2
+                right: window.innerWidth / (16/9), // frustumSize * aspect / 2
+                top: window.innerHeight / (16/9), // frustumSize / 2
+                bottom: window.innerHeight / -(16/9), // frustumSize / -2
+                near: 1,
+                far: 10000,
             }
         };
     }
 
     controls(shapeHeight, marginTop = null) {
-        marginTop = window.innerHeight * 0.053333333;
+        marginTop = window.innerHeight * 0.05;
         //set viewpoint to top of shape
         const topPoint = shapeHeight - (window.innerHeight / 2);
         //set and add margin from top
@@ -42,7 +50,8 @@ export default class Configuration {
         }
     }
 
-    initialCss3DObjectForRef() {
+    initialCss3DObjectForRef(shape) {
+        const controls = this.controls(shape.mainShape.height);
         /**
          * window.innerWidth  == 1920
          * window.innerHeight == 660
@@ -57,8 +66,8 @@ export default class Configuration {
         return {
             object: {
                 position: {
-                    x: -708,
-                    y: 1960,
+                    x: window.innerWidth - window.innerWidth,
+                    y: controls.position.y, //TODO ShapeHeight / 2
                     z: 0
                 }
             }
@@ -94,21 +103,21 @@ export default class Configuration {
 
         return {
             shadow: {
-                width: 1400,
+                width:  window.innerWidth - (window.innerWidth - window.innerWidth * 0.8),
                 height: 600,
                 radius: 20,
                 position: {
-                    x: -700,
-                    y: -500
+                    x: (window.innerWidth - (window.innerWidth - window.innerWidth * 0.8)) / -2,
+                    y: 0
                 },
                 opacity: 0
             },
             mainShape: {
-                width: 1600,
+                width: window.innerWidth,
                 height: 800,
                 radius: 20,
                 position: {
-                    x: -800,
+                    x:  window.innerWidth / -2,
                     y: 0
                 }
             }
@@ -164,17 +173,6 @@ export default class Configuration {
 
     responsiveDesign() {
         /**
-         * Bootstrap Grid Breakpoints
-         *
-         * xs: 0
-         * sm: 576px
-         * md: 768px
-         * lg: 992px
-         * xl: 1200px
-         * xxl: 1400px
-         */
-
-        /**
          * https://gs.statcounter.com/screen-resolution-stats
          * last status: => 12 Feb 2023
          *
@@ -216,17 +214,19 @@ export default class Configuration {
         const browserHeight = window.innerHeight
 
         // spacing between border and content
-        const borderContentSpacing = 8.33333333; // Percent
-        console.log()
-        const borderContentMargin  = Math.ceil(window.innerWidth * (borderContentSpacing / 100));
+        //const borderContentSpacing = 8.33333333; // Percent
+        //console.log()
+        //const borderContentMargin  = Math.ceil(window.innerWidth * (borderContentSpacing / 100));
         //console.log(borderContentMargin)
 
-        const camera = this.camera(borderContentMargin);
-        const initialCss3DObjectForRef = this.initialCss3DObjectForRef();
+
+
         const mesh = this.mesh();
         const shadowPlane = this.shadowPlane()
         const light = this.light();
         const shapes = this.shapes();
+        const initialCss3DObjectForRef = this.initialCss3DObjectForRef(shapes);
+        const camera = this.camera(shapes.mainShape.width, shapes.mainShape.height);
         const controls = this.controls(shapes.mainShape.height);
 
         return {
@@ -254,13 +254,22 @@ export default class Configuration {
         const landscapeMQ = window.matchMedia("(orientation: landscape)");
         const portraitMQ = window.matchMedia("(orientation: portrait)");
 
-        window.matchMedia('(min-width: 992px)')
-
         const xs = window.matchMedia('(max-width: 576px)')
         const sm = window.matchMedia('(min-width: 576px) and (max-width: 768px)')
         const md = window.matchMedia('(min-width: 768px) and (max-width: 992px)')
         const lg = window.matchMedia('(min-width: 992px) and (max-width: 1200px)')
         const xl = window.matchMedia('(min-width: 1200px) and (max-width: 1400px)')
         const xxl = window.matchMedia('(min-width: 1400px)')
+
+        return {
+            landscapeMQ,
+            portraitMQ,
+            xs,
+            sm,
+            md,
+            lg,
+            xl,
+            xxl
+        }
     }
 }

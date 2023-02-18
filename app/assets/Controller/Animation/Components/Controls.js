@@ -1,12 +1,13 @@
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {OrbitControlsGizmo} from "./OrbitControlsGizmo.js";
 import {ControlSettings} from "./ControlSettings.js";
-import Configuration from "./Configuration";
+
 
 const CSSControls = (camera, CSSRenderer, configuration) => {
     const config = configuration.controls
 
     let CSSControls = new OrbitControls(camera, CSSRenderer.domElement);
+    //console.log(CSSRenderer.domElement.outerHTML)
     CSSControls.object.position.y = config.position.y;
     CSSControls.target.set(config.position.x,config.position.y,config.position.z);
     CSSControls.update();
@@ -15,75 +16,34 @@ const CSSControls = (camera, CSSRenderer, configuration) => {
     const basicContainer =  document.getElementsByClassName('basicContainer')[0];
 
     if (typeof htmlContainer !== 'undefined') {
-        htmlContainer.style.width = window.innerWidth + 'px';
+
+        /*        htmlContainer.style.width = window.innerWidth + 'px';
         htmlContainer.style.height = window.innerHeight + 'px';
         htmlContainer.style.transformStyle = 'preserve-3d';
         htmlContainer.style.position = 'absolute';
-        htmlContainer.style.zIndex = '15';
+        htmlContainer.style.zIndex = '15';*/
 
         basicContainer.style.width = window.innerWidth + 'px';
         basicContainer.style.height = window.innerHeight + 'px';
 
-        /**
-        * TODO: Find out how work exactly CSS3DRenderer to set initial matrix on html element
-        */
-        /*
-        const initialMatrix = getInitialMatrix(camera);
-        htmlContainer.style.transform = initialMatrix;
-
-        // [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1700, 999.9999999999999, 1]
-        //  1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 1700, -1000, 1
-        const initialObjectMatrix = getInitialObjectMatrix(camera);
-        htmlContainer.firstElementChild.style.transform = initialObjectMatrix
-        console.log(initialMatrix)
-        console.log(initialObjectMatrix)
-        */
-        //const getCss3dTransform = document.getElementById('css3dRenderer').parentNode.style.transform
-        //console.log(getCss3dTransform)
+        //let initCss3dContainer = document.getElementById('css3dRenderer').parentElement.parentElement
+        //initCss3dContainer.style.width = '0px';
+        //initCss3dContainer.style.height = '0px';
 
 
-    }
 
+        document.getElementById('mainContainer').addEventListener('mousedown', function(ev) {
+            let css3DInitContainer = document.getElementById('css3dRenderer').parentElement.parentElement;
+            //css3DInitContainer.style.width = window.innerWidth + 'px';
+            //css3DInitContainer.style.height = window.innerHeight + 'px';
+        });
+        document.getElementById('mainContainer').addEventListener('mouseup', function(ev) {
+            console.log(ev);
+        });
 
-    if (typeof htmlContainer !== 'undefined') {
         CSSControls.addEventListener('change', function(ev) {
-/*
-            let camera = ev.target.object;
 
-            /!**
-             * scale() translate() matrix3d() translate()
-             * defaults:
-             *  let scale = 'scale(' + getFov(camera) + ')';
-             *!/
-            let scale = 'scale(' + getFov(camera) + ')';
-            //let scale = 'scale(1)';
-            let translateStart = 'translate(' + epsilon( getTxty(camera).tx ) + 'px,' + epsilon( getTxty(camera).ty ) + 'px)'
-            let matrix = ev.target.object.matrixWorldInverse;
-
-            /!**
-             * matrix3d(a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, d4)
-             * Here's what they're for.
-             *
-             * a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, d4
-             * These arguments are a number that describe the linear transformation.
-             * a4, b4, c4
-             * These arguments are a number that describe the translation to apply.
-             *!/
-            let matrix3d = getCameraCSSMatrix(matrix);
-            let translateEnd = 'translate(' + widthHeightHalf().widthHalf + 'px,' + widthHeightHalf().heightHalf + 'px)';
-
-            let cssTransformAttr = scale + translateStart + matrix3d + translateEnd;
-            let objectCSSMatrix = getObjectCSSMatrix(matrix);
-
-            document.getElementsByClassName('animateContainer')[0].style.transform = cssTransformAttr;
-            document.getElementsByClassName('animateContainer')[0].firstElementChild.style.transform = objectCSSMatrix
-*/
-            /**
-             * For Testing
-             */
-            //document.getElementsByClassName('container')[0].style.border = '1px solid'
-            //document.getElementsByClassName('container')[0].firstElementChild.style.border = '1px solid red'
-
+            //console.log(document.getElementById('css3dRenderer').parentElement.parentElement);
 
             /**
              * hack to set transform style without flickering
@@ -157,7 +117,7 @@ const Controls = (camera, renderer) => {
 const getInitialMatrix = (camera) => {
     let scale = 'scale(' + getFov(camera) + ')';
     let translateStart = 'translate(' + epsilon( getTxty(camera).tx ) + 'px,' + epsilon( getTxty(camera).ty ) + 'px)'
-    console.log(camera)
+    //console.log(camera)
     let matrix = camera.matrix;
     let matrix3d = getCameraCSSMatrix(matrix);
     let translateEnd = 'translate(' + widthHeightHalf().widthHalf + 'px,' + widthHeightHalf().heightHalf + 'px)';

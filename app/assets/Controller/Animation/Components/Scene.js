@@ -28,10 +28,18 @@ export default class Scene {
     addInitialCss3DObjectForRef() {
         const config = this.configuration.initialCss3DObjectForRef;
         let content = '<div></div>';
-        let wrapper = document.createElement('div');
+        //let content = document.getElementsByClassName('basicContainer')[0].innerHTML;
+        //content = content.replace(/(\r\n|\n|\r|\t)/gm,"");
+
+        let wrapper = document.createElement('div', '');
+
         wrapper.innerHTML = content;
         let div = wrapper.firstChild;
         div.id = 'css3dRenderer'
+
+/*        div.style.width = '0px'
+        div.style.height = '0px'*/
+
         let object =  new CSS3DObject(div);
         /**
          * set initial Position

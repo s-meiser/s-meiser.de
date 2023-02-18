@@ -99,6 +99,11 @@ class TheaterStage {
             document.getElementsByClassName('animateContainer')[0].style.transform = this.CSSRenderer.domElement.firstChild.style.transform
             document.getElementsByClassName('animateContainer')[0].children[0].style.transform = document.getElementById('css3dRenderer').style.transform;
         }
+
+/*        if (typeof document.getElementById('css3dRenderer') !== 'undefined') {
+            let initCss3DContainer = document.getElementById('css3dRenderer');
+            //console.log(initCss3DContainer.);
+        }*/
     }
 
 

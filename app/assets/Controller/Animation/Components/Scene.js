@@ -20,31 +20,51 @@ export default class Scene {
 
     scene() {
         let scene = new THREE.Scene();
-        const initialCss3DObjectForRef = this.addInitialCss3DObjectForRef();
-        scene.add(initialCss3DObjectForRef);
+        //const initialCss3DObjectForRef = this.addInitialCss3DObjectForRef();
+        //const createDiv = this.createDiv();
+        //scene.add(initialCss3DObjectForRef);
         return scene;
+    }
+
+    createDiv() {
+
     }
 
     addInitialCss3DObjectForRef() {
         const config = this.configuration.initialCss3DObjectForRef;
-        let content = '<div></div>';
+        let contentLink = '<div><a href="/test">test</a> </div>';
         //let content = document.getElementsByClassName('basicContainer')[0].innerHTML;
         //content = content.replace(/(\r\n|\n|\r|\t)/gm,"");
 
-        let wrapper = document.createElement('div', '');
+        // Create a new HTML element that contains the link
+        const linkElement = document.createElement('a');
+        linkElement.href = '/test';
+        linkElement.target = '_blank';
+        linkElement.textContent = 'LINK';
 
-        wrapper.innerHTML = content;
+        linkElement.addEventListener('click', (event) => {
+            console.log(event)
+            // Prevent the default click behavior
+            event.preventDefault();
+
+            // Open the link in a new tab or window
+            window.open(linkElement.href, '_blank');
+        });
+
+        let wrapper = document.createElement('div');
+
+        wrapper.innerHTML = contentLink;
         let div = wrapper.firstChild;
         div.id = 'css3dRenderer'
 
-/*        div.style.width = '0px'
-        div.style.height = '0px'*/
+        div.style.width = '500px'
+        div.style.height = '500px'
 
-        let object =  new CSS3DObject(div);
+        let object = new CSS3DObject(linkElement);
         /**
          * set initial Position
          */
-        object.position.set(config.object.position.x, config.object.position.y, config.object.position.z);
+        object.position.set(config.object.position.x, config.object.position.y, 150);
         return object;
     }
 

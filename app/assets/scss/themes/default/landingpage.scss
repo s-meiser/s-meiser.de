@@ -49,12 +49,36 @@ body {
     pointer-events: none;
     background-color: #FFF0  !important;
 }
-
-.basicContainer {
-    overflow: hidden;
+/*.animateContainer {
+    //transform-style: preserve-3d;
+    //pointer-events: none;
+    //width: 1920px;
+    //height: 675px;
+    //transform: scale(0.888889) translate(0px, 0px) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 496.25, -1000, 1) translate(960px, 337.5px);
+}*/
+/*.basicContainer {
+    //position: absolute;
+    //overflow: hidden;
+    //width: 1920px;
+    //height: 675px;
+    //position: absolute;
+    //touch-action: none;
+}*/
+.test{
+/*    width: 500px;
+    height: 500px;
     position: absolute;
-    top: 0;
-    touch-action: none;
+    pointer-events: auto;
+    user-select: none;
+    border: 1px solid rebeccapurple;
+    transform: translate(-50%, -50%) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 496.25, 0, 1);*/
+}
+.basicContainer {
+    position: absolute;
+    border: 1px solid rebeccapurple;
+}
+.animateContainer {
+    position: absolute;
 }
 
 .debugContainer {

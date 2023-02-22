@@ -26,11 +26,11 @@ const Renderer = () => {
 const CSSRenderer = () => {
     const CSSRenderer = new CSS3DRenderer();
     CSSRenderer.setSize( window.innerWidth, window.innerHeight );
-    CSSRenderer.domElement.style.position = 'fixed'
-    CSSRenderer.domElement.style.top = '0'
+    CSSRenderer.domElement.style.position = 'absolute'
+    //CSSRenderer.domElement.style.top = '0'
 /*    CSSRenderer.domElement.style.width = '0px';
     CSSRenderer.domElement.style.height = '0px';*/
-    console.log(CSSRenderer)
+    //console.log(CSSRenderer)
     return {CSSRenderer};
 }
 

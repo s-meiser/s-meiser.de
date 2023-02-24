@@ -20,9 +20,9 @@ export default class Scene {
 
     scene() {
         let scene = new THREE.Scene();
-        //const initialCss3DObjectForRef = this.addInitialCss3DObjectForRef();
+        const initialCss3DObjectForRef = this.addInitialCss3DObjectForRef();
         //const createDiv = this.createDiv();
-        //scene.add(initialCss3DObjectForRef);
+        scene.add(initialCss3DObjectForRef);
         return scene;
     }
 
@@ -57,14 +57,14 @@ export default class Scene {
         let div = wrapper.firstChild;
         div.id = 'css3dRenderer'
 
-        div.style.width = '500px'
-        div.style.height = '500px'
+        //div.style.width = '500px'
+        //div.style.height = '500px'
 
         let object = new CSS3DObject(linkElement);
         /**
          * set initial Position
          */
-        object.position.set(config.object.position.x, config.object.position.y, 150);
+        //object.position.set(config.object.position.x, config.object.position.y, 150);
         return object;
     }
 

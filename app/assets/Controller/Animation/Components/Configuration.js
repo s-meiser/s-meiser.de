@@ -50,6 +50,18 @@ export default class Configuration {
         }
     }
 
+    htmlContainer() {
+        return {
+            object: {
+                position: {
+                    x: window.innerWidth - window.innerWidth,
+                    y: 800,
+                    z: 0
+                }
+            }
+        }
+    }
+
     initialCss3DObjectForRef(shape) {
         const controls = this.controls(shape.mainShape.height);
         /**

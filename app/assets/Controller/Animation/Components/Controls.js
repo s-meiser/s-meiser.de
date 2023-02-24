@@ -26,7 +26,7 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     /**
      * set ControlsSettings
      */
-    const controlsSettings = new ControlSettings(CSSControls);
+    const controlsSettings = new ControlSettings(controls);
     //controlsSettings.setPolarAngle()
     //controlsSettings.setAzimuthAngle()
 

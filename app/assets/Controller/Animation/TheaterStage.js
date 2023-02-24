@@ -23,11 +23,6 @@ class TheaterStage {
     domElement;
     cameraElement;
 
-    cache = {
-        camera: { fov: 0, style: '' },
-        objects: new WeakMap()
-    };
-
     // helper
     composer;
     bloomComposer;
@@ -90,9 +85,8 @@ class TheaterStage {
         document.getElementById('mainContainer').appendChild(this.renderer.domElement);
         document.getElementById('mainContainer').appendChild(this.controls.controlsGizmo.domElement);
 
-        this.cameraElement = document.querySelector('.basicContainer')
-        this.domElement = document.querySelector('.animateContainer')
-
+        this.cameraElement = document.querySelector('.cameraContainer')
+        this.domElement = document.querySelector('.domContainer')
 
         this.cameraElement.style.width = window.innerWidth+'px';
         this.cameraElement.style.height = window.innerHeight+'px';

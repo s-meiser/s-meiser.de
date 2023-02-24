@@ -6,7 +6,6 @@ export default class Renderer {
     configuration;
 
     constructor(configuration) {
-        console.log(configuration)
         this.configuration = configuration;
     }
 
@@ -49,10 +48,13 @@ export default class Renderer {
             cameraElement.style.transform = style;
             cache.camera.style = style;
 
-            // TODO: x,y,z für domElement
+            let domX = this.configuration.htmlContainer.object.position.x
+            let domY = this.configuration.htmlContainer.object.position.y
+            let domZ = this.configuration.htmlContainer.object.position.z
+
             //                                                x    y    z
             // matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 111, 222, 333, 1)
-            domElement.style.transform = 'translate(-50%, -50%) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, -800, 800, 0, 1)'
+            domElement.style.transform = 'translate(-50%, -50%) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, '+domX+', '+domY+', '+domZ+', 1)'
         }
     }
 }

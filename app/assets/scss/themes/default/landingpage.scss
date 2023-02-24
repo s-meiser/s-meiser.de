@@ -55,14 +55,18 @@ body {
     overflow: hidden;
     touch-action: none;
 }
-.basicContainer {
+.cameraContainer {
     position: absolute;
     pointer-events: none;
 }
-.animateContainer {
+.domContainer {
     position: absolute;
     pointer-events: auto;
-    user-select: none;
+    //user-select: none;
+    > div {
+        position: absolute;
+        pointer-events: auto;
+    }
 }
 
 .debugContainer {

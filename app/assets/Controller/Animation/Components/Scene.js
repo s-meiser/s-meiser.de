@@ -1,18 +1,34 @@
 import * as THREE from 'three';
 import {linearGradientShader} from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
+import Utility from "./Utility";
+import {MathUtils} from "three";
+import {TWEEN} from "three/examples/jsm/libs/tween.module.min";
 
 export default class Scene {
 
     configuration;
-    newScene;
+    camera;
 
-    constructor(configuration) {
+    newScene;
+    groupMatLineHex = [];
+    groupTween = [];
+    groupTweenBack = [];
+
+    groupTweenHex = [];
+    groupTweenBackHex = [];
+
+    clock = new THREE.Clock();
+
+    constructor(camera, configuration) {
         this.configuration = configuration;
+        this.camera = camera;
+
         this.newScene = this.scene();
         this.addPlane(this.newScene);
-        this.shadowPlane(this.newScene)
-        this.spotlight(this.newScene)
+        this.shadowPlane(this.newScene);
+        this.spotlight(this.newScene);
+        this.hexagon(this.camera);
 
         return this.newScene;
     }
@@ -109,7 +125,76 @@ export default class Scene {
         light.target.position.y = config.target.position.y;
         light.target.position.z = config.target.position.z;
     }
+
+    hexagon(camera) {
+        let utility = new Utility(camera);
+
+        let margin = 1.1;
+
+        // 93278f << lila
+        // 29abe2 << blau
+
+        let borderHex1 = utility.addBorderLine(0xFFDC00);
+        this.groupMatLineHex.push(borderHex1.matLine);
+        let geoAttributeHex1 = utility.setGeoAttribute(borderHex1.matLine, borderHex1);
+
+        const lineWidth = 1000/camera.position.z*utility.lineMultiplier;
+        const scale = (camera.position.z/1000)*lineWidth+300;
+
+        borderHex1.line.scale.set(scale, scale, 0);
+        borderHex1.line.position.set(0, 0, 30);
+        borderHex1.line.rotateZ(MathUtils.degToRad(30));
+        //borderHex1.matLine.opacity = 0.2;
+
+/*        let tween1 = new TWEEN.Tween(borderHex1.matLine)
+            .to({opacity: 0.8}, 1000)
+            .onUpdate()
+
+        let tweenBack1 = new TWEEN.Tween(borderHex1.matLine)
+            .to({opacity: 0.2}, 1000)
+            .onUpdate()
+            .onComplete(() => setTimeout(() => this.groupTween[0].start(), 4000))
+
+        this.groupTween.push(tween1);
+        this.groupTweenBack.push(tweenBack1);
+
+        this.groupTween[0].chain(this.groupTweenBack[0]);
+
+        this.groupTween[0].start();
+*/
+        utility.addToScene(this.newScene, [
+            borderHex1.line,
+            geoAttributeHex1
+        ]);
+
+
+/*        let hex1 = utility.createHexagon();
+        hex1.position.set(0, -10*margin, 30);
+        hex1.scale.set(300, 300, 0);
+        hex1.rotateZ(MathUtils.degToRad(30));
+        this.newScene.add(hex1);
+
+        let tween1Hex = new TWEEN.Tween(hex1.material)
+            .to({opacity: 0.8}, 1000)
+            .onUpdate()
+
+        let tweenBack1Hex = new TWEEN.Tween(hex1.material)
+            .to({opacity: 0.2}, 1000)
+            .onUpdate()
+            .onComplete(() => setTimeout(() => this.groupTweenHex[0].start(), 4000))
+
+        this.groupTweenHex.push(tween1Hex);
+        this.groupTweenBackHex.push(tweenBack1Hex);
+
+        this.groupTweenHex[0].chain(this.groupTweenBackHex[0]);
+
+        this.groupTweenHex[0].start();*/
+
+    }
+
 }
+
+
 
 /**
  * rounded rect shape

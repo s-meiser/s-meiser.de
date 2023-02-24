@@ -7,7 +7,7 @@ import {Controls, CSSControls} from "./Components/Controls";
 import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
 import {Matrix4} from "three";
-
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min';
 
 class TheaterStage {
 
@@ -22,6 +22,8 @@ class TheaterStage {
     config;
     domElement;
     cameraElement;
+    delta = 0;
+    clock = new THREE.Clock();
 
     // helper
     composer;
@@ -61,7 +63,7 @@ class TheaterStage {
     }
 
     setScene() {
-        this.scene = new Scene(this.config);
+        this.scene = new Scene(this.camera, this.config);
     }
 
     setRenderer() {
@@ -91,8 +93,16 @@ class TheaterStage {
         this.cameraElement.style.height = window.innerHeight+'px';
     }
 
-    animate() {
+    animate(time) {
         requestAnimationFrame(() => { this.animate(); });
+       // TWEEN.update(time);
+        //this.delta = this.clock.getDelta();
+
+/*        let i;
+        for (i = 0; i < groupMatLineHex.length; i++) {
+            groupMatLineHex[i].resolution.set( 1920, 1080 );
+        }*/
+
         this.renderer.render( this.scene, this.camera );
         this.renderObjects.htmlRenderer(this.scene, this.camera, this.domElement, this.cameraElement );
         //this.CSSRenderer.render( this.scene, this.camera );

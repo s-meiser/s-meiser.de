@@ -54,7 +54,6 @@ class TheaterStage {
          * Call always as last function
          */
         this.animate();
-        //this.render();
     }
 
     setCamera() {
@@ -68,12 +67,12 @@ class TheaterStage {
     setRenderer() {
         this.renderObjects = new Renderer(this.config);
         this.renderer = this.renderObjects.renderer();
-        this.CSSRenderer = this.renderObjects.cssRenderer()
+        //this.CSSRenderer = this.renderObjects.cssRenderer()
     }
 
     setControls() {
         this.controls = Controls(this.camera, this.renderer, this.CSSRenderer, this.config);
-        this.CSSControls = CSSControls(this.camera, this.CSSRenderer, this.config);
+        //this.CSSControls = CSSControls(this.camera, this.CSSRenderer, this.config);
     }
 
     setHelper() {

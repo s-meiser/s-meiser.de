@@ -54,7 +54,7 @@ export default class Configuration {
         return {
             object: {
                 position: {
-                    x: -window.innerWidth / 2,
+                    x: -window.innerWidth / 2 + 100,
                     y: 800,
                     z: 0
                 }
@@ -129,11 +129,11 @@ export default class Configuration {
                 opacity: 0
             },
             mainShape: {
-                width: window.innerWidth,
+                width: window.innerWidth - 200,
                 height: 800,
                 radius: 20,
                 position: {
-                    x:  window.innerWidth / -2,
+                    x: (window.innerWidth / -2) + 100,
                     y: 0
                 }
             }

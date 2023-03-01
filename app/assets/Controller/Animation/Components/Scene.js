@@ -28,7 +28,8 @@ export default class Scene {
         this.addPlane(this.newScene);
         this.shadowPlane(this.newScene);
         this.spotlight(this.newScene);
-        this.hexagon(this.camera);
+        this.spotlight2(this.newScene);
+        this.hexagon(this.newScene, this.camera);
 
         return this.newScene;
     }
@@ -126,69 +127,69 @@ export default class Scene {
         light.target.position.z = config.target.position.z;
     }
 
-    hexagon(camera) {
+    spotlight2(scene) {
+        const light = new THREE.SpotLight(0xffffff, 1);
+        light.castShadow = true;
+
+        light.rotation.set(100,-400,0)
+        light.position.set(-900,700,900)
+        light.angle = 2.9
+
+        light.shadow.mapSize.width = 1024;
+        light.shadow.mapSize.height = 1024;
+
+        light.shadow.camera.near = 500;
+        light.shadow.camera.far = 4000;
+        light.shadow.camera.fov = 30;
+
+        light.target.rotation.set(500,500,500)
+        light.target.position.set( 500, 500, 500 );
+        light.add( light.target );
+        //scene.add(light);
+
+        const sphereSize = 10;
+        const pointLightHelper = new THREE.SpotLightHelper( light, sphereSize, '#FF0000' );
+        //scene.add( pointLightHelper );
+
+    }
+
+    hexagon(scene, camera) {
         let utility = new Utility(camera);
 
-        let margin = 1.1;
+
+        const planeGeometry = new THREE.PlaneGeometry(
+            1720,
+            800
+        );
+        const material = new THREE.ShadowMaterial({
+            color: 0x000000
+        });
+        material.opacity = 0.75;
+        const plane = new THREE.Mesh(planeGeometry, material);
+        plane.receiveShadow = true;
+        plane.position.y = 800;
+        plane.position.z = 20;
+        //scene.add(plane);
+
 
         // 93278f << lila
         // 29abe2 << blau
 
-        let borderHex1 = utility.addBorderLine(0xFFDC00);
-        this.groupMatLineHex.push(borderHex1.matLine);
-        let geoAttributeHex1 = utility.setGeoAttribute(borderHex1.matLine, borderHex1);
+        let hexagonTopLeft = utility.getHexagonBorder(0xFFFFFF, 3, 0.5,20, 'double');
+        hexagonTopLeft.scale.set(125,125,0)
+        hexagonTopLeft.position.set(-850,800,0)
+        hexagonTopLeft.rotation.set(50,50,100)
+        hexagonTopLeft.castShadow = true; //default is false
+        hexagonTopLeft.receiveShadow = true; //default
+        scene.add(hexagonTopLeft);
 
-        const lineWidth = 1000/camera.position.z*utility.lineMultiplier;
-        const scale = (camera.position.z/1000)*lineWidth+300;
-
-        borderHex1.line.scale.set(scale, scale, 0);
-        borderHex1.line.position.set(0, 0, 30);
-        borderHex1.line.rotateZ(MathUtils.degToRad(30));
-        //borderHex1.matLine.opacity = 0.2;
-
-/*        let tween1 = new TWEEN.Tween(borderHex1.matLine)
-            .to({opacity: 0.8}, 1000)
-            .onUpdate()
-
-        let tweenBack1 = new TWEEN.Tween(borderHex1.matLine)
-            .to({opacity: 0.2}, 1000)
-            .onUpdate()
-            .onComplete(() => setTimeout(() => this.groupTween[0].start(), 4000))
-
-        this.groupTween.push(tween1);
-        this.groupTweenBack.push(tweenBack1);
-
-        this.groupTween[0].chain(this.groupTweenBack[0]);
-
-        this.groupTween[0].start();
-*/
-        utility.addToScene(this.newScene, [
-            borderHex1.line,
-            geoAttributeHex1
-        ]);
-
-
-/*        let hex1 = utility.createHexagon();
-        hex1.position.set(0, -10*margin, 30);
-        hex1.scale.set(300, 300, 0);
-        hex1.rotateZ(MathUtils.degToRad(30));
-        this.newScene.add(hex1);
-
-        let tween1Hex = new TWEEN.Tween(hex1.material)
-            .to({opacity: 0.8}, 1000)
-            .onUpdate()
-
-        let tweenBack1Hex = new TWEEN.Tween(hex1.material)
-            .to({opacity: 0.2}, 1000)
-            .onUpdate()
-            .onComplete(() => setTimeout(() => this.groupTweenHex[0].start(), 4000))
-
-        this.groupTweenHex.push(tween1Hex);
-        this.groupTweenBackHex.push(tweenBack1Hex);
-
-        this.groupTweenHex[0].chain(this.groupTweenBackHex[0]);
-
-        this.groupTweenHex[0].start();*/
+        let hexagonMesh = utility.getHexagonMesh(0xF1F1E6, 0.5, 20, 'double');
+        hexagonMesh.scale.set(125,125,0)
+        hexagonMesh.position.set(-850,800,0)
+        hexagonMesh.rotation.set(50,50,100)
+        hexagonMesh.castShadow = true; //default is false
+        hexagonMesh.receiveShadow = true; //default
+        scene.add(hexagonMesh);
 
     }
 

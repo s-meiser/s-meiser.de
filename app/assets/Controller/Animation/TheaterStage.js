@@ -91,6 +91,8 @@ class TheaterStage {
 
         this.cameraElement.style.width = window.innerWidth+'px';
         this.cameraElement.style.height = window.innerHeight+'px';
+
+        this.renderer.domElement.id = 'canvasRenderer';
     }
 
     animate(time) {

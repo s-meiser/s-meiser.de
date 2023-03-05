@@ -8,6 +8,7 @@ import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
 import {Matrix4} from "three";
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min';
+import {CSSObject} from './Components/CSSObject';
 
 class TheaterStage {
 
@@ -20,7 +21,7 @@ class TheaterStage {
     CSSControls;
     animateContainer;
     config;
-    domElement;
+    domElement = {};
     cameraElement;
     delta = 0;
     clock = new THREE.Clock();
@@ -69,12 +70,10 @@ class TheaterStage {
     setRenderer() {
         this.renderObjects = new Renderer(this.config);
         this.renderer = this.renderObjects.renderer();
-        //this.CSSRenderer = this.renderObjects.cssRenderer()
     }
 
     setControls() {
         this.controls = Controls(this.camera, this.renderer, this.CSSRenderer, this.config);
-        //this.CSSControls = CSSControls(this.camera, this.CSSRenderer, this.config);
     }
 
     setHelper() {
@@ -82,13 +81,10 @@ class TheaterStage {
     }
 
     addToDom() {
-        //document.getElementById('mainContainer').appendChild(this.CSSRenderer.domElement);
         document.getElementById('mainContainer').appendChild(this.renderer.domElement);
         document.getElementById('mainContainer').appendChild(this.controls.controlsGizmo.domElement);
 
-        this.cameraElement = document.querySelector('.cameraContainer')
-        this.domElement = document.querySelector('.domContainer')
-
+        this.cameraElement = document.querySelector('.cameraContainer');
         this.cameraElement.style.width = window.innerWidth+'px';
         this.cameraElement.style.height = window.innerHeight+'px';
 
@@ -97,17 +93,8 @@ class TheaterStage {
 
     animate(time) {
         requestAnimationFrame(() => { this.animate(); });
-       // TWEEN.update(time);
-        //this.delta = this.clock.getDelta();
-
-/*        let i;
-        for (i = 0; i < groupMatLineHex.length; i++) {
-            groupMatLineHex[i].resolution.set( 1920, 1080 );
-        }*/
-
         this.renderer.render( this.scene, this.camera );
-        this.renderObjects.htmlRenderer(this.scene, this.camera, this.domElement, this.cameraElement );
-        //this.CSSRenderer.render( this.scene, this.camera );
+        this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );
     }
 
 }

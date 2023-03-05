@@ -2,8 +2,7 @@ import * as THREE from 'three';
 import {linearGradientShader} from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
 import Utility from "./Utility";
-import {MathUtils} from "three";
-import {TWEEN} from "three/examples/jsm/libs/tween.module.min";
+import {CSSObject} from "./CSSObject";
 
 export default class Scene {
 
@@ -30,7 +29,7 @@ export default class Scene {
         this.spotlight(this.newScene);
         this.spotlight2(this.newScene);
         this.hexagon(this.newScene, this.camera);
-
+        this.html(this.newScene);
         return this.newScene;
     }
 
@@ -75,7 +74,7 @@ export default class Scene {
             configShape.mainShape.height,
             configShape.mainShape.radius
         );
-        let mat = linearGradientShader('27.0', '#090d12', '#1c2f35')
+        let mat = linearGradientShader('27.0', '#090d12', '#1c2f35');
         let mesh = new THREE.Mesh(shape, mat);
         mesh.position.set(config.mesh.object.position.x, config.mesh.object.position.y, config.mesh.object.position.z);
         mesh.name = config.mesh.object.name
@@ -128,23 +127,29 @@ export default class Scene {
     }
 
     spotlight2(scene) {
-        const light = new THREE.SpotLight(0xffffff, 1);
+        const light = new THREE.SpotLight(0xffffff);
         light.castShadow = true;
 
         light.rotation.set(100,-400,0)
-        light.position.set(-900,700,900)
+        light.position.set(-900,700,1500)
         light.angle = 2.9
+        light.intensity = 0.0001
+        light.distance = 2000;
+        light.decay = 2;
 
-        light.shadow.mapSize.width = 1024;
-        light.shadow.mapSize.height = 1024;
+        light.shadow.mapSize.width = 512;
+        light.shadow.mapSize.height = 512;
 
-        light.shadow.camera.near = 500;
-        light.shadow.camera.far = 4000;
-        light.shadow.camera.fov = 30;
+        //light.shadow.camera.near = 500;
+        //light.shadow.camera.far = 4000;
+        //light.shadow.camera.fov = 30;
+        //light.shadow.focus = 1; // default
+        //light.shadow.camera.fov = 30;
 
-        light.target.rotation.set(500,500,500)
-        light.target.position.set( 500, 500, 500 );
+        //light.target.rotation.set(0,0,0)
+        light.target.position.set( 600, 500, 500 );
         light.add( light.target );
+        //console.log(light)
         //scene.add(light);
 
         const sphereSize = 10;
@@ -191,6 +196,32 @@ export default class Scene {
         hexagonMesh.receiveShadow = true; //default
         scene.add(hexagonMesh);
 
+    }
+
+    html(scene) {
+
+        let firstDom001 = document.querySelector('.content-1')
+        let antoherDom002 = document.querySelector('.content-2')
+
+        const objContent1 = new CSSObject( firstDom001 )
+        objContent1.position.x = 100;
+        objContent1.position.y = 200;
+        objContent1.position.z = 300;
+        objContent1.rotation.x = 100;
+        objContent1.rotation.y = 200;
+        objContent1.rotation.z = 300;
+
+        const objContent2 = new CSSObject( antoherDom002 )
+        objContent2.position.x = 100;
+        objContent2.position.y = 200;
+        objContent2.position.z = 300;
+        objContent2.rotation.x = 0;
+        objContent2.rotation.y = 0;
+        objContent2.rotation.z = 0;
+
+
+        scene.add(objContent1);
+        scene.add(objContent2);
     }
 
 }

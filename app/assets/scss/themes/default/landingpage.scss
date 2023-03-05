@@ -58,6 +58,7 @@ body {
 .cameraContainer {
     position: fixed; // google chrome reload bugfix
     pointer-events: none;
+    transform-style: preserve-3d;
 }
 .domContainer {
     position: absolute;

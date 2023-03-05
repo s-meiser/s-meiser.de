@@ -2,6 +2,15 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {OrbitControlsGizmo} from "./OrbitControlsGizmo.js";
 import {ControlSettings} from "./ControlSettings.js";
 
+const CSSControls = (camera, CSSRenderer, configuration) => {
+    const config = configuration.controls
+    let CSSControls = new OrbitControls(camera, CSSRenderer.domElement);
+    //console.log(CSSRenderer.domElement.outerHTML)
+    CSSControls.object.position.y = config.position.y;
+    CSSControls.target.set(config.position.x, config.position.y, config.position.z);
+    CSSControls.update();
+}
+
 const Controls = (camera, renderer, CSSRenderer, configuration) => {
     const config = configuration.controls
     let controls = new OrbitControls(camera, renderer.domElement);
@@ -58,5 +67,5 @@ const mouseMoveWhilstDown =(target, whileMove) => {
 
 
 
-export {Controls};
+export {Controls, CSSControls};
 

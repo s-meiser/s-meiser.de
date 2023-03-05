@@ -1,9 +1,17 @@
 import * as THREE from 'three';
 import {CSS3DRenderer} from "three/examples/jsm/renderers/CSS3DRenderer";
+import {Matrix4, Quaternion, Vector3} from "three";
 
 export default class Renderer {
 
     configuration;
+    cssObjectStyle;
+
+    _matrix = new Matrix4();
+    _matrix2 = new Matrix4();
+    _position = new Vector3();
+    _quaternion = new Quaternion();
+    _scale = new Vector3();
 
     constructor(configuration) {
         this.configuration = configuration;
@@ -24,18 +32,11 @@ export default class Renderer {
         return renderer;
     }
 
-    cssRenderer() {
-        const CSSRenderer = new CSS3DRenderer();
-        CSSRenderer.setSize( window.innerWidth, window.innerHeight );
-        CSSRenderer.domElement.style.position = 'absolute'
-        return CSSRenderer;
-    }
-
-    htmlRenderer(scene, camera, domElement, cameraElement) {
+    htmlRenderer(scene, camera, cameraElement) {
         const fov = getFov(camera);
 
         if ( cache.camera.fov !== fov ) {
-            domElement.style.perspective = camera.isPerspectiveCamera ? fov + 'px' : '';
+            cameraElement.style.perspective = camera.isPerspectiveCamera ? fov + 'px' : '';
             cache.camera.fov = fov;
         }
 
@@ -47,14 +48,28 @@ export default class Renderer {
         if ( cache.camera.style !== style ) {
             cameraElement.style.transform = style;
             cache.camera.style = style;
+        }
+        this.renderObject( scene, scene, camera, style );
+    }
 
-            let domX = this.configuration.htmlContainer.object.position.x
-            let domY = this.configuration.htmlContainer.object.position.y
-            let domZ = this.configuration.htmlContainer.object.position.z
+    renderObject(CSSObjects, scene, camera, cameraCSSMatrix) {
+        for (const [key, value] of Object.entries(CSSObjects.children)) {
+            if(value.isCSSObject) {
+                let style;
 
-            //                                                x    y    z
-            // matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 111, 222, 333, 1)
-            domElement.style.transform = 'translate(-50%, -50%) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, '+domX+', '+domY+', '+domZ+', 1)'
+                const visible = (value.visible === true ) && (value.layers.test( camera.layers ) === true);
+                value.element.style.display = ( visible === true ) ? '' : 'none';
+
+                let cssObjectStyle = getObjectCSSMatrix(value.matrixWorld);
+
+                const cachedObject = cache.objects.get(value.element);
+                if (cachedObject === undefined || cachedObject.style !== style) {
+                    value.element.style.transform = cssObjectStyle;
+                    const objectData = { style: style };
+                    cache.objects.set( value, objectData );
+                }
+            }
+            this.renderObject( value, scene, camera, cameraCSSMatrix );
         }
     }
 }

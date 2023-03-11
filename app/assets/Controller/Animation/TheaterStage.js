@@ -1,14 +1,12 @@
 import * as THREE from 'three';
-import {CSS3DObject} from 'three/examples/jsm/renderers/CSS3DRenderer';
 import {Camera} from "./Components/Camera";
 import {Helper} from "./Components/Helper";
 import Renderer from "./Components/Renderer";
-import {Controls, CSSControls} from "./Components/Controls";
+import {Controls} from "./Components/Controls";
 import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
-import {Matrix4} from "three";
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min';
-import {CSSObject} from './Components/CSSObject';
+
 
 class TheaterStage {
 

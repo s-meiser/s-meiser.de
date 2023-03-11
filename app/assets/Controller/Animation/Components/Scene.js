@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {linearGradientShader} from "../Materials/LinearGradientShader";
+import {glowMaterial, glowMaterial2, glowMaterial3, linearGradientShader} from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
 import Utility from "./Utility";
 import {CSSObject} from "./CSSObject";
@@ -19,15 +19,19 @@ export default class Scene {
 
     clock = new THREE.Clock();
 
+    bloomScene;
+
     constructor(camera, configuration) {
         this.configuration = configuration;
         this.camera = camera;
+        //this.bloomScene = bloomScene;
 
         this.newScene = this.scene();
         this.addPlane(this.newScene);
-        this.shadowPlane(this.newScene);
-        this.spotlight(this.newScene);
-        this.spotlight2(this.newScene);
+        //this.testMesh(this.newScene);
+        //this.shadowPlane(this.newScene);
+        //this.spotlight(this.newScene);
+        //this.spotlight2(this.newScene);
         this.hexagon(this.newScene, this.camera);
         this.html(this.newScene);
         return this.newScene;
@@ -76,9 +80,54 @@ export default class Scene {
         );
         let mat = linearGradientShader('27.0', '#090d12', '#1c2f35');
         let mesh = new THREE.Mesh(shape, mat);
-        mesh.position.set(config.mesh.object.position.x, config.mesh.object.position.y, config.mesh.object.position.z);
+        mesh.position.set(config.mesh.object.position.x, config.mesh.object.position.y, 0);
         mesh.name = config.mesh.object.name
         scene.add(mesh);
+        //mesh.layers.enable( 0 );
+        //outer glow
+
+        const glowShape = roundedRectShape(
+            -5000,
+            -5000,
+            10000,
+            10000,
+            configShape.shadow.radius
+        );
+
+        const testGeometry = new THREE.PlaneGeometry( 2000, 1000, 1 );
+        //const boxgeometry = new THREE.BoxGeometry( 100, 100, 100 );
+        //const orgMaterial = new THREE.MeshBasicMaterial({color: 0xff00dd});
+        //const orgMesh = new THREE.Mesh( testGeometry, orgMaterial );
+        //const glowGeo = this.createGlowGeometry(orgMesh.geometry, 100)
+        let glowMat = glowMaterial3();
+        //glowMat.side = THREE.DoubleSide;
+        let glowMesh = new THREE.Mesh(testGeometry, glowMat);
+        //glowMesh.scale.set(2,2,1)
+        glowMesh.position.set(0,400,-5);
+        scene.add(glowMesh);
+    }
+
+    createGlowGeometry(geometry, size) {
+        // Gather vertexNormals from geometry.attributes.normal
+        const glowGeometry = geometry.clone();
+        const vertexNormals = glowGeometry.attributes.normal.array;
+        //console.log(vertexNormals)
+        // Modify the vertices according to vertexNormal
+        for (let i = 0; i < vertexNormals.length; i += 3) {
+
+            const x = vertexNormals[i];
+            const y = vertexNormals[i + 1];
+            const z = vertexNormals[i + 2];
+
+            const vertex = new THREE.Vector3(x, y, z);
+            vertex.multiplyScalar(size);
+            const float32Array = glowGeometry.attributes.position.array.slice(i, i + 3)
+            //console.log(glowGeometry.attributes.position.array.slice(i, i + 3))
+            vertex.add(new THREE.Vector3(float32Array[0], float32Array[1], float32Array[2]));
+            glowGeometry.attributes.position.setXYZ(i / 3, vertex.x, vertex.y, vertex.z);
+        }
+
+        return glowGeometry;
     }
 
     /**
@@ -118,8 +167,8 @@ export default class Scene {
         light.shadow.camera.aspect = config.shadow.camera.aspect;
         light.shadow.focus = config.shadow.focus; // default
 
-        scene.add(light);
-        scene.add(light.target );
+        //scene.add(light);
+        //scene.add(light.target );
 
         light.target.position.x = config.target.position.x;
         light.target.position.y = config.target.position.y;
@@ -127,16 +176,16 @@ export default class Scene {
     }
 
     spotlight2(scene) {
-        const light = new THREE.SpotLight(0xffffff);
+        const light = new THREE.SpotLight(0xffffff, 1/100);
         light.castShadow = true;
 
-        light.rotation.set(100,-400,0)
-        light.position.set(-900,700,1500)
-        light.angle = 2.9
+        light.rotation.set(100,-425,0)
+        light.position.set(-950,800,1500)
+        light.angle = 3
         light.intensity = 0.0001
         light.distance = 2000;
         light.decay = 2;
-
+        //console.log(light.position)
         light.shadow.mapSize.width = 512;
         light.shadow.mapSize.height = 512;
 
@@ -147,7 +196,7 @@ export default class Scene {
         //light.shadow.camera.fov = 30;
 
         //light.target.rotation.set(0,0,0)
-        light.target.position.set( 600, 500, 500 );
+        light.target.position.set( 500, 400, 500 );
         light.add( light.target );
         //console.log(light)
         //scene.add(light);
@@ -182,16 +231,16 @@ export default class Scene {
 
         let hexagonTopLeft = utility.getHexagonBorder(0xFFFFFF, 3, 0.5,20, 'double');
         hexagonTopLeft.scale.set(125,125,0)
-        hexagonTopLeft.position.set(-850,800,0)
-        hexagonTopLeft.rotation.set(50,50,100)
+        hexagonTopLeft.position.set(-850,800,10)
+        hexagonTopLeft.rotation.set(50,-60,100)
         hexagonTopLeft.castShadow = true; //default is false
         hexagonTopLeft.receiveShadow = true; //default
         scene.add(hexagonTopLeft);
 
         let hexagonMesh = utility.getHexagonMesh(0xF1F1E6, 0.5, 20, 'double');
         hexagonMesh.scale.set(125,125,0)
-        hexagonMesh.position.set(-850,800,0)
-        hexagonMesh.rotation.set(50,50,100)
+        hexagonMesh.position.set(-850,800,10)
+        hexagonMesh.rotation.set(50,-60,100)
         hexagonMesh.castShadow = true; //default is false
         hexagonMesh.receiveShadow = true; //default
         scene.add(hexagonMesh);
@@ -212,9 +261,9 @@ export default class Scene {
         objContent1.rotation.z = 300;
 
         const objContent2 = new CSSObject( antoherDom002 )
-        objContent2.position.x = 100;
-        objContent2.position.y = 200;
-        objContent2.position.z = 300;
+        objContent2.position.x = 0;
+        objContent2.position.y = 500;
+        objContent2.position.z = 0;
         objContent2.rotation.x = 0;
         objContent2.rotation.y = 0;
         objContent2.rotation.z = 0;

@@ -1,17 +1,8 @@
 import * as THREE from 'three';
-import {CSS3DRenderer} from "three/examples/jsm/renderers/CSS3DRenderer";
-import {Matrix4, Quaternion, Vector3} from "three";
 
 export default class Renderer {
 
     configuration;
-    cssObjectStyle;
-
-    _matrix = new Matrix4();
-    _matrix2 = new Matrix4();
-    _position = new Vector3();
-    _quaternion = new Quaternion();
-    _scale = new Vector3();
 
     constructor(configuration) {
         this.configuration = configuration;

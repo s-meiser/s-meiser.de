@@ -116,6 +116,14 @@ export default class Configuration {
     }
 
     shapes() {
+        const mediaQueries = this.mediaQueries();
+
+        let margin;
+        if (mediaQueries.xs.matches) {
+            margin = 50;
+        } else {
+            margin = 200;
+        }
 
         return {
             shadow: {
@@ -129,11 +137,11 @@ export default class Configuration {
                 opacity: 0
             },
             mainShape: {
-                width: window.innerWidth - 200,
+                width: window.innerWidth - margin,
                 height: 800,
                 radius: 20,
                 position: {
-                    x: (window.innerWidth / -2) + 100,
+                    x: (window.innerWidth / -2) + (margin/2),
                     y: 0
                 }
             }
@@ -197,6 +205,7 @@ export default class Configuration {
         const camera = this.camera(shapes.mainShape.width, shapes.mainShape.height);
         const controls = this.controls(shapes.mainShape.height);
         const htmlContainer = this.htmlContainer();
+        const mediaQueries = this.mediaQueries();
 
         return {
             //initialCss3DObjectForRef,
@@ -206,7 +215,8 @@ export default class Configuration {
             shadowPlane,
             light,
             shapes,
-            htmlContainer
+            htmlContainer,
+            mediaQueries
         }
     }
 

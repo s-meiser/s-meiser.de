@@ -143,7 +143,7 @@ const glowMaterial3 = () => {
                 vec3 color = glowColor;
 
                 // specify size of border. 0.0 - no border, 1.0 - border occupies the entire space
-                vec2 borderSize = vec2(0.1); 
+                vec2 borderSize = vec2(0.5); 
 
                 // size of rectangle in terms of uv 
                 vec2 rectangleSize = vec2(1.0) - borderSize; 
@@ -164,6 +164,55 @@ const glowMaterial3 = () => {
 
     return shader;
 }
+
+const shadowMaterial = () => {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            shadowColor: { value: new THREE.Color(0x090d12) },
+        },
+        vertexShader: `
+            varying vec2 v_uv;
+            void main(){
+                v_uv = uv;
+                vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                gl_Position = projectionMatrix * mvPosition;
+         }
+        `,
+        fragmentShader: `
+            uniform vec3 shadowColor;
+            varying vec2 v_uv;
+            void main(){              
+                vec2 uv = v_uv;
+                // Zooms out by a factor of 2.0
+                uv *= 2.0;
+                // Shifts every axis by -1.0
+                uv -= 1.0;
+
+                // Base color for the effect
+                vec3 color = shadowColor;
+
+                // specify size of border. 0.0 - no border, 1.0 - border occupies the entire space
+                vec2 borderSize = vec2(0.8); 
+
+                // size of rectangle in terms of uv 
+                vec2 rectangleSize = vec2(1.0) - borderSize; 
+
+                // distance field, 0.0 - point is inside rectangle, 1.0 point is on the far edge of the border.
+                float distanceField = length(max(abs(uv)-rectangleSize,0.0) / borderSize);
+
+                // calculate alpha accordingly to the value of the distance field
+                float alpha = 1.0 - distanceField;
+
+                gl_FragColor = vec4(color, alpha); 
+            }
+        `,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide
+    });
+}
+
+
 const shadowShader = () => {
     return new THREE.ShaderMaterial( {
         lights: true,
@@ -237,4 +286,203 @@ const shadowShader = () => {
     });
 }
 
-export {linearGradientShader, shadowShader, glowMaterial, glowMaterial2, glowMaterial3}
+
+const bloomMaterial = () => {
+    return new THREE.ShaderMaterial({
+        defines: {
+            "RESOLUTION": "vec2(" + window.innerWidth.toFixed(1) + ", " + window.innerHeight.toFixed(1) + ")"
+        },
+        uniforms: {
+            "tDiffuse": { value: null },
+            "resolution": { value: new THREE.Vector2() },
+            "bloomStrength": { value: 1.0 },
+            "bloomRadius": { value: 0.1 },
+            "bloomThreshold": { value: 0.8 },
+            "color": { value: new THREE.Color(0xff00dd) },
+        },
+        vertexShader: `
+            varying vec2 vUv;
+        
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform sampler2D tDiffuse;
+            uniform vec2 resolution;
+            uniform float bloomStrength;
+            uniform float bloomRadius;
+            uniform float bloomThreshold;
+            uniform vec3 color;
+        
+            varying vec2 vUv;
+        
+            void main() {
+              vec4 texel = texture2D(tDiffuse, vUv);
+              vec4 bloomColor = vec4(0.0);
+              float brightness = max(max(texel.r, texel.g), texel.b);
+        
+              if (brightness > bloomThreshold) {
+                vec2 bloomUV = vUv - vec2(0.5);
+                bloomUV *= resolution;
+                bloomUV *= bloomRadius;
+                bloomUV += vec2(0.5);
+        
+                bloomColor = texture2D(tDiffuse, bloomUV);
+                bloomColor *= bloomStrength * (brightness - bloomThreshold);
+              }
+        
+              gl_FragColor = mix(texel, bloomColor + texel, 1.0);
+            }
+        `,
+        transparent: false,
+        depthWrite: false,
+        side: THREE.DoubleSide
+    });
+}
+
+
+const blurMaterial = () => {
+    return new THREE.ShaderMaterial({
+        uniforms: {
+            "tDiffuse": { value: null },
+            "resolution": { value: new THREE.Vector2() },
+            "bloomStrength": { value: 1.0 },
+            "bloomRadius": { value: 0.1 },
+            "bloomThreshold": { value: 0.8 },
+            "color": { value: new THREE.Color(0xff00dd) },
+        },
+        vertexShader: `
+            varying vec2 vUv;
+        
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform vec2 gamma;
+            uniform sampler2D positionTexture;
+            uniform sampler2D colorTexture;
+            uniform sampler2D noiseTexture;
+            uniform sampler2D depthOfFieldTexture;
+            uniform sampler2D fogTexture;
+            uniform vec2 nearFar;
+            uniform vec2 enabled;
+                
+            void main() {
+              float minSeparation = 1.0;
+              float maxSeparation = 1.0;
+              float minDistance   = 1.5;
+              float maxDistance   = 2.0;
+              float noiseScale    = 1.0;
+              int   size          = 1;
+              vec3  colorModifier = vec3(0.522, 0.431, 0.349);
+            
+              colorModifier = pow(colorModifier, vec3(gamma.x));
+            
+              float near = nearFar.x;
+              float far  = nearFar.y;
+            
+              vec2 fragCoord = gl_FragCoord.xy;
+            
+              vec2 texSize   = textureSize(colorTexture, 0);
+              vec2 texCoord  = fragCoord / texSize;
+            
+              vec4  color        = texture2D(colorTexture,        texCoord);
+              float depthOfField = texture2D(depthOfFieldTexture, texCoord).r;
+              float fog          = texture2D(fogTexture,          texCoord).a;
+            
+              if (enabled.x != 1.0) { gl_FragColor = color; return; }
+            
+              vec4 fragColor = vec4(0.0);
+            
+              vec2 noise  = texture2D(noiseTexture, fragCoord / textureSize(noiseTexture, 0)).rg;
+                   noise  = noise * 2.0 - 1.0;
+                   noise *= noiseScale;
+            
+              texCoord = (fragCoord - noise) / texSize;
+            
+              vec4 position     = texture2D(positionTexture, texCoord);
+              vec4 positionTemp = position;
+            
+              if (position.a <= 0.0) { position.y = far; }
+            
+              float depth =
+                clamp
+                  (   1.0
+                    - ( (far - position.y)
+                      / (far - near)
+                      )
+                  , 0.0
+                  , 1.0
+                  );
+            
+              float separation = mix(maxSeparation, minSeparation, depth);
+              float count      = 1.0;
+              float mx         = 0.0;
+            
+              for (int i = -size; i <= size; ++i) {
+                for (int j = -size; j <= size; ++j) {
+                  texCoord =
+                      (vec2(i, j) * separation + (fragCoord + noise))
+                    / texSize;
+            
+                  positionTemp =
+                    texture2D
+                      ( positionTexture
+                      , texCoord
+                      );
+            
+                  if (positionTemp.y <= 0.0) { positionTemp.y = far; }
+            
+                  mx = max(mx, abs(position.y - positionTemp.y));
+            
+                  depthOfField =
+                    max
+                      ( texture2D
+                          ( depthOfFieldTexture
+                          , texCoord
+                          ).r
+                      , depthOfField
+                      );
+            
+                  fog +=
+                    texture2D
+                      ( fogTexture
+                      , texCoord
+                      ).a;
+            
+                  count += 1.0;
+                }
+              }
+            
+              depthOfField = 1.0 - clamp(depthOfField, 0.0, 1.0);
+              fog          = 1.0 - clamp(fog / count,  0.0, 1.0);
+              float diff   = smoothstep(minDistance, maxDistance, mx) * depthOfField * fog;
+            
+              texCoord = fragCoord / texSize;
+            
+              vec3 lineColor  = texture(colorTexture, texCoord).rgb;
+                   lineColor *= colorModifier;
+            
+              fragColor.rgb = mix(color.rgb, lineColor, clamp(diff, 0.0, 1.0));
+              fragColor.a   = 1.0;
+            }
+        `,
+        transparent: false,
+        depthWrite: false,
+        side: THREE.DoubleSide
+    });
+}
+export {
+    linearGradientShader,
+    shadowShader,
+    glowMaterial,
+    glowMaterial2,
+    glowMaterial3,
+    shadowMaterial,
+    bloomMaterial,
+    blurMaterial
+}

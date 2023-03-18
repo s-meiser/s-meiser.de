@@ -5,7 +5,7 @@ import Renderer from "./Components/Renderer";
 import {Controls} from "./Components/Controls";
 import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min';
+import {ExternalLoader} from "./Components/Loader";
 
 
 class TheaterStage {
@@ -27,6 +27,8 @@ class TheaterStage {
     // helper
     composer;
     bloomComposer;
+
+    loaderStatus = 0;
 
     constructor() {
 
@@ -63,6 +65,9 @@ class TheaterStage {
 
     setScene() {
         this.scene = new Scene(this.camera, this.config);
+        ExternalLoader(this.scene, this.config).then(function (response) {
+            //console.log(response)
+        });
     }
 
     setRenderer() {
@@ -83,13 +88,15 @@ class TheaterStage {
         document.getElementById('mainContainer').appendChild(this.controls.controlsGizmo.domElement);
 
         this.cameraElement = document.querySelector('.cameraContainer');
-        this.cameraElement.style.width = window.innerWidth+'px';
-        this.cameraElement.style.height = window.innerHeight+'px';
+        this.cameraElement.style.width = window.innerWidth + 'px';
+        this.cameraElement.style.height = window.innerHeight + 'px';
 
         this.renderer.domElement.id = 'canvasRenderer';
     }
 
+
     animate(time) {
+        //console.log(this.loaderStatus);
         requestAnimationFrame(() => { this.animate(); });
         this.renderer.render( this.scene, this.camera );
         this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );

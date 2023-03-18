@@ -13,7 +13,7 @@ const Helper = (camera, scene, renderer, bloomComposer) => {
     const size = 1000;
     const divisions = 50;
     const gridHelper = new THREE.GridHelper( size, divisions );
-    scene.add( gridHelper );
+    //scene.add( gridHelper );
 
 /*
     const helper = new THREE.CameraHelper( camera );

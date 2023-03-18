@@ -1,5 +1,13 @@
 import * as THREE from 'three';
-import {glowMaterial, glowMaterial2, glowMaterial3, linearGradientShader} from "../Materials/LinearGradientShader";
+import {
+    glowMaterial,
+    glowMaterial2,
+    shadowMaterial,
+    bloomMaterial,
+    glowMaterial3,
+    linearGradientShader,
+    blurMaterial
+} from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
 import Utility from "./Utility";
 import {CSSObject} from "./CSSObject";
@@ -30,7 +38,7 @@ export default class Scene {
         this.addPlane(this.newScene);
         //this.testMesh(this.newScene);
         //this.shadowPlane(this.newScene);
-        //this.spotlight(this.newScene);
+        this.spotlight(this.newScene);
         //this.spotlight2(this.newScene);
         this.hexagon(this.newScene, this.camera);
         this.html(this.newScene);
@@ -44,6 +52,8 @@ export default class Scene {
     addPlane(scene) {
         const config = this.configuration.mesh;
         const configShape = this.configuration.shapes;
+        const mediaQueries = this.configuration.mediaQueries;
+
         /**
          * hidden Mesh to cast shadow
          * THREE.ShaderMaterial does not support casting shadows out of the box
@@ -78,36 +88,47 @@ export default class Scene {
             configShape.mainShape.height,
             configShape.mainShape.radius
         );
-        let mat = linearGradientShader('27.0', '#090d12', '#1c2f35');
+        let mat = linearGradientShader('-120.0', '#253f42', '#000000');
         let mesh = new THREE.Mesh(shape, mat);
         mesh.position.set(config.mesh.object.position.x, config.mesh.object.position.y, 0);
         mesh.name = config.mesh.object.name
         scene.add(mesh);
-        //mesh.layers.enable( 0 );
-        //outer glow
 
-        const glowShape = roundedRectShape(
-            -5000,
-            -5000,
-            10000,
-            10000,
-            configShape.shadow.radius
-        );
+        /**
+         * xs: 0 (max-width: 576px)
+         * sm: 576px (min-width: 576px) and (max-width: 768px)
+         * md: 768px (min-width: 768px) and (max-width: 992px)
+         * lg: 992px (min-width: 992px) and (max-width: 1200px)
+         * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
+         * xxl: 1400px (min-width: 1400px)
+         */
+        const positionLeftSide = (window.innerWidth/-2);
 
-        const testGeometry = new THREE.PlaneGeometry( 2000, 1000, 1 );
-        //const boxgeometry = new THREE.BoxGeometry( 100, 100, 100 );
-        //const orgMaterial = new THREE.MeshBasicMaterial({color: 0xff00dd});
-        //const orgMesh = new THREE.Mesh( testGeometry, orgMaterial );
-        //const glowGeo = this.createGlowGeometry(orgMesh.geometry, 100)
-        let glowMat = glowMaterial3();
-        //glowMat.side = THREE.DoubleSide;
-        let glowMesh = new THREE.Mesh(testGeometry, glowMat);
-        //glowMesh.scale.set(2,2,1)
-        glowMesh.position.set(0,400,-5);
-        scene.add(glowMesh);
+        let margin = 460;
+        let width = 1200;
+        let height = 800;
+        let posY = 200;
+
+        if (mediaQueries.xs.matches) {
+            margin = 100;
+            width = 400;
+            height = 700;
+        }
+        if (mediaQueries.sm.matches) {
+            margin = 200;
+            width = 500;
+            height = 700;
+        }
+
+        const shadowGeometry = new THREE.PlaneGeometry(width, height, 1 );
+        let shadowMat = shadowMaterial();
+        let shadowMesh = new THREE.Mesh(shadowGeometry, shadowMat);
+        // shadowMesh.position.set(-500,200,-5);
+        shadowMesh.position.set(positionLeftSide+margin,posY,-5);
+        scene.add(shadowMesh);
     }
 
-    createGlowGeometry(geometry, size) {
+/*    createGlowGeometry(geometry, size) {
         // Gather vertexNormals from geometry.attributes.normal
         const glowGeometry = geometry.clone();
         const vertexNormals = glowGeometry.attributes.normal.array;
@@ -128,7 +149,7 @@ export default class Scene {
         }
 
         return glowGeometry;
-    }
+    }*/
 
     /**
      * plane to display shadow from objects like planes or 3D models
@@ -153,11 +174,39 @@ export default class Scene {
 
     spotlight(scene) {
         const config = this.configuration.light;
+        const mediaQueries = this.configuration.mediaQueries
+
+
+        /**
+         * xs: 0 (max-width: 576px)
+         * sm: 576px (min-width: 576px) and (max-width: 768px)
+         * md: 768px (min-width: 768px) and (max-width: 992px)
+         * lg: 992px (min-width: 992px) and (max-width: 1200px)
+         * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
+         * xxl: 1400px (min-width: 1400px)
+         */
+        let lightIntensity = 100;
+        if (mediaQueries.xs.matches) {
+            lightIntensity = 40;
+        }
+        if (mediaQueries.sm.matches) {
+            lightIntensity = 50;
+        }
+        if (mediaQueries.md.matches) {
+            lightIntensity = 50;
+        }
+        if (mediaQueries.lg.matches) {
+            lightIntensity = 50;
+        }
+        if (mediaQueries.xl.matches) {
+            lightIntensity = 60;
+        }
 
         const light = new THREE.SpotLight(0xffffff);
         light.castShadow = true; // default false
-        light.position.set(config.light.position.x, config.light.position.y, config.light.position.z);
-        light.intensity = 0;
+        light.position.set(config.light.position.x, config.light.position.y, 1500);
+        light.intensity = lightIntensity;
+        light.distance = 2000;
         light.angle = config.light.angle
 
         light.shadow.mapSize.width = config.shadow.mapSize.width; // default
@@ -167,8 +216,11 @@ export default class Scene {
         light.shadow.camera.aspect = config.shadow.camera.aspect;
         light.shadow.focus = config.shadow.focus; // default
 
-        //scene.add(light);
-        //scene.add(light.target );
+        scene.add(light);
+        scene.add(light.target );
+        const sphereSize = 1;
+        const pointLightHelper = new THREE.SpotLightHelper( light, sphereSize, '#FF0000' );
+        //scene.add( pointLightHelper );
 
         light.target.position.x = config.target.position.x;
         light.target.position.y = config.target.position.y;
@@ -209,7 +261,13 @@ export default class Scene {
 
     hexagon(scene, camera) {
         let utility = new Utility(camera);
+        const mediaQueries = this.configuration.mediaQueries
 
+
+        let margin = 0;
+        if (mediaQueries.xs.matches) {
+            margin = 50;
+        }
 
         const planeGeometry = new THREE.PlaneGeometry(
             1720,
@@ -228,10 +286,12 @@ export default class Scene {
 
         // 93278f << lila
         // 29abe2 << blau
+        const positionLeftSide = (window.innerWidth/-2)+110;
 
         let hexagonTopLeft = utility.getHexagonBorder(0xFFFFFF, 3, 0.5,20, 'double');
         hexagonTopLeft.scale.set(125,125,0)
-        hexagonTopLeft.position.set(-850,800,10)
+        //hexagonTopLeft.position.set(-850,800,10)
+        hexagonTopLeft.position.set(positionLeftSide-margin,800,10)
         hexagonTopLeft.rotation.set(50,-60,100)
         hexagonTopLeft.castShadow = true; //default is false
         hexagonTopLeft.receiveShadow = true; //default
@@ -239,7 +299,7 @@ export default class Scene {
 
         let hexagonMesh = utility.getHexagonMesh(0xF1F1E6, 0.5, 20, 'double');
         hexagonMesh.scale.set(125,125,0)
-        hexagonMesh.position.set(-850,800,10)
+        hexagonMesh.position.set(positionLeftSide-margin,800,10)
         hexagonMesh.rotation.set(50,-60,100)
         hexagonMesh.castShadow = true; //default is false
         hexagonMesh.receiveShadow = true; //default
@@ -249,13 +309,14 @@ export default class Scene {
 
     html(scene) {
 
+        let menuHtml = document.querySelector('.content-menu')
         let firstDom001 = document.querySelector('.content-1')
         let antoherDom002 = document.querySelector('.content-2')
 
         const objContent1 = new CSSObject( firstDom001 )
         objContent1.position.x = 100;
         objContent1.position.y = 200;
-        objContent1.position.z = 300;
+        objContent1.position.z = -300;
         objContent1.rotation.x = 100;
         objContent1.rotation.y = 200;
         objContent1.rotation.z = 300;
@@ -269,8 +330,15 @@ export default class Scene {
         objContent2.rotation.z = 0;
 
 
-        scene.add(objContent1);
-        scene.add(objContent2);
+        const menu = new CSSObject( menuHtml )
+        menu.position.x = 0;
+        menu.position.y = 500;
+        menu.position.z = 0;
+
+
+        //scene.add(objContent1);
+        scene.add(menu);
+        //scene.add(objContent2);
     }
 
 }

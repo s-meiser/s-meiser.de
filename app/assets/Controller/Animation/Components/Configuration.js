@@ -233,6 +233,7 @@ export default class Configuration {
     mediaQueries() {
         const landscapeMQ = window.matchMedia("(orientation: landscape)");
         const portraitMQ = window.matchMedia("(orientation: portrait)");
+        const touch  = window.matchMedia('(hover: none)').matches
 
         const xs = window.matchMedia('(max-width: 576px)')
         const sm = window.matchMedia('(min-width: 576px) and (max-width: 768px)')
@@ -242,6 +243,7 @@ export default class Configuration {
         const xxl = window.matchMedia('(min-width: 1400px)')
 
         return {
+            touch,
             landscapeMQ,
             portraitMQ,
             xs,

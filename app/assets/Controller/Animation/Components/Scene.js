@@ -25,21 +25,12 @@ export default class Scene {
     groupTweenHex = [];
     groupTweenBackHex = [];
 
-    clock = new THREE.Clock();
-
-    bloomScene;
-
     constructor(camera, configuration) {
         this.configuration = configuration;
         this.camera = camera;
-        //this.bloomScene = bloomScene;
-
         this.newScene = this.scene();
         this.addPlane(this.newScene);
-        //this.testMesh(this.newScene);
-        //this.shadowPlane(this.newScene);
         this.spotlight(this.newScene);
-        //this.spotlight2(this.newScene);
         this.hexagon(this.newScene, this.camera);
         this.html(this.newScene);
         return this.newScene;
@@ -128,50 +119,6 @@ export default class Scene {
         scene.add(shadowMesh);
     }
 
-/*    createGlowGeometry(geometry, size) {
-        // Gather vertexNormals from geometry.attributes.normal
-        const glowGeometry = geometry.clone();
-        const vertexNormals = glowGeometry.attributes.normal.array;
-        //console.log(vertexNormals)
-        // Modify the vertices according to vertexNormal
-        for (let i = 0; i < vertexNormals.length; i += 3) {
-
-            const x = vertexNormals[i];
-            const y = vertexNormals[i + 1];
-            const z = vertexNormals[i + 2];
-
-            const vertex = new THREE.Vector3(x, y, z);
-            vertex.multiplyScalar(size);
-            const float32Array = glowGeometry.attributes.position.array.slice(i, i + 3)
-            //console.log(glowGeometry.attributes.position.array.slice(i, i + 3))
-            vertex.add(new THREE.Vector3(float32Array[0], float32Array[1], float32Array[2]));
-            glowGeometry.attributes.position.setXYZ(i / 3, vertex.x, vertex.y, vertex.z);
-        }
-
-        return glowGeometry;
-    }*/
-
-    /**
-     * plane to display shadow from objects like planes or 3D models
-     */
-    shadowPlane(scene) {
-        const config = this.configuration.shadowPlane;
-
-        const planeGeometry = new THREE.PlaneGeometry(
-            config.geometry.width,
-            config.geometry.height
-        );
-        const material = new THREE.ShadowMaterial({
-            color: 0x000000
-        });
-        material.opacity = 0.75;
-        const plane = new THREE.Mesh(planeGeometry, material);
-        plane.receiveShadow = true;
-        plane.position.y = config.mesh.position.y;
-        plane.position.z = config.mesh.position.z;
-        scene.add(plane);
-    }
-
     spotlight(scene) {
         const config = this.configuration.light;
         const mediaQueries = this.configuration.mediaQueries
@@ -225,38 +172,6 @@ export default class Scene {
         light.target.position.x = config.target.position.x;
         light.target.position.y = config.target.position.y;
         light.target.position.z = config.target.position.z;
-    }
-
-    spotlight2(scene) {
-        const light = new THREE.SpotLight(0xffffff, 1/100);
-        light.castShadow = true;
-
-        light.rotation.set(100,-425,0)
-        light.position.set(-950,800,1500)
-        light.angle = 3
-        light.intensity = 0.0001
-        light.distance = 2000;
-        light.decay = 2;
-        //console.log(light.position)
-        light.shadow.mapSize.width = 512;
-        light.shadow.mapSize.height = 512;
-
-        //light.shadow.camera.near = 500;
-        //light.shadow.camera.far = 4000;
-        //light.shadow.camera.fov = 30;
-        //light.shadow.focus = 1; // default
-        //light.shadow.camera.fov = 30;
-
-        //light.target.rotation.set(0,0,0)
-        light.target.position.set( 500, 400, 500 );
-        light.add( light.target );
-        //console.log(light)
-        //scene.add(light);
-
-        const sphereSize = 10;
-        const pointLightHelper = new THREE.SpotLightHelper( light, sphereSize, '#FF0000' );
-        //scene.add( pointLightHelper );
-
     }
 
     hexagon(scene, camera) {

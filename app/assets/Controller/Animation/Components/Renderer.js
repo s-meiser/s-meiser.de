@@ -1,14 +1,17 @@
 import * as THREE from 'three';
+import Scene from "./Scene";
 
 export default class Renderer {
 
     configuration;
+    camera;
 
-    constructor(configuration) {
+    constructor(configuration, camera) {
         this.configuration = configuration;
+        this.camera = camera
     }
 
-    renderer() {
+    renderer(camera, scene, config) {
         let renderer;
         renderer = new THREE.WebGLRenderer({
             alpha: true,
@@ -19,6 +22,25 @@ export default class Renderer {
         renderer.domElement.id = 'threejs';
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
+        window.addEventListener('resize', function (ev) {
+            /*            const modalReload = document.querySelector('.modal-reload');
+                        const mobileControls = document.querySelector('.mobileControls');
+                        const gizmoControls = document.querySelector('.obit-controls-gizmo');
+                        const threejsCanvas = document.querySelector('#canvasRenderer');
+                        const content = document.querySelector('.cameraContainer');
+
+                        modalReload.style.display = 'flex';
+                        mobileControls.style.display = 'none';
+                        gizmoControls.style.display = 'none';
+                        threejsCanvas.style.display = 'none';
+                        content.style.display = 'none';*/
+            //scene.clear();
+            //window.refreshScene = new Scene(camera, config);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
         return renderer;
     }

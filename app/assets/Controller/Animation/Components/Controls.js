@@ -43,61 +43,68 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     controls.enableZoom = false;
     controls.enablePan = false;
 
-
-
-
-
-    document.addEventListener('mousemove', (event) => {
-        //camera.rotation.set(0, 0, 0)
-        //console.log(camera.rotation);
-    });
     if (mediaQueries.touch) {
         controls.enableRotate = false;
 
         let initialPositionX;
         let initialPositionY;
-        //let currentPositionX;
-        //let currentPositionY;
+        let interval;
+        let diffPosX;
+        let diffPosY;
+
+
 
         document.getElementById("pan-circle").addEventListener("touchstart", (event) => {
-            //console.log("You touched the screen!");
             initialPositionX = event.changedTouches[0].clientX
             initialPositionY = event.changedTouches[0].clientY
+
+            interval = setInterval(function() {
+                if (diffPosX >= 0 || diffPosY >= 0 || diffPosX <= 0 || diffPosY <= 0) {
+                    controls.target.x += diffPosX/25;
+                    camera.position.x += diffPosX/25;
+                    controls.target.y += diffPosY/25;
+                    camera.position.y += diffPosY/25;
+                }
+            }, 50);
         })
         document.getElementById("pan-circle").addEventListener("touchmove", (event) => {
             //console.log("You moved your finger!");
+
+
             let currentPositionX = event.changedTouches[0].clientX
             let currentPositionY = event.changedTouches[0].clientY
 
-            const atan2 = getAtan2(initialPositionX, initialPositionY, currentPositionX, currentPositionY);
-
-            console.log(`angle is ${atan2.degrees} degrees`);
-            //console.log(`The angle between the two points is ${atan2.radians} radians`);
-            //console.log(`atan2 deltaX deltaY - ${atan2.deltaX} - ${atan2.deltaY}`);
-
-
-            const xy = getXYCoord(50,50,50,atan2.degrees);
-            //console.log(`The point on the circle with angle 45 is (${xy.x}, ${xy.y})`);
-
-            const matrix = angleToMatrix(atan2.degrees);
-            console.log(`Matrix angle is (${matrix})`);
-
-            const element = document.querySelector('#pan-circle')
-
+            const angleDegRad = calcPos2AngleDegRad(initialPositionX, initialPositionY, currentPositionX, currentPositionY);
+            const xyPos = getXYCoord(55,50,50, angleDegRad.degrees);
+            const matrix = angleToMatrix(currentPositionY,initialPositionY, currentPositionX, initialPositionX);
+            //console.log(angleDegRad.degrees)
             //--panArrowTop
             //--panArrowRight
             //--panArrowTransform
-            const attr = window.getComputedStyle(document.querySelector('#pan-circle'), ':before').getPropertyValue('transform');
-            console.log(attr)
-            //element.style.setProperty('--panArrowTransform', 'matrix('+atan2.radians+', '+atan2.radians+', '+atan2.radians*(-1)+', '+atan2.radians+', 2.5, -5)')
+            //const attr = window.getComputedStyle(document.querySelector('#pan-circle'), ':before').getPropertyValue('transform');
 
-            //console.log(circleAttr)
+            const element = document.querySelector('#pan-circle')
+            element.style.setProperty('--panArrowTransform', 'matrix('+matrix.arrow+', 2.5, -5)')
+            element.style.setProperty('--afterPanArrowTransform', 'matrix('+matrix.ring+', 15, -85)')
+            element.style.setProperty('--panArrowRight', (100-xyPos.x)+'%')
+            element.style.setProperty('--panArrowTop', xyPos.y+'%')
+            element.style.setProperty('--panOpacity', '1')
+            element.style.setProperty('--afterPanOpacity', '1');
 
+            controls.enablePan = true;
+            diffPosX = currentPositionX - initialPositionX;
+            diffPosY = initialPositionY - currentPositionY;
 
-            //console.log(event.changedTouches[0]);
         })
+
+
+
         document.getElementById("pan-circle").addEventListener("touchend", (event) => {
-            //console.log("You removed your finger from the screen!");
+            const element = document.querySelector('#pan-circle');
+            element.style.setProperty('--panOpacity', '0');
+            element.style.setProperty('--afterPanOpacity', '0');
+            //console.log(myInterval)
+            clearInterval(interval);
         })
 
     }
@@ -122,34 +129,31 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
 }
 
 const getXYCoord = (radius, centerX, centerY, angleInDegrees) => {
-/*    const radius = 50;
-    const centerX = 50;
-    const centerY = 50;
-    const angleInDegrees = 45;*/
     const angleInRadians = angleInDegrees * Math.PI / 180;
     const x = centerX + radius * Math.cos(angleInRadians);
     const y = centerY + radius * Math.sin(angleInRadians);
-    return {x,y};
+    return {x, y};
 }
 
-const getAtan2 = (x1, y1, x2, y2) => {
-/*    const x1 = 35;
-    const y1 = 75;
-    const x2 = 165;
-    const y2 = 17;*/
-
+const calcPos2AngleDegRad = (x1, y1, x2, y2) => {
     const deltaX = x2 - x1;
     const deltaY = y2 - y1;
     const radians = Math.atan2(deltaY, deltaX);
     const degrees = radians * 180 / Math.PI;
-
     return {radians, degrees, deltaX, deltaY}
 }
 
-const angleToMatrix = (angle) => {
-    let cos = Math.cos(angle);
-    let sin = Math.sin(angle);
-    return [[cos, -sin], [sin, cos]];
+const angleToMatrix = (y2, y1, x2, x1) => {
+    let angle = Math.atan2(y2 - y1, x2 - x1);
+    let cos = Math.cos(angle*(-1));
+    let sin = Math.sin(angle*(-1));
+    let cosRing = Math.sin(angle-1.60);
+    let sinRing = Math.cos(angle-1.60);
+    return {
+        arrow: [[cos, -sin], [sin, cos]],
+        ring: [[cosRing, -sinRing], [sinRing, cosRing]]
+    };
+
 }
 
 const mouseMoveWhilstDown =(target, whileMove) => {

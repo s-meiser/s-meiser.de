@@ -71,8 +71,8 @@ class TheaterStage {
     }
 
     setRenderer() {
-        this.renderObjects = new Renderer(this.config);
-        this.renderer = this.renderObjects.renderer();
+        this.renderObjects = new Renderer(this.config, this.camera);
+        this.renderer = this.renderObjects.renderer(this.camera, this.scene, this.config);
     }
 
     setControls() {
@@ -98,6 +98,12 @@ class TheaterStage {
     animate(time) {
         //console.log(this.loaderStatus);
         requestAnimationFrame(() => { this.animate(); });
+        //console.log(this.scene)
+        //console.log(window.refreshScene)
+        if (typeof window.refreshScene !== 'undefined') {
+            //this.renderer.render( window.refreshScene, this.camera );
+            //this.renderObjects.htmlRenderer(window.refreshScene, this.camera, this.cameraElement );
+        }
         this.renderer.render( this.scene, this.camera );
         this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );
     }

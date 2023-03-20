@@ -1,6 +1,13 @@
 {% extends 'html_header.html.twig' %}
 
 {% block body %}
+	<div class="modal-reload">
+		<div class="modal-reload-content">
+			<p>Das Seitenverhältnis ihres Bildschirm hat sich geändert, bitte laden Sie die Seite neu ...</p>
+			<button type="button" class="btn btn-refresh" onclick="location.reload();">Refresh</button>
+		</div>
+	</div>
+
 	<div class="mobileControls">
 		<div class="pan">
 			<div id="pan-circle">
@@ -11,6 +18,7 @@
 		<div class="zoom"></div>
 		<div class="scroll"></div>
 	</div>
+
 	<div class="cameraContainer">
 		<div class="domContainer content-menu">
 			<div class="text-white">

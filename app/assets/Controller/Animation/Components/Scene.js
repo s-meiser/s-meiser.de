@@ -175,6 +175,8 @@ export default class Scene {
     }
 
     hexagon(scene, camera) {
+
+
         let utility = new Utility(camera);
         const mediaQueries = this.configuration.mediaQueries
 
@@ -205,11 +207,11 @@ export default class Scene {
 
         let hexagonTopLeft = utility.getHexagonBorder(0xFFFFFF, 3, 0.5,20, 'double');
         hexagonTopLeft.scale.set(125,125,0)
-        //hexagonTopLeft.position.set(-850,800,10)
         hexagonTopLeft.position.set(positionLeftSide-margin,800,10)
         hexagonTopLeft.rotation.set(50,-60,100)
         hexagonTopLeft.castShadow = true; //default is false
         hexagonTopLeft.receiveShadow = true; //default
+        hexagonTopLeft.name = 'hexagonTopLeft';
         scene.add(hexagonTopLeft);
 
         let hexagonMesh = utility.getHexagonMesh(0xF1F1E6, 0.5, 20, 'double');
@@ -218,8 +220,20 @@ export default class Scene {
         hexagonMesh.rotation.set(50,-60,100)
         hexagonMesh.castShadow = true; //default is false
         hexagonMesh.receiveShadow = true; //default
+        hexagonMesh.name = 'hexagonMesh';
         scene.add(hexagonMesh);
 
+        window.addEventListener('resize', function (ev) {
+/*            console.log(scene.children);
+            scene.traverse( function ( child ) {
+                if ( child.name === 'hexagonTopLeft' ) {
+                    const positionLeftSide = (window.innerWidth/-2)+110;
+                    child.scale.set(125,125,0)
+                    child.position.set(positionLeftSide-margin,800,10)
+                    child.rotation.set(50,-60,100)
+                }
+            });*/
+        })
     }
 
     html(scene) {

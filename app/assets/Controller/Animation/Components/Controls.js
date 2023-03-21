@@ -2,15 +2,6 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {OrbitControlsGizmo} from "./OrbitControlsGizmo.js";
 import {ControlSettings} from "./ControlSettings.js";
 
-const CSSControls = (camera, CSSRenderer, configuration) => {
-    const config = configuration.controls
-    let CSSControls = new OrbitControls(camera, CSSRenderer.domElement);
-    //console.log(CSSRenderer.domElement.outerHTML)
-    CSSControls.object.position.y = config.position.y;
-    //CSSControls.target.set(config.position.x, config.position.y, config.position.z);
-    //CSSControls.update();
-}
-
 const Controls = (camera, renderer, CSSRenderer, configuration) => {
     const config = configuration.controls
     const mediaQueries = configuration.mediaQueries;
@@ -52,8 +43,6 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
         let diffPosX;
         let diffPosY;
 
-
-
         document.getElementById("pan-circle").addEventListener("touchstart", (event) => {
             initialPositionX = event.changedTouches[0].clientX
             initialPositionY = event.changedTouches[0].clientY
@@ -68,8 +57,6 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
             }, 50);
         })
         document.getElementById("pan-circle").addEventListener("touchmove", (event) => {
-            //console.log("You moved your finger!");
-
 
             let currentPositionX = event.changedTouches[0].clientX
             let currentPositionY = event.changedTouches[0].clientY
@@ -169,7 +156,5 @@ const mouseMoveWhilstDown =(target, whileMove) => {
     });
 }
 
-
-
-export {Controls, CSSControls};
+export {Controls};
 

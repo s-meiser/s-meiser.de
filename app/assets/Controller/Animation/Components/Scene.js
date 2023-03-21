@@ -222,18 +222,6 @@ export default class Scene {
         hexagonMesh.receiveShadow = true; //default
         hexagonMesh.name = 'hexagonMesh';
         scene.add(hexagonMesh);
-
-        window.addEventListener('resize', function (ev) {
-/*            console.log(scene.children);
-            scene.traverse( function ( child ) {
-                if ( child.name === 'hexagonTopLeft' ) {
-                    const positionLeftSide = (window.innerWidth/-2)+110;
-                    child.scale.set(125,125,0)
-                    child.position.set(positionLeftSide-margin,800,10)
-                    child.rotation.set(50,-60,100)
-                }
-            });*/
-        })
     }
 
     html(scene) {

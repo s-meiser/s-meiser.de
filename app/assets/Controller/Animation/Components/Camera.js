@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import Configuration from "./Configuration";
 
 const Camera = (configuration) => {
     const config = configuration.camera;

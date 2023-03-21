@@ -92,17 +92,51 @@ class TheaterStage {
         this.cameraElement.style.height = window.innerHeight + 'px';
 
         this.renderer.domElement.id = 'canvasRenderer';
+
+        console.log(this.camera)
     }
 
 
     animate(time) {
-        //console.log(this.loaderStatus);
         requestAnimationFrame(() => { this.animate(); });
-        //console.log(this.scene)
-        //console.log(window.refreshScene)
-        if (typeof window.refreshScene !== 'undefined') {
-            //this.renderer.render( window.refreshScene, this.camera );
-            //this.renderObjects.htmlRenderer(window.refreshScene, this.camera, this.cameraElement );
+
+        if (typeof window.resized !== 'undefined' && window.resized === true) {
+            window.resized = false
+            this.scene.clear();
+
+            let config = new Configuration();
+
+            this.camera.left = config.camera.orthographicCamera.left
+            this.camera.right = config.camera.orthographicCamera.right
+            this.camera.top = config.camera.orthographicCamera.top
+            this.camera.bottom = config.camera.orthographicCamera.bottom
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.position.set(config.camera.position.x, config.camera.position.y, config.camera.position.z);
+            this.camera.updateProjectionMatrix();
+
+            this.controls.controls.target.set(
+                config.controls.position.x,
+                config.controls.position.y,
+                config.controls.position.z,
+            )
+            this.camera.position.x = this.controls.controls.target.x
+            this.camera.position.y = this.controls.controls.target.y
+            this.controls.controls.update();
+
+            this.scene = new Scene(this.camera, config);
+            ExternalLoader(this.scene, this.config).then(function (response) {
+                //console.log(response)
+            });
+            //this.cameraElement = document.querySelector('.cameraContainer');
+            //this.cameraElement.style.width = window.innerWidth + 'px';
+            //this.cameraElement.style.height = window.innerHeight + 'px';
+
+
+            //this.camera.aspect = window.innerWidth / window.innerHeight;
+            //this.camera.updateProjectionMatrix();
+            this.renderer.setSize( window.innerWidth, window.innerHeight );
+            this.renderer.render( this.scene, this.camera );
+            this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );
         }
         this.renderer.render( this.scene, this.camera );
         this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );

@@ -11,7 +11,7 @@ export default class Renderer {
         this.camera = camera
     }
 
-    renderer(camera, scene, config) {
+    renderer() {
         let renderer;
         renderer = new THREE.WebGLRenderer({
             alpha: true,
@@ -24,22 +24,7 @@ export default class Renderer {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
         window.addEventListener('resize', function (ev) {
-            /*            const modalReload = document.querySelector('.modal-reload');
-                        const mobileControls = document.querySelector('.mobileControls');
-                        const gizmoControls = document.querySelector('.obit-controls-gizmo');
-                        const threejsCanvas = document.querySelector('#canvasRenderer');
-                        const content = document.querySelector('.cameraContainer');
-
-                        modalReload.style.display = 'flex';
-                        mobileControls.style.display = 'none';
-                        gizmoControls.style.display = 'none';
-                        threejsCanvas.style.display = 'none';
-                        content.style.display = 'none';*/
-            //scene.clear();
-            //window.refreshScene = new Scene(camera, config);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            window.resized = true;
         });
 
         return renderer;

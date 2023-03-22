@@ -103,8 +103,7 @@ body {
 }
 
 .mobileControls {
-    display: block;
-
+    display: none;
 }
 
 .modal-reload {
@@ -135,8 +134,8 @@ body {
 .pan {
     position: absolute;
     z-index: 10;
-    bottom: 10px;
-    left: 10px;
+    bottom: 20px;
+    left: 20px;
     #pan-circle {
         width: 100px;
         height: 100px;
@@ -188,6 +187,64 @@ body {
         -moz-border-radius: 25px;
         border-radius: 25px;
         border: 2px solid rgba(0, 126, 255, 0.34);
-        //background-color: rgb(0 0 0 / 25%);
+    }
+}
+
+.rotate {
+    position: absolute;
+    z-index: 10;
+    bottom: 20px;
+    right: 20px;
+
+    #rotate-circle {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        border: 2px solid rgba(0, 0, 0, 0.09);
+        background-color: rgba(10, 10, 10, 0.2);
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: var(--rotateArrowTop, 85%);
+            right: var(--rotateArrowRight, calc(100% - 85%));
+            transform: var(--rotateArrowTransform, translateY(-50%) translateX(50%) rotate(45deg));
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid rgba(0, 126, 255, 0.87);
+            opacity: var(--rotateOpacity, 0);
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            top: var(--afterRotateArrowTop, 85%);
+            right: var(--afterRotateArrowRight, 15%);
+            transform: var(--afterRotateArrowTransform, translateY(-85%) translateX(15%) rotate(45deg));
+            width: 100px;
+            height: 100px;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            /* border-right: 13px solid rgba(0, 126, 255, 0.87); */
+            border-left: 3px solid rgba(0, 126, 255, 0.87);
+            opacity: var(--afterRotateOpacity, 0);
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+        }
+        .touch-rotate {
+            width: 25px;
+            height: 25px;
+            -webkit-border-radius: 25px;
+            -moz-border-radius: 25px;
+            border-radius: 25px;
+            border: 2px solid rgba(0, 126, 255, 0.34);
+        }
     }
 }

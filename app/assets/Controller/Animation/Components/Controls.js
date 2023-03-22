@@ -37,33 +37,39 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     if (mediaQueries.touch) {
         controls.enableRotate = false;
 
-        let initialPositionX;
-        let initialPositionY;
-        let interval;
-        let diffPosX;
-        let diffPosY;
+        let initialPanPositionX;
+        let initialPanPositionY;
+        let panInterval;
+        let diffPanPosX;
+        let diffPanPosY;
+
+        //show mobile controls
+
+        const mobileControls = document.querySelector('.mobileControls');
+        mobileControls.style.display = 'block';
 
         document.getElementById("pan-circle").addEventListener("touchstart", (event) => {
-            initialPositionX = event.changedTouches[0].clientX
-            initialPositionY = event.changedTouches[0].clientY
+            initialPanPositionX = event.changedTouches[0].clientX
+            initialPanPositionY = event.changedTouches[0].clientY
 
-            interval = setInterval(function() {
-                if (diffPosX >= 0 || diffPosY >= 0 || diffPosX <= 0 || diffPosY <= 0) {
-                    controls.target.x += diffPosX/25;
-                    camera.position.x += diffPosX/25;
-                    controls.target.y += diffPosY/25;
-                    camera.position.y += diffPosY/25;
+            panInterval = setInterval(function() {
+                if (diffPanPosX >= 0 || diffPanPosY >= 0 || diffPanPosX <= 0 || diffPanPosY <= 0) {
+                    controls.target.x += diffPanPosX/25;
+                    camera.position.x += diffPanPosX/25;
+                    controls.target.y += diffPanPosY/25;
+                    camera.position.y += diffPanPosY/25;
                 }
             }, 50);
         })
+
         document.getElementById("pan-circle").addEventListener("touchmove", (event) => {
 
             let currentPositionX = event.changedTouches[0].clientX
             let currentPositionY = event.changedTouches[0].clientY
 
-            const angleDegRad = calcPos2AngleDegRad(initialPositionX, initialPositionY, currentPositionX, currentPositionY);
+            const angleDegRad = calcPos2AngleDegRad(initialPanPositionX, initialPanPositionY, currentPositionX, currentPositionY);
             const xyPos = getXYCoord(55,50,50, angleDegRad.degrees);
-            const matrix = angleToMatrix(currentPositionY,initialPositionY, currentPositionX, initialPositionX);
+            const matrix = angleToMatrix(currentPositionY,initialPanPositionY, currentPositionX, initialPanPositionX);
             //console.log(angleDegRad.degrees)
             //--panArrowTop
             //--panArrowRight
@@ -79,19 +85,72 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
             element.style.setProperty('--afterPanOpacity', '1');
 
             controls.enablePan = true;
-            diffPosX = currentPositionX - initialPositionX;
-            diffPosY = initialPositionY - currentPositionY;
-
+            diffPanPosX = currentPositionX - initialPanPositionX;
+            diffPanPosY = initialPanPositionY - currentPositionY;
         })
-
-
 
         document.getElementById("pan-circle").addEventListener("touchend", (event) => {
             const element = document.querySelector('#pan-circle');
             element.style.setProperty('--panOpacity', '0');
             element.style.setProperty('--afterPanOpacity', '0');
-            //console.log(myInterval)
-            clearInterval(interval);
+            clearInterval(panInterval);
+
+            //TODO:
+            // Issue - sometimes panInterval is moving
+            // Solution - get and set current position
+        })
+
+
+        let initialRotatePositionX;
+        let initialRotatePositionY;
+        let rotateInterval;
+        let diffRotatePosX;
+        let diffRotatePosY;
+
+        document.getElementById("rotate-circle").addEventListener("touchstart", (event) => {
+            initialRotatePositionX = event.changedTouches[0].clientX
+            initialRotatePositionY = event.changedTouches[0].clientY
+
+            rotateInterval = setInterval(function() {
+                if (diffRotatePosX >= 0 || diffRotatePosY >= 0 || diffRotatePosX <= 0 || diffRotatePosY <= 0) {
+                    //controls.target.x += diffRotatePosX/25;
+                    camera.rotation.x -= 0.0005;
+                    //controls.target.y += diffRotatePosY/25;
+                    camera.rotation.y -= 0.0005;
+                }
+            }, 50);
+        })
+        document.getElementById("rotate-circle").addEventListener("touchmove", (event) => {
+
+            let currentPositionX = event.changedTouches[0].clientX
+            let currentPositionY = event.changedTouches[0].clientY
+
+            const angleDegRad = calcPos2AngleDegRad(initialRotatePositionX, initialRotatePositionY, currentPositionX, currentPositionY);
+            const xyPos = getXYCoord(55,50,50, angleDegRad.degrees);
+            const matrix = angleToMatrix(currentPositionY,initialRotatePositionY, currentPositionX, initialRotatePositionX);
+            //console.log(angleDegRad.degrees)
+            //--rotateArrowTop
+            //--rotateArrowRight
+            //--rotateArrowTransform
+            //const attr = window.getComputedStyle(document.querySelector('#rotate-circle'), ':before').getPropertyValue('transform');
+
+            const element = document.querySelector('#rotate-circle')
+            element.style.setProperty('--rotateArrowTransform', 'matrix('+matrix.arrow+', 2.5, -5)')
+            element.style.setProperty('--afterRotateArrowTransform', 'matrix('+matrix.ring+', 15, -85)')
+            element.style.setProperty('--rotateArrowRight', (100-xyPos.x)+'%')
+            element.style.setProperty('--rotateArrowTop', xyPos.y+'%')
+            element.style.setProperty('--rotateOpacity', '1')
+            element.style.setProperty('--afterRotateOpacity', '1');
+
+
+            diffRotatePosX = currentPositionX - initialRotatePositionX;
+            diffRotatePosY = initialRotatePositionY - currentPositionY;
+        })
+        document.getElementById("rotate-circle").addEventListener("touchend", (event) => {
+            const element = document.querySelector('#rotate-circle');
+            element.style.setProperty('--rotateOpacity', '0');
+            element.style.setProperty('--afterRotateOpacity', '0');
+            clearInterval(rotateInterval);
         })
 
     }

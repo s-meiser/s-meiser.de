@@ -93,13 +93,13 @@ class TheaterStage {
 
         this.renderer.domElement.id = 'canvasRenderer';
 
-        console.log(this.camera)
+
     }
 
 
     animate(time) {
         requestAnimationFrame(() => { this.animate(); });
-
+        //console.log(this.camera)
         if (typeof window.resized !== 'undefined' && window.resized === true) {
             window.resized = false
             this.scene.clear();
@@ -127,13 +127,11 @@ class TheaterStage {
             ExternalLoader(this.scene, this.config).then(function (response) {
                 //console.log(response)
             });
-            //this.cameraElement = document.querySelector('.cameraContainer');
-            //this.cameraElement.style.width = window.innerWidth + 'px';
-            //this.cameraElement.style.height = window.innerHeight + 'px';
 
+            this.cameraElement = document.querySelector('.cameraContainer');
+            this.cameraElement.style.width = window.innerWidth + 'px';
+            this.cameraElement.style.height = window.innerHeight + 'px';
 
-            //this.camera.aspect = window.innerWidth / window.innerHeight;
-            //this.camera.updateProjectionMatrix();
             this.renderer.setSize( window.innerWidth, window.innerHeight );
             this.renderer.render( this.scene, this.camera );
             this.renderObjects.htmlRenderer(this.scene, this.camera, this.cameraElement );

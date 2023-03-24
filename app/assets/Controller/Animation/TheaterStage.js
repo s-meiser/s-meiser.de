@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {Camera} from "./Components/Camera";
 import {Helper} from "./Components/Helper";
 import Renderer from "./Components/Renderer";
-import {Controls} from "./Components/Controls";
+import {Controls, ControlInstructions} from "./Components/Controls";
 import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
 import {ExternalLoader} from "./Components/Loader";
@@ -93,7 +93,7 @@ class TheaterStage {
 
         this.renderer.domElement.id = 'canvasRenderer';
 
-
+        ControlInstructions();
     }
 
 

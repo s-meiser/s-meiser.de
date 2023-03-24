@@ -133,7 +133,7 @@ body {
 
 .pan {
     position: absolute;
-    z-index: 10;
+    z-index: 20;
     bottom: 20px;
     left: 20px;
     #pan-circle {
@@ -190,61 +190,80 @@ body {
     }
 }
 
-.rotate {
+
+
+.control-instructions {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(0 0 0 / 32%);
     position: absolute;
     z-index: 10;
-    bottom: 20px;
-    right: 20px;
+    display: none;
 
-    #rotate-circle {
+    .panning {
         width: 100px;
         height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        -webkit-border-radius: 100px;
-        -moz-border-radius: 100px;
-        border-radius: 100px;
-        border: 2px solid rgba(0, 0, 0, 0.09);
-        background-color: rgba(10, 10, 10, 0.2);
+        //border: 2px solid rgba(0, 126, 255, 0.87);
+        box-shadow: 0 0 14px 3px rgb(255, 255, 255);
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        //display: none;
+        z-index: 20;
+        .fingerAnimation {
+            position: absolute;
+            z-index: 30;
+            left: 40px;
+            top: 40px;
+            //transition: 1s ease-out;
+            //transform: translate3d(36px, -26px, 0px);
+            -webkit-animation: moveFinger 1.25s linear infinite;
+            -moz-animation: moveFinger 1.25s linear infinite;
+            -o-animation: moveFinger 1.25s linear infinite;
 
-        &:before {
-            content: "";
-            position: absolute;
-            top: var(--rotateArrowTop, 85%);
-            right: var(--rotateArrowRight, calc(100% - 85%));
-            transform: var(--rotateArrowTransform, translateY(-50%) translateX(50%) rotate(45deg));
-            width: 0;
-            height: 0;
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-left: 5px solid rgba(0, 126, 255, 0.87);
-            opacity: var(--rotateOpacity, 0);
+            @-webkit-keyframes moveFinger {
+                0% {
+                    left: 40px;
+                    top: 40px
+                }
+                100% {
+                    transform: translate3d(36px, -26px, 0px);
+                }
+            }
+            .touch-circle {
+                width: 20px;
+                height: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;
+                background-color: rgba(0, 0, 0, 0.64);
+                border: 2px solid rgb(101, 101, 101);
+            }
+            img {
+                width: 30px;
+                margin-left: 30px;
+                margin-top: -13px;
+                transform: rotate(328deg);
+            }
         }
-        &:after {
-            content: "";
+        span {
             position: absolute;
-            top: var(--afterRotateArrowTop, 85%);
-            right: var(--afterRotateArrowRight, 15%);
-            transform: var(--afterRotateArrowTransform, translateY(-85%) translateX(15%) rotate(45deg));
-            width: 100px;
-            height: 100px;
-            border-top: 3px solid transparent;
-            border-bottom: 3px solid transparent;
-            /* border-right: 13px solid rgba(0, 126, 255, 0.87); */
-            border-left: 3px solid rgba(0, 126, 255, 0.87);
-            opacity: var(--afterRotateOpacity, 0);
-            -webkit-border-radius: 100px;
-            -moz-border-radius: 100px;
-            border-radius: 100px;
-        }
-        .touch-rotate {
-            width: 25px;
-            height: 25px;
-            -webkit-border-radius: 25px;
-            -moz-border-radius: 25px;
-            border-radius: 25px;
-            border: 2px solid rgba(0, 126, 255, 0.34);
+            top: -70px;
+            width: 100%;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.69);
+            color: rgba(0, 0, 0, 0.51);
+            box-shadow: 0 0 14px 3px rgb(255, 255, 255);
+            padding: 2px;
+            text-align: center;
         }
     }
+}
+.transition-to-transparent {
+    background-color: rgb(0 0 0 / 0%);
+    transition: background-color 1000ms ease-in-out
+}
+
+.rotate {
+
 }

@@ -1,6 +1,7 @@
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {OrbitControlsGizmo} from "./OrbitControlsGizmo.js";
 import {ControlSettings} from "./ControlSettings.js";
+import $ from "jquery";
 
 const Controls = (camera, renderer, CSSRenderer, configuration) => {
     const config = configuration.controls
@@ -35,7 +36,9 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     controls.enablePan = false;
 
     if (mediaQueries.touch) {
-        controls.enableRotate = false;
+        controls.enableRotate = true;
+        controls.enableZoom = true;
+        controls.enablePan = true;
 
         let initialPanPositionX;
         let initialPanPositionY;
@@ -101,58 +104,6 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
         })
 
 
-        let initialRotatePositionX;
-        let initialRotatePositionY;
-        let rotateInterval;
-        let diffRotatePosX;
-        let diffRotatePosY;
-
-        document.getElementById("rotate-circle").addEventListener("touchstart", (event) => {
-            initialRotatePositionX = event.changedTouches[0].clientX
-            initialRotatePositionY = event.changedTouches[0].clientY
-
-            rotateInterval = setInterval(function() {
-                if (diffRotatePosX >= 0 || diffRotatePosY >= 0 || diffRotatePosX <= 0 || diffRotatePosY <= 0) {
-                    //controls.target.x += diffRotatePosX/25;
-                    camera.rotation.x -= 0.0005;
-                    //controls.target.y += diffRotatePosY/25;
-                    camera.rotation.y -= 0.0005;
-                }
-            }, 50);
-        })
-        document.getElementById("rotate-circle").addEventListener("touchmove", (event) => {
-
-            let currentPositionX = event.changedTouches[0].clientX
-            let currentPositionY = event.changedTouches[0].clientY
-
-            const angleDegRad = calcPos2AngleDegRad(initialRotatePositionX, initialRotatePositionY, currentPositionX, currentPositionY);
-            const xyPos = getXYCoord(55,50,50, angleDegRad.degrees);
-            const matrix = angleToMatrix(currentPositionY,initialRotatePositionY, currentPositionX, initialRotatePositionX);
-            //console.log(angleDegRad.degrees)
-            //--rotateArrowTop
-            //--rotateArrowRight
-            //--rotateArrowTransform
-            //const attr = window.getComputedStyle(document.querySelector('#rotate-circle'), ':before').getPropertyValue('transform');
-
-            const element = document.querySelector('#rotate-circle')
-            element.style.setProperty('--rotateArrowTransform', 'matrix('+matrix.arrow+', 2.5, -5)')
-            element.style.setProperty('--afterRotateArrowTransform', 'matrix('+matrix.ring+', 15, -85)')
-            element.style.setProperty('--rotateArrowRight', (100-xyPos.x)+'%')
-            element.style.setProperty('--rotateArrowTop', xyPos.y+'%')
-            element.style.setProperty('--rotateOpacity', '1')
-            element.style.setProperty('--afterRotateOpacity', '1');
-
-
-            diffRotatePosX = currentPositionX - initialRotatePositionX;
-            diffRotatePosY = initialRotatePositionY - currentPositionY;
-        })
-        document.getElementById("rotate-circle").addEventListener("touchend", (event) => {
-            const element = document.querySelector('#rotate-circle');
-            element.style.setProperty('--rotateOpacity', '0');
-            element.style.setProperty('--afterRotateOpacity', '0');
-            clearInterval(rotateInterval);
-        })
-
     }
 
     if (!mediaQueries.touch) {
@@ -172,6 +123,35 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     }
 
     return {controls, controlsGizmo}
+}
+
+const ControlInstructions = () => {
+
+    const controlInstructionsPan = document.querySelector('.panning');
+    // Check if a cookie with name "username" exists
+    if (!hasCookieName("controlInstructions")) {
+        console.log('dont have controlInstructions');
+        $('.control-instructions').show();
+        $('.panning').show();
+
+        document.getElementById("pan-circle").addEventListener("touchmove", (event) => {
+            createCookie("controlInstructions", true, 180);
+            $(".panning").fadeOut();
+            $('.control-instructions').addClass('transition-to-transparent');
+            //$('.control-instructions').css('background-color', '#00000000').fadeOut(1000);
+        });
+    }
+    // Create a cookie with name "username" and value "johndoe" that expires in 7 days
+    //createCookie("username", "johndoe", 7);
+
+    // Read the value of the "username" cookie
+    //let username = readCookie("username");
+
+    // Update the value of the "username" cookie to "janedoe" and extend its expiration by 7 days
+    //updateCookie("username", "janedoe", 7);
+
+    // Delete the "username" cookie
+    //deleteCookie("username");
 }
 
 const getXYCoord = (radius, centerX, centerY, angleInDegrees) => {
@@ -215,5 +195,45 @@ const mouseMoveWhilstDown =(target, whileMove) => {
     });
 }
 
-export {Controls};
+
+// Create a cookie with a name, value, and expiration time in days
+const createCookie = (name, value, days) => {
+    let expires = "";
+    if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+// Read a cookie with a given name
+const readCookie = (name) => {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+// Update a cookie with a given name, value, and expiration time in days
+const updateCookie = (name, value, days) => {
+    createCookie(name, value, days);
+}
+
+// Delete a cookie with a given name
+const deleteCookie = (name) => {
+    createCookie(name, "", -1);
+}
+
+// Check if a cookie with a given name exists
+const hasCookieName = (name) => {
+    let cookies = document.cookie.split(";").map(cookie => cookie.trim());
+    return cookies.some(cookie => cookie.startsWith(`${name}=`));
+}
+
+export {Controls, ControlInstructions};
 

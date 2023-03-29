@@ -1,11 +1,20 @@
 {% extends 'html_header.html.twig' %}
 
 {% block body %}
-	<div class="modal-reload">
-		<div class="modal-reload-content">
-			<p>Das Seitenverhältnis ihres Bildschirm hat sich geändert, bitte laden Sie die Seite neu ...</p>
-			<button type="button" class="btn btn-refresh" onclick="location.reload();">Refresh</button>
+	{#
+	<div class="modal-loaded">
+		<div class="modal-loaded-content">
+
 		</div>
+	</div>#}
+
+	<div class="loader-container">
+		<div class="loader-text">Sebastian Meiser</div>
+		<div class="loader-animation">
+			<div class="loading-bar-left"></div>
+			<div class="loading-bar-right"></div>
+		</div>
+
 	</div>
 
 	<div class="mobileControls">
@@ -25,22 +34,23 @@
 				<img src="/build/images/1-finger.svg">
 			</div>
 		</div>
-		<div class="zooming">
-			<!--Pinch in and out to adjust camera distance-->
-			<span>2 Finger Zoom zum Einstellen des Kameraabstands</span>
-		</div>
-		<div class="rotate">
-			<!--1 finger rotation to adjust the camera angle-->
-			<span>1 Finger Rotation zum Einstellen des Kamerawinkels</span>
-		</div>
 	</div>
 
-	<div class="rotate">
+{#	<div class="control-instructions-zooming">
+		<!--Pinch in and out to adjust camera distance-->
+		<span>2 Finger zum zoomen/vergrößern</span>
+	</div>
+	<div class="control-instructions-rotate">
+		<!--1 finger rotation to adjust the camera angle-->
+		<span>1 Finger zum rotieren (Kamerawinkel)</span>
+	</div>#}
+
+{#	<div class="rotate">
 		<div id="rotate-circle">
 			<div class="touch-rotate"></div>
 		</div>
 	</div>
-	<div class="zoom"></div>
+	<div class="zoom"></div>#}
 
 	<div class="cameraContainer">
 		<div class="domContainer content-menu">

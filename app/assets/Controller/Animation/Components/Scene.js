@@ -1,12 +1,7 @@
 import * as THREE from 'three';
 import {
-    glowMaterial,
-    glowMaterial2,
     shadowMaterial,
-    bloomMaterial,
-    glowMaterial3,
     linearGradientShader,
-    blurMaterial
 } from "../Materials/LinearGradientShader";
 import RoundedRectShape from "../Shapes/RoundedRectShape";
 import Utility from "./Utility";
@@ -223,6 +218,11 @@ export default class Scene {
         hexagonMesh.name = 'hexagonMesh';
         scene.add(hexagonMesh);
     }
+
+    hexagonContent(scene) {
+
+    }
+
 
     html(scene) {
 

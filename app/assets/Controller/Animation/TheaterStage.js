@@ -67,6 +67,8 @@ class TheaterStage {
         this.scene = new Scene(this.camera, this.config);
         ExternalLoader(this.scene, this.config).then(function (response) {
             //console.log(response)
+            //console.log('then2');
+            //console.log(window.loaderWelcomingSign)
         });
     }
 
@@ -92,8 +94,6 @@ class TheaterStage {
         this.cameraElement.style.height = window.innerHeight + 'px';
 
         this.renderer.domElement.id = 'canvasRenderer';
-
-        ControlInstructions();
     }
 
 

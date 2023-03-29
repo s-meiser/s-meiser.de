@@ -32,8 +32,8 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     const controlsSettings = new ControlSettings(controls);
     controlsSettings.setPolarAngle()
     controlsSettings.setAzimuthAngle()
-    controls.enableZoom = false;
-    controls.enablePan = false;
+    //controls.enableZoom = false;
+    //controls.enablePan = false;
 
     if (mediaQueries.touch) {
         controls.enableRotate = true;
@@ -97,12 +97,9 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
             element.style.setProperty('--panOpacity', '0');
             element.style.setProperty('--afterPanOpacity', '0');
             clearInterval(panInterval);
-
-            //TODO:
-            // Issue - sometimes panInterval is moving
-            // Solution - get and set current position
         })
 
+        ControlInstructions();
 
     }
 
@@ -126,19 +123,23 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
 }
 
 const ControlInstructions = () => {
-
+    //deleteCookie("controlInstructions");
     const controlInstructionsPan = document.querySelector('.panning');
     // Check if a cookie with name "username" exists
     if (!hasCookieName("controlInstructions")) {
-        console.log('dont have controlInstructions');
         $('.control-instructions').show();
         $('.panning').show();
 
         document.getElementById("pan-circle").addEventListener("touchmove", (event) => {
             createCookie("controlInstructions", true, 180);
             $(".panning").fadeOut();
-            $('.control-instructions').addClass('transition-to-transparent');
-            //$('.control-instructions').css('background-color', '#00000000').fadeOut(1000);
+            $('.control-instructions').addClass('transition-to-transparent step-1');
+        });
+
+        isElementLoaded('.step-1').then((selector) => {
+            setTimeout(() => {
+                $('.control-instructions').hide();
+            }, 1000);
         });
     }
     // Create a cookie with name "username" and value "johndoe" that expires in 7 days
@@ -153,6 +154,13 @@ const ControlInstructions = () => {
     // Delete the "username" cookie
     //deleteCookie("username");
 }
+
+const isElementLoaded = async selector => {
+    while ( document.querySelector(selector) === null) {
+        await new Promise( resolve =>  requestAnimationFrame(resolve) )
+    }
+    return document.querySelector(selector);
+};
 
 const getXYCoord = (radius, centerX, centerY, angleInDegrees) => {
     const angleInRadians = angleInDegrees * Math.PI / 180;

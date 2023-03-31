@@ -6,6 +6,7 @@ import {Controls, ControlInstructions} from "./Components/Controls";
 import Scene from "./Components/Scene";
 import Configuration from "./Components/Configuration";
 import {ExternalLoader} from "./Components/Loader";
+import $ from "jquery";
 
 
 class TheaterStage {
@@ -99,8 +100,13 @@ class TheaterStage {
 
     animate(time) {
         requestAnimationFrame(() => { this.animate(); });
-        //console.log(this.camera)
+
         if (typeof window.resized !== 'undefined' && window.resized === true) {
+            $('.loading-bar-left,.loading-bar-right').empty();
+            $('.loader-container').show();
+            $('#canvasRenderer,.obit-controls-gizmo').css('filter', 'blur(3px)');
+
+
             window.resized = false
             this.scene.clear();
 

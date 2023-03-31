@@ -269,9 +269,17 @@ body {
     display: flex;
     height: 3px;
     background-color: rgb(255 255 255 / 23%);
+    flex-direction: row;
+    justify-content: center;
     .loading-bar-left {
         height: 3px;
-        background-color: aqua;
+        background-color: rgba(0, 126, 255, 0.61);
+        display: flex;
+    }
+    .loading-bar-right {
+        height: 3px;
+        background-color: rgba(0, 126, 255, 0.61);
+        display: flex;
     }
 }
 

@@ -1,16 +1,9 @@
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
-
+import $ from 'jquery'
 const ExternalLoader = async (scene, configuration) => {
 
-    let loadInterval;
-
     const mediaQueries = configuration.mediaQueries
-    const loaderTextWidth = document.querySelector('.loader-text').offsetWidth;
-    document.querySelector('.loader-animation').style.width = loaderTextWidth+'px'
-    //document.querySelector('.loading-bar-left').style.width = loaderTextWidth/2+'px'
-    //document.querySelector('.loading-bar-right').style.width = loaderTextWidth/2+'px'
-
+    $('.loader-animation').width($('.loader-text').width());
 
     const welcomeSignUrl = 'build/models/glb/a_welcoming_sign.glb';
     const treeUrl = 'build/models/glb/treea.glb';
@@ -18,10 +11,10 @@ const ExternalLoader = async (scene, configuration) => {
     const grassUrl = 'build/models/glb/grass_free_download.glb';
 
     const res = Promise.all([
-        getFileSize(welcomeSignUrl),
-        getFileSize(treeUrl),
-        getFileSize(stoneUrl),
-        getFileSize(grassUrl)
+        getFileSize(welcomeSignUrl, 'sign'),
+        getFileSize(treeUrl, 'tree'),
+        getFileSize(stoneUrl, 'stone'),
+        getFileSize(grassUrl, 'grass')
     ]).then(([
             welcomeSign,
             tree,
@@ -35,53 +28,51 @@ const ExternalLoader = async (scene, configuration) => {
         }))
 
     Promise.resolve(res).then(function (fileInfo) {
-        const countOfLoadingFiles = Object.keys(fileInfo).length
         let totalSize = 0;
         for (const [key, value] of Object.entries(fileInfo)) {
             totalSize = totalSize + parseInt(value.size);
         }
+        const $loaderDiv = $('.loader-animation');
 
         return Promise.all([
-            //Tree(scene),
-            //House(scene)
-            //WoodStick(scene),
-            //OakTree(scene),
-            Treea(scene, mediaQueries, fileInfo.tree, countOfLoadingFiles, totalSize),
-            GraniteStoneBrown(scene, mediaQueries, fileInfo.stone, countOfLoadingFiles, totalSize),
-            Grass(scene, mediaQueries, fileInfo.grass, countOfLoadingFiles, totalSize),
-            AWelcomingSign(scene, mediaQueries, fileInfo.welcomeSign, countOfLoadingFiles, totalSize),
+            AWelcomingSign(scene, mediaQueries, fileInfo.welcomeSign, $loaderDiv, totalSize),
+            Grass(scene, mediaQueries, fileInfo.grass, $loaderDiv, totalSize),
+            GraniteStoneBrown(scene, mediaQueries, fileInfo.stone, $loaderDiv, totalSize),
+            Treea(scene, mediaQueries, fileInfo.tree, $loaderDiv, totalSize),
         ]).then((values) => {
-            clearInterval(loadInterval);
-            return values;
+            $('.loader-container').fadeOut(1000);
+            $('#canvasRenderer,.obit-controls-gizmo').css('filter', 'blur(0px)');
         });
     });
 
 
 }
 
-const getFileSize = (url) => {
+const getFileSize = (url, name) => {
     return fetch(url, {
         method: 'HEAD',
     }).then(function (response) {
         return {
+            name: name,
             url: url,
             size: response.headers.get('content-length')
         };
     });
-
 }
 
-const AWelcomingSign = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSize) => {
-    const loader = new GLTFLoader();
+const updateProgress = (loadedSize, fileSize, totalSize, name, divWidth) => {
+    const percent = (loadedSize / totalSize) * divWidth;
+    $(`.${name}`).width(percent)
+};
 
-    /**
-     * xs: 0 (max-width: 576px)
-     * sm: 576px (min-width: 576px) and (max-width: 768px)
-     * md: 768px (min-width: 768px) and (max-width: 992px)
-     * lg: 992px (min-width: 992px) and (max-width: 1200px)
-     * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
-     * xxl: 1400px (min-width: 1400px)
-     */
+const addSingleProgressDiv = (className) => {
+    const newContent = `<div class="${className}"></div>`;
+    $('.loading-bar-left').append(newContent)
+    $('.loading-bar-right').append(newContent)
+}
+
+const AWelcomingSign = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+    const loader = new GLTFLoader();
     const positionLeftSide = (window.innerWidth/2);
 
     let margin = 40;
@@ -114,10 +105,8 @@ const AWelcomingSign = async(scene, mediaQueries, fileInfo, countOfLoadingFiles,
         positionY = 210;
     }
 
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    //const dracoLoader = new DRACOLoader();
-    //dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    //loader.setDRACOLoader(dracoLoader);
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
 
     return new Promise(async (resolve, reject) => {
         loader.load(
@@ -130,13 +119,9 @@ const AWelcomingSign = async(scene, mediaQueries, fileInfo, countOfLoadingFiles,
                 gltf.scene.rotation.set(0.05, 500, 0)
                 scene.add(gltf.scene);
             },
-            // called while loading is progressing
             function (xhr) {
-                window.loaderWelcomingSign = xhr;
-                //console.log(xhr)
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
             },
-            // called when loading has errors
             function (error) {
                 console.log('An error happened');
             }
@@ -144,22 +129,9 @@ const AWelcomingSign = async(scene, mediaQueries, fileInfo, countOfLoadingFiles,
     });
 }
 
-const Grass = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSize) => {
+const Grass = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new GLTFLoader();
 
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    //loader.setDRACOLoader(dracoLoader);
-
-    /**
-     * xs: 0 (max-width: 576px)
-     * sm: 576px (min-width: 576px) and (max-width: 768px)
-     * md: 768px (min-width: 768px) and (max-width: 992px)
-     * lg: 992px (min-width: 992px) and (max-width: 1200px)
-     * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
-     * xxl: 1400px (min-width: 1400px)
-     */
     const positionLeftSide = (window.innerWidth/-2);
 
     let grass1_margin = 110;
@@ -222,7 +194,11 @@ const Grass = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
         grass2_posZ = 70
     }
 
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
+
     return new Promise(async (resolve, reject) => {
+        let currentAddedPercent = 0;
         loader.load(
             'build/models/glb/grass_free_download.glb',
             function (gltf) {
@@ -237,12 +213,9 @@ const Grass = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
                 scene.add(grass2);
 
             },
-            // called while loading is progressing
             function (xhr) {
-                window.loaderGrass = xhr;
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
             },
-            // called when loading has errors
             function (error) {
                 console.log('An error happened');
             }
@@ -250,23 +223,9 @@ const Grass = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
     });
 }
 
-const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSize) => {
+const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new GLTFLoader();
 
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    //const dracoLoader = new DRACOLoader();
-    //dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    //loader.setDRACOLoader(dracoLoader);
-
-
-    /**
-     * xs: 0 (max-width: 576px)
-     * sm: 576px (min-width: 576px) and (max-width: 768px)
-     * md: 768px (min-width: 768px) and (max-width: 992px)
-     * lg: 992px (min-width: 992px) and (max-width: 1200px)
-     * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
-     * xxl: 1400px (min-width: 1400px)
-     */
     const positionLeftSide = (window.innerWidth/-2);
 
     let margin = 90;
@@ -294,9 +253,11 @@ const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, countOfLoadingFil
         scale = 0.85;
     }
 
-    const loadingBarLeft = document.querySelector('.loading-bar-left');
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
 
     return new Promise(async (resolve, reject) => {
+
         loader.load(
             'build/models/glb/granite_stone_brown_scale_10.glb',
             function (gltf) {
@@ -305,20 +266,10 @@ const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, countOfLoadingFil
                 gltf.scene.rotation.set(0, 850, 0)
                 gltf.scene.position.set(positionLeftSide+margin, 0, 0)
                 scene.add(gltf.scene);
-                //console.log('scene added')
             },
-            // called while loading is progressing
             function (xhr) {
-                let offset = document.querySelector('.loading-bar-left').offsetWidth;
-
-                let setWidth = offset + (xhr.loaded / totalSize * 100) - offset;
-
-                console.log(offset)
-                loadingBarLeft.style.width = setWidth+'px';
-                //window.loaderStone = xhr;
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
             },
-            // called when loading has errors
             function (error) {
                 console.log('An error happened');
             }
@@ -326,17 +277,9 @@ const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, countOfLoadingFil
     });
 }
 
-const Treea = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSize) => {
+const Treea = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new GLTFLoader();
 
-    /**
-     * xs: 0 (max-width: 576px)
-     * sm: 576px (min-width: 576px) and (max-width: 768px)
-     * md: 768px (min-width: 768px) and (max-width: 992px)
-     * lg: 992px (min-width: 992px) and (max-width: 1200px)
-     * xl: 1200px (min-width: 1200px) and (max-width: 1400px)
-     * xxl: 1400px (min-width: 1400px)
-     */
     const positionLeftSide = (window.innerWidth/-2);
 
     let margin = 50;
@@ -364,7 +307,8 @@ const Treea = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
         scale = 595;
     }
 
-    const loadingBarLeft = document.querySelector('.loading-bar-left');
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
 
     return new Promise(async (resolve, reject) => {
         loader.load(
@@ -376,22 +320,9 @@ const Treea = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
                 gltf.scene.rotation.set(0, 200, 0)
                 scene.add(gltf.scene);
             },
-            // called while loading is progressing
             function (xhr) {
-                let offset = document.querySelector('.loading-bar-left').offsetWidth;
-                let setWidth = offset + (xhr.loaded / totalSize * 100) - offset;
-
-                loadingBarLeft.style.width = setWidth+'px';
-                //let addToBar = (xhr.loaded / totalSize * 100);
-                //loadingBarLeft.style.width = htmlLoadingBarWidth+'px';
-                //console.log((xhr.loaded / totalSize * 100) + '% loaded');
-                //console.log(htmlLoadingBarWidth);
-                //window.loaderTree = xhr;
-
-
-
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
             },
-            // called when loading has errors
             function (error) {
                 console.log('An error happened');
             }
@@ -399,99 +330,5 @@ const Treea = async(scene, mediaQueries, fileInfo, countOfLoadingFiles, totalSiz
     });
 }
 
-const OakTree = async(scene) => {
-    const loader = new GLTFLoader();
-
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    loader.setDRACOLoader(dracoLoader);
-
-    return new Promise(async (resolve, reject) => {
-        loader.load(
-            'build/models/gltf/oak_trees.gltf',
-            function (gltf) {
-                resolve(gltf);
-                gltf.scene.scale.set(200, 200, 200)
-                gltf.scene.position.set(-500, 0, 50)
-                gltf.scene.rotation.set(0, 900, 0)
-                scene.add(gltf.scene);
-
-            },
-            // called while loading is progressing
-            function (xhr) {
-
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            // called when loading has errors
-            function (error) {
-                console.log('An error happened');
-            }
-        );
-    });
-}
-
-const WoodStick = async(scene) => {
-    const loader = new GLTFLoader();
-
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    loader.setDRACOLoader(dracoLoader);
-
-    return new Promise(async (resolve, reject) => {
-        loader.load(
-            'build/models/glb/wood_stick_01.glb',
-            function (gltf) {
-                resolve(gltf);
-                gltf.scene.scale.set(2000, 2000, 2000)
-                gltf.scene.position.set(-2100, -2900, 4400)
-                scene.add(gltf.scene);
-
-            },
-            // called while loading is progressing
-            function (xhr) {
-
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            // called when loading has errors
-            function (error) {
-                console.log('An error happened');
-            }
-        );
-    });
-}
-
-
-const Tree = async(scene) => {
-    const loader = new GLTFLoader();
-
-    // Optional: Provide a DRACOLoader instance to decode compressed mesh data
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath('/build/models/gltf/textures/');
-    loader.setDRACOLoader(dracoLoader);
-
-    return new Promise(async (resolve, reject) => {
-        loader.load(
-            'build/models/glb/japanese_maple_tree.glb',
-            function (gltf) {
-                resolve(gltf);
-                gltf.scene.scale.set(100, 100, 100)
-                scene.add(gltf.scene);
-
-            },
-            // called while loading is progressing
-            function (xhr) {
-
-                //console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
-            // called when loading has errors
-            function (error) {
-                console.log('An error happened');
-            }
-        );
-    });
-
-};
 
 export {ExternalLoader}

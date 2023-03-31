@@ -57,7 +57,8 @@ body {
     touch-action: none;
 }
 .cameraContainer {
-    position: fixed; // google chrome reload bugfix
+    position: absolute; // google chrome reload bugfix
+    z-index: 1;
     pointer-events: none;
     transform-style: preserve-3d;
 }
@@ -65,10 +66,26 @@ body {
     position: absolute;
     pointer-events: auto;
     //user-select: none;
+    transform-style: preserve-3d;
     > div {
         position: absolute;
         pointer-events: auto;
+        transform-style: preserve-3d;
     }
+}
+
+.credit-box {
+    background-color: rgba(253, 253, 253, 0.88);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #000;
+    display: block;
+    padding: 10px;
+    min-width: 160px;
+    -webkit-box-shadow: 0 0 30px 5px rgba(0,0,0,0.55);
+    box-shadow: 0 0 30px 5px rgba(0,0,0,0.55);
+    font-size: 12px;
 }
 
 .hex {
@@ -247,7 +264,7 @@ body {
 
 }
 
-#canvasRenderer,.obit-controls-gizmo {
+#canvasRenderer,.obit-controls-gizmo, .cameraContainer {
     filter: blur(3px);
 }
 

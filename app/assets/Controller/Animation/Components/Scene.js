@@ -227,35 +227,39 @@ export default class Scene {
     html(scene) {
 
         let menuHtml = document.querySelector('.content-menu')
-        let firstDom001 = document.querySelector('.content-1')
-        let antoherDom002 = document.querySelector('.content-2')
-
-        const objContent1 = new CSSObject( firstDom001 )
-        objContent1.position.x = 100;
-        objContent1.position.y = 200;
-        objContent1.position.z = -300;
-        objContent1.rotation.x = 100;
-        objContent1.rotation.y = 200;
-        objContent1.rotation.z = 300;
-
-        const objContent2 = new CSSObject( antoherDom002 )
-        objContent2.position.x = 0;
-        objContent2.position.y = 500;
-        objContent2.position.z = 0;
-        objContent2.rotation.x = 0;
-        objContent2.rotation.y = 0;
-        objContent2.rotation.z = 0;
-
+        let creditTreeHtml = document.querySelector('.credit-tree')
+        let creditStoneHtml = document.querySelector('.credit-stone')
+        let creditGrassHtml = document.querySelector('.credit-grass')
+        let creditSignHtml = document.querySelector('.credit-sign')
 
         const menu = new CSSObject( menuHtml )
         menu.position.x = 0;
         menu.position.y = 500;
         menu.position.z = 0;
 
+        const creditTree = new CSSObject( creditTreeHtml )
+        creditTree.position.x = -1100;
+        creditTree.position.y = 150;
 
-        //scene.add(objContent1);
+        const creditStone = new CSSObject( creditStoneHtml )
+        creditStone.position.x = -800;
+        creditStone.position.y = -40;
+
+        const creditGrass = new CSSObject( creditGrassHtml )
+        creditGrass.position.x = -1100;
+        creditGrass.position.y = -20;
+
+        const creditSign = new CSSObject( creditSignHtml )
+        creditSign.position.x = 900;
+        creditSign.position.y = 50;
+
+
         scene.add(menu);
-        //scene.add(objContent2);
+        scene.add(creditTree);
+        scene.add(creditStone);
+        scene.add(creditGrass);
+        scene.add(creditSign);
+
     }
 
 }

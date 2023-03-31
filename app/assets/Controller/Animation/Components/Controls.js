@@ -32,7 +32,7 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
     const controlsSettings = new ControlSettings(controls);
     controlsSettings.setPolarAngle()
     controlsSettings.setAzimuthAngle()
-    //controls.enableZoom = false;
+    controls.enableZoom = false;
     //controls.enablePan = false;
 
     if (mediaQueries.touch) {

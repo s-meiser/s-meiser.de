@@ -104,7 +104,7 @@ class TheaterStage {
         if (typeof window.resized !== 'undefined' && window.resized === true) {
             $('.loading-bar-left,.loading-bar-right').empty();
             $('.loader-container').show();
-            $('#canvasRenderer,.obit-controls-gizmo').css('filter', 'blur(3px)');
+            $('#canvasRenderer,.obit-controls-gizmo,.cameraContainer').css('filter', 'blur(3px)');
 
 
             window.resized = false

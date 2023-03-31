@@ -41,7 +41,11 @@ const ExternalLoader = async (scene, configuration) => {
             Treea(scene, mediaQueries, fileInfo.tree, $loaderDiv, totalSize),
         ]).then((values) => {
             $('.loader-container').fadeOut(1000);
-            $('#canvasRenderer,.obit-controls-gizmo').css('filter', 'blur(0px)');
+            setTimeout(function(){
+                $('.loading-bar-left,.loading-bar-right').empty();
+                $('#canvasRenderer,.obit-controls-gizmo,.cameraContainer').css('filter', 'blur(0px)');
+            }, 1000);
+
         });
     });
 
@@ -118,6 +122,9 @@ const AWelcomingSign = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
                 gltf.scene.position.set(positionLeftSide-margin, positionY, 50)
                 gltf.scene.rotation.set(0.05, 500, 0)
                 scene.add(gltf.scene);
+
+                // add Credits to Scene
+                // "A Welcoming Sign" (https://skfb.ly/6SN7B) by Raneman is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
             },
             function (xhr) {
                 updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
@@ -212,6 +219,9 @@ const Grass = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
                 grass2.position.set(positionLeftSide+grass2_margin, grass2_posY, grass2_posZ)
                 scene.add(grass2);
 
+                // add credits to scene
+                // "Grass free download" (https://skfb.ly/6TQw7) by Fred Drabble is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
             },
             function (xhr) {
                 updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
@@ -266,6 +276,10 @@ const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, loaderDiv, totalS
                 gltf.scene.rotation.set(0, 850, 0)
                 gltf.scene.position.set(positionLeftSide+margin, 0, 0)
                 scene.add(gltf.scene);
+
+                // add credits to scene
+                // "Granite stone brown 02" (https://skfb.ly/688pC) by 3dhdscan is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
             },
             function (xhr) {
                 updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
@@ -319,6 +333,8 @@ const Treea = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
                 gltf.scene.position.set(positionLeftSide+margin, positionY, 0)
                 gltf.scene.rotation.set(0, 200, 0)
                 scene.add(gltf.scene);
+                // add credits to scene
+                // "TreeA" (https://skfb.ly/6QWJM) by BotondBencsik is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
             },
             function (xhr) {
                 updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
@@ -329,6 +345,5 @@ const Treea = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
         );
     });
 }
-
 
 export {ExternalLoader}

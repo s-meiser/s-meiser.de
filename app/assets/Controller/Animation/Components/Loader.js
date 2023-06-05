@@ -1,5 +1,9 @@
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import $ from 'jquery'
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import * as THREE from 'three';
+import Utility from "./Utility";
+
 const ExternalLoader = async (scene, configuration) => {
 
     const mediaQueries = configuration.mediaQueries
@@ -9,22 +13,38 @@ const ExternalLoader = async (scene, configuration) => {
     const treeUrl = 'build/models/glb/treea.glb';
     const stoneUrl = 'build/models/glb/granite_stone_brown_scale_10.glb';
     const grassUrl = 'build/models/glb/grass_free_download.glb';
+    const svgLogoCss3 = 'build/images/logos/CSS3.svg';
+    const svgLogoHtml5 = 'build/images/logos/HTML5.svg';
+    const svgLogoSymfony = 'build/images/logos/Symfony.svg';
+    const svgLogoThreeJS = 'build/images/logos/ThreeJS.svg';
 
     const res = Promise.all([
         getFileSize(welcomeSignUrl, 'sign'),
         getFileSize(treeUrl, 'tree'),
         getFileSize(stoneUrl, 'stone'),
-        getFileSize(grassUrl, 'grass')
+        getFileSize(grassUrl, 'grass'),
+        getFileSize(svgLogoCss3, 'svgLogoCss3'),
+        getFileSize(svgLogoHtml5, 'svgLogoHtml5'),
+        getFileSize(svgLogoSymfony, 'svgLogoSymfony'),
+        getFileSize(svgLogoThreeJS, 'svgLogoThreeJS')
     ]).then(([
             welcomeSign,
             tree,
             stone,
-            grass
+            grass,
+            svgLogoCss3,
+            svgLogoHtml5,
+            svgLogoSymfony,
+            svgLogoThreeJS
         ]) => ({
             welcomeSign,
             tree,
             stone,
-            grass
+            grass,
+            svgLogoCss3,
+            svgLogoHtml5,
+            svgLogoSymfony,
+            svgLogoThreeJS
         }))
 
     Promise.resolve(res).then(function (fileInfo) {
@@ -39,6 +59,10 @@ const ExternalLoader = async (scene, configuration) => {
             Grass(scene, mediaQueries, fileInfo.grass, $loaderDiv, totalSize),
             GraniteStoneBrown(scene, mediaQueries, fileInfo.stone, $loaderDiv, totalSize),
             Treea(scene, mediaQueries, fileInfo.tree, $loaderDiv, totalSize),
+            SvgLogoCss3(scene, mediaQueries, fileInfo.svgLogoCss3, $loaderDiv, totalSize),
+            //SvgLogoHtml5(scene, mediaQueries, fileInfo.svgLogoHtml5, $loaderDiv, totalSize),
+            //SvgLogoSymfony(scene, mediaQueries, fileInfo.svgLogoSymfony, $loaderDiv, totalSize),
+            SvgLogoThreeJS(scene, mediaQueries, fileInfo.svgLogoThreeJS, $loaderDiv, totalSize),
         ]).then((values) => {
             $('.loader-container').fadeOut(1000);
             setTimeout(function(){
@@ -75,6 +99,141 @@ const addSingleProgressDiv = (className) => {
     $('.loading-bar-right').append(newContent)
 }
 
+const svgGroups = (paths) => {
+    const group = new THREE.Group();
+
+    for (let i = 0; i < paths.length; i++) {
+
+        const path = paths[i];
+
+        const material = new THREE.MeshBasicMaterial({
+            color: path.color,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+            transparent: true
+        });
+
+        const shapes = SVGLoader.createShapes( path );
+
+        for (let j = 0; j < shapes.length; j++) {
+            const shape = shapes[ j ];
+
+            const geometry = new THREE.ShapeGeometry( shape );
+            // flip SVG
+            geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
+            const mesh = new THREE.Mesh(geometry, material);
+            group.add(mesh);
+        }
+    }
+    return group;
+}
+
+function degrees2radians(degrees)
+{
+    return degrees * (Math.PI/180);
+}
+function radians2degrees(radians)
+{
+    return radians * 180 / Math.PI;
+}
+
+const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+    const loader = new SVGLoader();
+
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
+
+    return new Promise(async (resolve, reject) => {
+        // load a SVG resource
+        loader.load(
+            // resource URL
+            fileInfo.url,
+            // called when the resource is loaded
+            function (data) {
+                resolve(data);
+                const svg = svgGroups(data.paths)
+                const fitLogoIntoHexagon = 0;
+                const rotationFactorX = 0
+                const rotationFactorY = 0
+                const rotationFactorZ = -0.325
+
+                svg.scale.set(0.14,0.14)
+                svg.position.set(-910,845,20)
+                svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
+
+                let utility = new Utility();
+                const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
+                hexagon.scale.set(45,45,1)
+                hexagon.position.set(-900,810,30);
+                hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
+                hexagon.castShadow = true; //default is false
+                hexagon.receiveShadow = true; //default
+
+                const group = new THREE.Group();
+                group.add(hexagon);
+                group.add(svg);
+                //group.position.set(-200,-150,0);
+                group.rotation.set(0,0,0)
+                scene.add(group);
+
+            },
+            function (xhr) {
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
+            },
+            function (error) {
+                console.log('An error happened');
+            });
+    });
+}
+
+const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+    const loader = new SVGLoader();
+
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
+
+    return new Promise(async (resolve, reject) => {
+        // load a SVG resource
+        loader.load(
+            // resource URL
+            fileInfo.url,
+            // called when the resource is loaded
+            function (data) {
+                resolve(data);
+                const svg = svgGroups(data.paths)
+                const fitLogoIntoHexagon = 0;
+                const rotationFactorX = 0
+                const rotationFactorY = 0
+                const rotationFactorZ = -0.325
+
+                svg.scale.set(0.14,0.14)
+                svg.position.set(-910,845,20)
+                svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
+
+                let utility = new Utility();
+                const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
+                hexagon.scale.set(45,45,1)
+                hexagon.position.set(-900,810,30);
+                hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
+                hexagon.castShadow = true; //default is false
+                hexagon.receiveShadow = true; //default
+
+                const group = new THREE.Group();
+                group.add(hexagon);
+                group.add(svg);
+                //group.position.set(-200,-150,0);
+                group.rotation.set(0,0,0)
+                scene.add(group);
+
+            },
+            function (xhr) {
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
+            },
+            function (error) {
+                console.log('An error happened');
+        });
+    });
+}
 const AWelcomingSign = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new GLTFLoader();
     const positionLeftSide = (window.innerWidth/2);
@@ -114,7 +273,7 @@ const AWelcomingSign = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
 
     return new Promise(async (resolve, reject) => {
         loader.load(
-            'build/models/glb/a_welcoming_sign.glb',
+            fileInfo.url,
             function (gltf) {
                 resolve(gltf);
                 gltf.scene.scale.set(scale, scale, scale)
@@ -207,7 +366,7 @@ const Grass = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     return new Promise(async (resolve, reject) => {
         let currentAddedPercent = 0;
         loader.load(
-            'build/models/glb/grass_free_download.glb',
+            fileInfo.url,
             function (gltf) {
                 resolve(gltf);
                 gltf.scene.scale.set(grass1_scale, grass1_scale, grass1_scale)
@@ -269,7 +428,7 @@ const GraniteStoneBrown = async(scene, mediaQueries, fileInfo, loaderDiv, totalS
     return new Promise(async (resolve, reject) => {
 
         loader.load(
-            'build/models/glb/granite_stone_brown_scale_10.glb',
+            fileInfo.url,
             function (gltf) {
                 resolve(gltf);
                 gltf.scene.scale.set(scale, scale, scale)

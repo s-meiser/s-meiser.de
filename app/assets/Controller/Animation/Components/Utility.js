@@ -5,6 +5,9 @@ import {MeshLine, MeshLineMaterial} from './../Mesh/THREE.MeshLine';
 export default class Utility {
 
     constructor(camera){
+        if (!camera) {
+            return null;
+        }
         this.camera = camera;
         this.lineMultiplier = 0.5;
         this.lineWidth = (10/camera.position.z)*this.lineMultiplier;

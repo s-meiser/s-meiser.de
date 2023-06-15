@@ -3,6 +3,7 @@ import $ from 'jquery'
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import * as THREE from 'three';
 import Utility from "./Utility";
+import {MeshLine, MeshLineMaterial} from "../Mesh/THREE.MeshLine";
 
 const ExternalLoader = async (scene, configuration) => {
 
@@ -99,8 +100,18 @@ const addSingleProgressDiv = (className) => {
     $('.loading-bar-right').append(newContent)
 }
 
-const svgGroups = (paths) => {
+const svgGroups = (paths, strokes, strokeColor, strokeWidth) => {
     const group = new THREE.Group();
+
+    const lineMaterial = new MeshLineMaterial({
+        color: strokeColor,
+        lineWidth: strokeWidth,
+        side: THREE.FrontSide,
+        opacity: 1,
+        depthTest: true,
+        transparent: false,
+        useAlphaMap: 0
+    });
 
     for (let i = 0; i < paths.length; i++) {
 
@@ -122,7 +133,18 @@ const svgGroups = (paths) => {
             // flip SVG
             geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
             const mesh = new THREE.Mesh(geometry, material);
-            group.add(mesh);
+            if (strokes) {
+                let shape3d = new THREE.BufferGeometry().setFromPoints(shapes[ j ].getPoints());
+                // flip SVG
+                shape3d.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
+                const line = new MeshLine();
+                line.setGeometry(shape3d);
+                const lineMesh = new THREE.Mesh(line, lineMaterial);
+                lineMesh.position.setZ(1)
+                group.add(mesh, lineMesh);
+            } else {
+                group.add(mesh);
+            }
         }
     }
     return group;
@@ -151,7 +173,7 @@ const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
             // called when the resource is loaded
             function (data) {
                 resolve(data);
-                const svg = svgGroups(data.paths)
+                const svg = svgGroups(data.paths, true, 0x000000, 1)
                 const fitLogoIntoHexagon = 0;
                 const rotationFactorX = 0
                 const rotationFactorY = 0

@@ -61,8 +61,8 @@ const ExternalLoader = async (scene, configuration) => {
             GraniteStoneBrown(scene, mediaQueries, fileInfo.stone, $loaderDiv, totalSize),
             Treea(scene, mediaQueries, fileInfo.tree, $loaderDiv, totalSize),
             SvgLogoCss3(scene, mediaQueries, fileInfo.svgLogoCss3, $loaderDiv, totalSize),
-            //SvgLogoHtml5(scene, mediaQueries, fileInfo.svgLogoHtml5, $loaderDiv, totalSize),
-            //SvgLogoSymfony(scene, mediaQueries, fileInfo.svgLogoSymfony, $loaderDiv, totalSize),
+            SvgLogoHtml5(scene, mediaQueries, fileInfo.svgLogoHtml5, $loaderDiv, totalSize),
+            SvgLogoSymfony(scene, mediaQueries, fileInfo.svgLogoSymfony, $loaderDiv, totalSize),
             SvgLogoThreeJS(scene, mediaQueries, fileInfo.svgLogoThreeJS, $loaderDiv, totalSize),
         ]).then((values) => {
             $('.loader-container').fadeOut(1000);
@@ -100,36 +100,32 @@ const addSingleProgressDiv = (className) => {
     $('.loading-bar-right').append(newContent)
 }
 
-const svgGroups = (paths, strokes, strokeColor, strokeWidth) => {
+/**
+ *
+ * @param paths
+ * @param lineMaterial
+ * @param objectMaterial
+ * @param strokes true|false
+ */
+const svgGroups = (paths, lineMaterial, objectMaterial, strokes) => {
     const group = new THREE.Group();
-
-    const lineMaterial = new MeshLineMaterial({
-        color: strokeColor,
-        lineWidth: strokeWidth,
-        side: THREE.FrontSide,
-        opacity: 1,
-        depthTest: true,
-        transparent: false,
-        useAlphaMap: 0
-    });
 
     for (let i = 0; i < paths.length; i++) {
 
         const path = paths[i];
-
         const material = new THREE.MeshBasicMaterial({
             color: path.color,
-            side: THREE.DoubleSide,
-            depthWrite: false,
-            transparent: true
+            side: objectMaterial.side,
+            depthWrite: objectMaterial.depthWrite,
+            transparent: objectMaterial.transparent
         });
 
-        const shapes = SVGLoader.createShapes( path );
+        const shapes = SVGLoader.createShapes(path);
 
         for (let j = 0; j < shapes.length; j++) {
-            const shape = shapes[ j ];
+            const shape = shapes[j];
 
-            const geometry = new THREE.ShapeGeometry( shape );
+            const geometry = new THREE.ShapeGeometry(shape);
             // flip SVG
             geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
             const mesh = new THREE.Mesh(geometry, material);
@@ -159,11 +155,53 @@ function radians2degrees(radians)
     return radians * 180 / Math.PI;
 }
 
-const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+
+const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new SVGLoader();
 
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
+
+    let scaleLogo = 0.40;
+    let scaleHexagon = 45;
+
+    let positionLogoX = -855;
+    let positionLogoY = 900;
+
+    let positionHexagonX = -830;
+    let positionHexagonY = 860;
+
+    // (max-width: 576px)
+    if (mediaQueries.xs.matches) {
+        scaleLogo = 0.14;
+        scaleHexagon = 45;
+
+        positionLogoX = -315;
+        positionLogoY = 850;
+
+        positionHexagonX = -80; // 750
+        positionHexagonY = 860; // 35
+    }
+
+    // (min-width: 576px) and (max-width: 768px)
+    if (mediaQueries.sm.matches) {
+
+    }
+
+    // (min-width: 768px) and (max-width: 992px)
+    if (mediaQueries.md.matches) {
+
+    }
+
+    //(min-width: 992px) and (max-width: 1200px)
+    if (mediaQueries.lg.matches) {
+
+    }
+
+    //(min-width: 1200px) and (max-width: 1400px)
+    if (mediaQueries.xl.matches) {
+
+    }
 
     return new Promise(async (resolve, reject) => {
         // load a SVG resource
@@ -173,20 +211,234 @@ const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
             // called when the resource is loaded
             function (data) {
                 resolve(data);
-                const svg = svgGroups(data.paths, true, 0x000000, 1)
+                // lineMaterial, objectMaterial
+                const objectMaterial = {
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
+                    transparent: true
+                };
+
+                const svg = svgGroups(data.paths, '', objectMaterial, true)
                 const fitLogoIntoHexagon = 0;
                 const rotationFactorX = 0
                 const rotationFactorY = 0
                 const rotationFactorZ = -0.325
 
-                svg.scale.set(0.14,0.14)
-                svg.position.set(-910,845,20)
+                svg.scale.set(scaleLogo,scaleLogo)
+                svg.position.set(positionLogoX,positionLogoY,20)
                 svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
 
                 let utility = new Utility();
                 const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
-                hexagon.scale.set(45,45,1)
-                hexagon.position.set(-900,810,30);
+                hexagon.scale.set(scaleHexagon,scaleHexagon,1)
+                hexagon.position.set(positionHexagonX,positionHexagonY,35);
+                hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
+                hexagon.castShadow = true; //default is false
+                hexagon.receiveShadow = true; //default
+
+                const group = new THREE.Group();
+                group.add(hexagon);
+                group.add(svg);
+                //group.position.set(-200,-150,0);
+                group.rotation.set(0,0,0)
+                scene.add(group);
+
+            },
+            function (xhr) {
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
+            },
+            function (error) {
+                console.log('An error happened');
+            });
+    });
+}
+
+
+const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+    const loader = new SVGLoader();
+
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
+
+    let scaleLogo = 0.12;
+    let scaleHexagon = 45;
+
+    let positionLogoX = -825;
+    let positionLogoY = 825;
+
+    let positionHexagonX = -795;
+    let positionHexagonY = 785;
+
+    // (max-width: 576px)
+    if (mediaQueries.xs.matches) {
+        scaleLogo = 0.14;
+        scaleHexagon = 45;
+
+        positionLogoX = -315;
+        positionLogoY = 850;
+
+        positionHexagonX = -45; // 750
+        positionHexagonY = 785; // 35
+    }
+
+    // (min-width: 576px) and (max-width: 768px)
+    if (mediaQueries.sm.matches) {
+
+    }
+
+    // (min-width: 768px) and (max-width: 992px)
+    if (mediaQueries.md.matches) {
+
+    }
+
+    //(min-width: 992px) and (max-width: 1200px)
+    if (mediaQueries.lg.matches) {
+
+    }
+
+    //(min-width: 1200px) and (max-width: 1400px)
+    if (mediaQueries.xl.matches) {
+
+    }
+
+    return new Promise(async (resolve, reject) => {
+        // load a SVG resource
+        loader.load(
+            // resource URL
+            fileInfo.url,
+            // called when the resource is loaded
+            function (data) {
+                resolve(data);
+                // lineMaterial, objectMaterial
+                const lineMaterial = new MeshLineMaterial({
+                    color: 0x000000,
+                    lineWidth: 1,
+                    side: THREE.DoubleSide,
+                    opacity: 1,
+                    depthTest: true,
+                    transparent: false,
+                    alphaTest: 1
+                });
+
+                const objectMaterial = {
+                    side: THREE.DoubleSide,
+                    depthWrite: true,
+                    transparent: false
+                };
+
+                const svg = svgGroups(data.paths, lineMaterial, objectMaterial, true)
+                const fitLogoIntoHexagon = 0;
+                const rotationFactorX = 0
+                const rotationFactorY = 0
+                const rotationFactorZ = -0.325
+
+                svg.scale.set(scaleLogo,scaleLogo)
+                svg.position.set(positionLogoX,positionLogoY,45)
+                svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
+
+                let utility = new Utility();
+                const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
+                hexagon.scale.set(scaleHexagon,scaleHexagon,1)
+                hexagon.position.set(positionHexagonX,positionHexagonY,65);
+                hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
+                hexagon.castShadow = true; //default is false
+                hexagon.receiveShadow = true; //default
+
+                const group = new THREE.Group();
+                group.add(hexagon);
+                group.add(svg);
+                //group.position.set(-200,-150,0);
+                group.rotation.set(0,0,0)
+                scene.add(group);
+
+            },
+            function (xhr) {
+                updateProgress(xhr.loaded, fileInfo.size, totalSize, fileInfo.name, divWidth);
+            },
+            function (error) {
+                console.log('An error happened');
+            });
+    });
+}
+
+
+const SvgLogoHtml5 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
+    const loader = new SVGLoader();
+
+    addSingleProgressDiv(fileInfo.name);
+    const divWidth = loaderDiv.width() / 2;
+
+    let scaleLogo = 0.11;
+    let scaleHexagon = 45;
+
+    let positionLogoX = -885;
+    let positionLogoY = 775;
+
+    let positionHexagonX = -870;
+    let positionHexagonY = 740;
+
+    // (max-width: 576px)
+    if (mediaQueries.xs.matches) {
+        scaleLogo = 0.14;
+        scaleHexagon = 45;
+
+        positionLogoX = -315;
+        positionLogoY = 850;
+
+        positionHexagonX = -120; // 750
+        positionHexagonY = 740; // 35
+    }
+
+    // (min-width: 576px) and (max-width: 768px)
+    if (mediaQueries.sm.matches) {
+
+    }
+
+    // (min-width: 768px) and (max-width: 992px)
+    if (mediaQueries.md.matches) {
+
+    }
+
+    //(min-width: 992px) and (max-width: 1200px)
+    if (mediaQueries.lg.matches) {
+
+    }
+
+    //(min-width: 1200px) and (max-width: 1400px)
+    if (mediaQueries.xl.matches) {
+
+    }
+
+    return new Promise(async (resolve, reject) => {
+        // load a SVG resource
+        loader.load(
+            // resource URL
+            fileInfo.url,
+            // called when the resource is loaded
+            function (data) {
+                resolve(data);
+
+                const objectMaterial = {
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
+                    transparent: true
+                };
+
+                const svg = svgGroups(data.paths, '', objectMaterial, false)
+                //const svg = svgGroups(data.paths)
+                const fitLogoIntoHexagon = 0;
+                const rotationFactorX = 0
+                const rotationFactorY = 0
+                const rotationFactorZ = -0.325
+
+                svg.scale.set(scaleLogo,scaleLogo)
+                svg.position.set(positionLogoX,positionLogoY,50)
+                svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
+
+                let utility = new Utility();
+                const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
+                hexagon.scale.set(scaleHexagon,scaleHexagon,1)
+                hexagon.position.set(positionHexagonX,positionHexagonY,60);
                 hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
                 hexagon.castShadow = true; //default is false
                 hexagon.receiveShadow = true; //default
@@ -214,6 +466,49 @@ const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) =
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
 
+    let scaleLogo = 0.14;
+    let scaleHexagon = 45;
+
+    let positionLogoX = -915;
+    let positionLogoY = 850;
+
+    let positionHexagonX = -905;
+    let positionHexagonY = 815;
+
+    // (max-width: 576px)
+    if (mediaQueries.xs.matches) {
+        scaleLogo = 0.14;
+        scaleHexagon = 45;
+
+        positionLogoX = -315;
+        positionLogoY = 850;
+
+        positionHexagonX = -155; // 750
+        positionHexagonY = 815;
+    }
+
+    // (min-width: 576px) and (max-width: 768px)
+    if (mediaQueries.sm.matches) {
+
+    }
+
+    // (min-width: 768px) and (max-width: 992px)
+    if (mediaQueries.md.matches) {
+
+    }
+
+    //(min-width: 992px) and (max-width: 1200px)
+    if (mediaQueries.lg.matches) {
+
+    }
+
+    //(min-width: 1200px) and (max-width: 1400px)
+    if (mediaQueries.xl.matches) {
+
+    }
+
+
+
     return new Promise(async (resolve, reject) => {
         // load a SVG resource
         loader.load(
@@ -222,20 +517,28 @@ const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) =
             // called when the resource is loaded
             function (data) {
                 resolve(data);
-                const svg = svgGroups(data.paths)
+
+                const objectMaterial = {
+                    side: THREE.DoubleSide,
+                    depthWrite: false,
+                    transparent: true
+                };
+
+                const svg = svgGroups(data.paths, '', objectMaterial, false)
+                //const svg = svgGroups(data.paths)
                 const fitLogoIntoHexagon = 0;
                 const rotationFactorX = 0
                 const rotationFactorY = 0
                 const rotationFactorZ = -0.325
 
-                svg.scale.set(0.14,0.14)
-                svg.position.set(-910,845,20)
+                svg.scale.set(scaleLogo,scaleLogo)
+                svg.position.set(positionLogoX,positionLogoY,20)
                 svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
 
                 let utility = new Utility();
                 const hexagon =  utility.getHexagonBorder(0xFFFFFF, 1.5, 0.5,20, 'double');
-                hexagon.scale.set(45,45,1)
-                hexagon.position.set(-900,810,30);
+                hexagon.scale.set(scaleHexagon,scaleHexagon,1)
+                hexagon.position.set(positionHexagonX,positionHexagonY,30);
                 hexagon.rotation.set(50,6+rotationFactorY,19+rotationFactorZ)
                 hexagon.castShadow = true; //default is false
                 hexagon.receiveShadow = true; //default

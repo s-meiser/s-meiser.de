@@ -32,6 +32,7 @@ export default class Utility {
         }
         hexagonShape.closePath();
 
+        // TODO: Refactor
         let opacityAdditionalOptions = {};
         if (opacity < 1) {
             opacityAdditionalOptions = {
@@ -50,8 +51,8 @@ export default class Utility {
             color: color,
             opacity: opacity,
             side: THREE.DoubleSide,
-            depthTest: opacityAdditionalOptions.depthTest,
-            transparent: opacityAdditionalOptions.transparent,
+            depthTest: true,
+            transparent: true
         });
         return new THREE.Mesh(geometry, material) ;
     }
@@ -83,6 +84,7 @@ export default class Utility {
         const line = new MeshLine();
         line.setGeometry(geometry);
 
+        // TODO: Refactor
         let opacityAdditionalOptions = {};
         if (opacity < 1) {
             opacityAdditionalOptions = {
@@ -114,8 +116,8 @@ export default class Utility {
             color: color,
             lineWidth: lineWidth,
             opacity: opacity,
-            depthTest: opacityAdditionalOptions.depthTest,
-            transparent: opacityAdditionalOptions.transparent,
+            depthTest: true,
+            transparent: true,
             side: setSide
         });
         return new THREE.Mesh(line, material);

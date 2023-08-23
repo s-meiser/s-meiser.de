@@ -1,3 +1,11 @@
 @function rem($pxValue) {
   @return #{calc($pxValue / $html-font-size * 0 + 1)}rem;
 }
+
+@function calculate-top($height) {
+  @return calc(300px - $height / 2);
+}
+
+@function calculate-left($width) {
+  @return calc($width / 2 - 860px);
+}

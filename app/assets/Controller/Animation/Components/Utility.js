@@ -146,4 +146,13 @@ export default class Utility {
             scene.add(array[i])
         }
     }
+
+    degrees2radians(degrees)
+    {
+        return degrees * (Math.PI/180);
+    }
+    radians2degrees(radians)
+    {
+        return radians * 180 / Math.PI;
+    }
 }

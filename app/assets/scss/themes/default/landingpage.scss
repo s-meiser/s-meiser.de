@@ -314,6 +314,14 @@ body {
     font-family: 'Noto Sans', sans-serif;
 }
 
+.content {
+    border: 1px solid red;
+    width: 1720px;
+    left: calculate-left(1720px);
+    height: 800px;
+    top: calculate-top(800px);
+}
+
 @keyframes rotate {
     0% {
         transform: perspective(200px) rotateX(0) rotateY(0);

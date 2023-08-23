@@ -56,7 +56,8 @@ Encore
      * Frontend Javascript
      */
     .addEntry('app', './assets/app-frontend.js')
-    .addEntry('Landingpage', './assets/Entity/Landingpage.js')
+    .addEntry('landingpage', './assets/Entity/Landingpage.js')
+    .addEntry('threeDimensional', './assets/Entity/ThreeDimensional.js')
 
     /*.addEntry('app', './assets/app.js')*/
 

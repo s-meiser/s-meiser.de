@@ -7,3 +7,11 @@ controllers:
 index:
     path: /
     controller: App\Controller\Index::landingpage
+
+threeDimensional:
+    path: /threeDimensional
+    controller: App\Controller\Index::threeDimensional
+
+flat:
+    path: /flat
+    controller: App\Controller\Index::flat

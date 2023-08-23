@@ -11,13 +11,19 @@ class Index extends AbstractController
     #[Route('/')]
     public function landingpage(): Response
     {
-        return $this->render('landingpage.html.twig');
+        return $this->render('threeDimensional.html.twig');
+        //return $this->render('landingpage.html.twig');
     }
 
-    #[Route('/templates/{slug}', name: 'templates')]
-    public function templates(string $slug): Response
+    #[Route('/3d')]
+    public function threeDimensional(): Response
     {
-        var_dump($slug);
-        return $this->render('JSTemplates/test.html.twig');
+        return $this->render('threeDimensional.html.twig');
+    }
+
+    #[Route('/flat')]
+    public function flat(): Response
+    {
+        return $this->render('flat.html.twig');
     }
 }

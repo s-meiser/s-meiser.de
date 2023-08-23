@@ -227,6 +227,7 @@ export default class Scene {
     html(scene) {
 
         let menuHtml = document.querySelector('.content-menu')
+        let contentHtml = document.querySelector('.content')
         let creditTreeHtml = document.querySelector('.credit-tree')
         let creditStoneHtml = document.querySelector('.credit-stone')
         let creditGrassHtml = document.querySelector('.credit-grass')
@@ -236,6 +237,11 @@ export default class Scene {
         menu.position.x = 0;
         menu.position.y = 500;
         menu.position.z = 0;
+
+        const content = new CSSObject( contentHtml )
+        content.position.x = 0;
+        content.position.y = 500;
+        content.position.z = 0;
 
         const creditTree = new CSSObject( creditTreeHtml )
         creditTree.position.x = -1100;

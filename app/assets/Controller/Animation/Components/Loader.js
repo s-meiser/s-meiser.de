@@ -146,30 +146,20 @@ const svgGroups = (paths, lineMaterial, objectMaterial, strokes) => {
     return group;
 }
 
-function degrees2radians(degrees)
-{
-    return degrees * (Math.PI/180);
-}
-function radians2degrees(radians)
-{
-    return radians * 180 / Math.PI;
-}
-
-
 const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new SVGLoader();
 
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
 
-    let scaleLogo = 0.40;
+    let scaleLogo = 0.30;
     let scaleHexagon = 45;
 
     let positionLogoX = -855;
-    let positionLogoY = 900;
+    let positionLogoY = 895;
 
-    let positionHexagonX = -830;
-    let positionHexagonY = 860;
+    let positionHexagonX = -833;
+    let positionHexagonY = 865;
 
     // (max-width: 576px)
     if (mediaQueries.xs.matches) {
@@ -179,7 +169,7 @@ const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
         positionLogoX = -315;
         positionLogoY = 850;
 
-        positionHexagonX = -80; // 750
+        positionHexagonX = -115; // 715
         positionHexagonY = 860; // 35
     }
 
@@ -223,7 +213,6 @@ const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
                 const rotationFactorX = 0
                 const rotationFactorY = 0
                 const rotationFactorZ = -0.325
-
                 svg.scale.set(scaleLogo,scaleLogo)
                 svg.position.set(positionLogoX,positionLogoY,20)
                 svg.rotation.set(50,6+rotationFactorY,0+rotationFactorZ)
@@ -240,8 +229,9 @@ const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
                 group.add(hexagon);
                 group.add(svg);
                 //group.position.set(-200,-150,0);
-                group.rotation.set(0,0,0)
-                scene.add(group);
+                //group.rotation.set(0,0,0)
+                scene.add(hexagon);
+                scene.add(svg);
 
             },
             function (xhr) {
@@ -253,21 +243,20 @@ const SvgLogoSymfony = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
     });
 }
 
-
 const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new SVGLoader();
 
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
 
-    let scaleLogo = 0.12;
+    let scaleLogo = 0.08;
     let scaleHexagon = 45;
-
-    let positionLogoX = -825;
-    let positionLogoY = 825;
 
     let positionHexagonX = -795;
     let positionHexagonY = 785;
+
+    let positionLogoX = positionHexagonX-20;
+    let positionLogoY = positionHexagonY+25;
 
     // (max-width: 576px)
     if (mediaQueries.xs.matches) {
@@ -277,7 +266,7 @@ const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
         positionLogoX = -315;
         positionLogoY = 850;
 
-        positionHexagonX = -45; // 750
+        positionHexagonX = -80; // 715
         positionHexagonY = 785; // 35
     }
 
@@ -361,18 +350,17 @@ const SvgLogoThreeJS = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize
     });
 }
 
-
 const SvgLogoHtml5 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new SVGLoader();
 
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
 
-    let scaleLogo = 0.11;
+    let scaleLogo = 0.08;
     let scaleHexagon = 45;
 
     let positionLogoX = -885;
-    let positionLogoY = 775;
+    let positionLogoY = 765;
 
     let positionHexagonX = -870;
     let positionHexagonY = 740;
@@ -385,7 +373,7 @@ const SvgLogoHtml5 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) 
         positionLogoX = -315;
         positionLogoY = 850;
 
-        positionHexagonX = -120; // 750
+        positionHexagonX = -155; // 715
         positionHexagonY = 740; // 35
     }
 
@@ -466,14 +454,18 @@ const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) =
     addSingleProgressDiv(fileInfo.name);
     const divWidth = loaderDiv.width() / 2;
 
-    let scaleLogo = 0.14;
+    let scaleLogo = 0.10;
     let scaleHexagon = 45;
 
-    let positionLogoX = -915;
-    let positionLogoY = 850;
+    let positionLogoX = -912;
+    let positionLogoY = 840;
 
     let positionHexagonX = -905;
     let positionHexagonY = 815;
+
+    let currentDisplayWidth = window.innerWidth;
+    let currentDisplayHeight = window.innerHeight;
+
 
     // (max-width: 576px)
     if (mediaQueries.xs.matches) {
@@ -483,7 +475,7 @@ const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) =
         positionLogoX = -315;
         positionLogoY = 850;
 
-        positionHexagonX = -155; // 750
+        positionHexagonX = -190; // 715
         positionHexagonY = 815;
     }
 
@@ -559,6 +551,7 @@ const SvgLogoCss3 = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) =
         });
     });
 }
+
 const AWelcomingSign = async(scene, mediaQueries, fileInfo, loaderDiv, totalSize) => {
     const loader = new GLTFLoader();
     const positionLeftSide = (window.innerWidth/2);

@@ -1,0 +1,96 @@
+{% extends 'html_header.html.twig' %}
+
+{% block body %}
+	<div data-controller="threeDimensional"></div>
+	{#
+	<div class="modal-loaded">
+		<div class="modal-loaded-content">
+
+		</div>
+	</div>#}
+
+	<div class="loader-container">
+		<div class="loader-text">Sebastian Meiser</div>
+		<div class="loader-animation">
+			<div class="loading-bar-left"></div>
+			<div class="loading-bar-right"></div>
+		</div>
+
+	</div>
+
+	<div class="mobileControls">
+		<div class="pan">
+			<div id="pan-circle">
+				<div class="touch-circle"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="control-instructions">
+		<div class="panning">
+			<!--Use the joystick to move-->
+			<span>Verwenden Sie den Joystick zum scrollen</span>
+			<div class="fingerAnimation">
+				<div class="touch-circle"></div>
+				<img src="/build/images/1-finger.svg">
+			</div>
+		</div>
+	</div>
+
+{#	<div class="control-instructions-zooming">
+		<!--Pinch in and out to adjust camera distance-->
+		<span>2 Finger zum zoomen/vergrößern</span>
+	</div>
+	<div class="control-instructions-rotate">
+		<!--1 finger rotation to adjust the camera angle-->
+		<span>1 Finger zum rotieren (Kamerawinkel)</span>
+	</div>#}
+
+{#	<div class="rotate">
+		<div id="rotate-circle">
+			<div class="touch-rotate"></div>
+		</div>
+	</div>
+	<div class="zoom"></div>#}
+
+	<div class="cameraContainer">
+		<div class="domContainer content-menu"></div>
+		<div class="domContainer credit-tree">
+			<div class="credit-box">
+				<a href="https://skfb.ly/6QWJM">TreeA</a> by BotondBencsik
+				is licensed under
+				<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a>
+			</div>
+		</div>
+
+		<div class="domContainer credit-stone">
+			<div class="credit-box">
+				<a href="https://skfb.ly/688pC">Granite stone brown 02</a> by 3dhdscan
+				is licensed under
+				<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a>
+			</div>
+		</div>
+
+		<div class="domContainer credit-grass">
+			<div class="credit-box">
+				<a href="https://skfb.ly/6TQw7">Grass</a> by Fred Drabble
+				is licensed under
+				<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a>
+			</div>
+		</div>
+
+		<div class="domContainer credit-sign">
+			<div class="credit-box">
+				<a href="https://skfb.ly/6SN7B">A Welcoming Sign</a> by Raneman
+				is licensed under
+				<a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution</a>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('threeDimensional') }}
+{% endblock %}

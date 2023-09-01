@@ -27,7 +27,7 @@ services:
       - php-fpm
     ports:
       - "5546:80"
-      - "443:443"
+      - "543:443"
 
   encore:
     image: node:19-alpine

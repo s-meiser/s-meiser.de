@@ -7,29 +7,12 @@
 
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: rem(16px);
     background: #c2c7bf;
     overflow: hidden;
     color: #e5e5e5;
 }
-
-
-/*.content-background-color {
-    !*background-color: rgb(13 16 21 / 80%);*!
-    !* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#090d12+0,1c2f35+100 *!
-    background: #090d12; !* Old browsers *!
-    background: -moz-linear-gradient(27deg,  #090d12 0%, #1c2f35 100%); !* FF3.6-15 *!
-    background: -webkit-linear-gradient(27deg,  #090d12 0%,#1c2f35 100%); !* Chrome10-25,Safari5.1-6 *!
-    background: linear-gradient(27deg,  #090d12 0%,#1c2f35 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#090d12', endColorstr='#1c2f35',GradientType=1 ); !* IE6-9 fallback on horizontal gradient *!
-
-}
-
-.content-box-shadow {
-    -webkit-box-shadow: 0 80px 100px -10px #000000;
-    box-shadow: 0 80px 100px -10px #000000;
-}*/
 
 .obit-controls-gizmo {
     position: absolute;
@@ -311,7 +294,7 @@ body {
     font-weight: 300;
     font-size: 35px;
     text-align: center;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .content {
@@ -321,6 +304,24 @@ body {
     height: 800px;
     top: calculate-top(800px);
 }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.darkToast {
+    background-color: #00000038;
+    border: 1px solid rgb(55 90 127);
+    .toast-header {
+        background-color: #00000057;
+        border-bottom: 1px solid rgb(55 90 127);
+        color: #FFF;
+    }
+}
+
 
 @keyframes rotate {
     0% {

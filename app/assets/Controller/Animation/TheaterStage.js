@@ -66,11 +66,7 @@ class TheaterStage {
 
     setScene() {
         this.scene = new Scene(this.camera, this.config);
-        ExternalLoader(this.scene, this.config).then(function (response) {
-            //console.log(response)
-            //console.log('then2');
-            //console.log(window.loaderWelcomingSign)
-        });
+        ExternalLoader(this.scene, this.config).then(function (response) {});
     }
 
     setRenderer() {

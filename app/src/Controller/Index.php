@@ -11,8 +11,8 @@ class Index extends AbstractController
     #[Route('/')]
     public function landingpage(): Response
     {
-        return $this->render('threeDimensional.html.twig');
-        //return $this->render('landingpage.html.twig');
+        //return $this->render('threeDimensional.html.twig');
+        return $this->render('landingpage.html.twig');
     }
 
     #[Route('/3d')]

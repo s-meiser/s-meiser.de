@@ -9,7 +9,7 @@ index:
     controller: App\Controller\Index::landingpage
 
 threeDimensional:
-    path: /threeDimensional
+    path: /3d
     controller: App\Controller\Index::threeDimensional
 
 flat:

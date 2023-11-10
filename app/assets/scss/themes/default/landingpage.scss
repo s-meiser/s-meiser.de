@@ -1,9 +1,85 @@
+@import "~@fontsource/roboto/100.css";
+@import "~@fontsource/roboto/300.css";
+@import "~@fontsource/roboto/400.css";
+@import "~@fontsource/roboto/500.css";
+@import "~@fontsource/roboto/700.css";
+@import "~@fontsource/roboto/900.css";
+
+
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: rem(16px);
     background: #c2c7bf;
     overflow: hidden;
     color: #0d1117;
+    color: #e5e5e5;
+}
+
+.obit-controls-gizmo {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    z-index: 1000;
+    background-color: #FFF0;
+    border-radius: 100%;
+    transition: background-color .15s  linear;
+    cursor: pointer;
+}
+
+.obit-controls-gizmo.dragging,
+.obit-controls-gizmo:hover {
+    background-color: #FFF3;
+}
+
+.obit-controls-gizmo.inactive {
+    pointer-events: none;
+    background-color: #FFF0  !important;
+}
+
+#mainContainer {
+    overflow: hidden;
+    touch-action: none;
+}
+.cameraContainer {
+    position: absolute; // google chrome reload bugfix
+    z-index: 1;
+    pointer-events: none;
+    transform-style: preserve-3d;
+}
+.domContainer {
+    position: absolute;
+    pointer-events: auto;
+    //user-select: none;
+    transform-style: preserve-3d;
+    > div {
+        position: absolute;
+        pointer-events: auto;
+        transform-style: preserve-3d;
+    }
+}
+
+.credit-box {
+    background-color: rgba(253, 253, 253, 0.88);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #000;
+    display: block;
+    padding: 10px;
+    min-width: 160px;
+    -webkit-box-shadow: 0 0 30px 5px rgba(0,0,0,0.55);
+    box-shadow: 0 0 30px 5px rgba(0,0,0,0.55);
+    font-size: 12px;
+}
+
+.hex {
+    margin-top: 30px;
+    width: 104px;
+    height: 60px;
+    background-color: rgb(39, 170, 225);
+    border-color: rgb(39, 170, 225);
+    position: relative;
+    display: inline-block;
 }
 .lp-box {
     .font {
@@ -19,6 +95,222 @@ body {
     #animateDiv {
         transform: perspective(700px) rotateX(0deg) rotateY(0deg);
     }
+.hex:before {
+    content: " ";
+    width: 0;
+    height: 0;
+    border-bottom: 30px solid;
+    border-color: inherit;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    position: absolute;
+    top: -30px;
+}
+.hex:after {
+    content: "";
+    width: 0;
+    position: absolute;
+    bottom: -30px;
+    border-top: 30px solid;
+    border-color: inherit;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+}
+
+.mobileControls {
+    display: none;
+}
+
+
+
+.pan {
+    position: absolute;
+    z-index: 20;
+    bottom: 20px;
+    left: 20px;
+    #pan-circle {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        -webkit-border-radius: 100px;
+        -moz-border-radius: 100px;
+        border-radius: 100px;
+        border: 2px solid rgba(0, 0, 0, 0.09);
+        background-color: rgba(10, 10, 10, 0.2);
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: var(--panArrowTop, 85%);
+            right: var(--panArrowRight, calc(100% - 85%));
+            transform: var(--panArrowTransform, translateY(-50%) translateX(50%) rotate(45deg));
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 5px solid rgba(0, 126, 255, 0.87);
+            opacity: var(--panOpacity, 0);
+        }
+        &:after {
+            content: "";
+            position: absolute;
+            top: var(--afterPanArrowTop, 85%);
+            right: var(--afterPanArrowRight, 15%);
+            transform: var(--afterPanArrowTransform, translateY(-85%) translateX(15%) rotate(45deg));
+            width: 100px;
+            height: 100px;
+            border-top: 3px solid transparent;
+            border-bottom: 3px solid transparent;
+            /* border-right: 13px solid rgba(0, 126, 255, 0.87); */
+            border-left: 3px solid rgba(0, 126, 255, 0.87);
+            opacity: var(--afterPanOpacity, 0);
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+        }
+    }
+
+    .touch-circle {
+        width: 25px;
+        height: 25px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+        border: 2px solid rgba(0, 126, 255, 0.34);
+    }
+}
+
+
+
+.control-instructions {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 0 0 / 32%);
+    position: absolute;
+    z-index: 10;
+    display: none;
+    top: 0;
+    left: 0;
+
+    .panning {
+        width: 100px;
+        height: 100px;
+        //border: 2px solid rgba(0, 126, 255, 0.87);
+        box-shadow: 0 0 14px 3px rgb(255, 255, 255);
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        //display: none;
+        z-index: 20;
+        .fingerAnimation {
+            position: absolute;
+            z-index: 30;
+            left: 40px;
+            top: 40px;
+            //transition: 1s ease-out;
+            //transform: translate3d(36px, -26px, 0px);
+            -webkit-animation: moveFinger 1.25s linear infinite;
+            -moz-animation: moveFinger 1.25s linear infinite;
+            -o-animation: moveFinger 1.25s linear infinite;
+
+            @-webkit-keyframes moveFinger {
+                0% {
+                    left: 40px;
+                    top: 40px
+                }
+                100% {
+                    transform: translate3d(36px, -26px, 0px);
+                }
+            }
+            .touch-circle {
+                width: 20px;
+                height: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;
+                background-color: rgba(0, 0, 0, 0.64);
+                border: 2px solid rgb(101, 101, 101);
+            }
+            img {
+                width: 30px;
+                margin-left: 30px;
+                margin-top: -13px;
+                transform: rotate(328deg);
+            }
+        }
+        span {
+            position: absolute;
+            top: -70px;
+            width: 100%;
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.69);
+            color: rgba(0, 0, 0, 0.51);
+            box-shadow: 0 0 20px 10px rgb(255, 255, 255);
+            padding: 2px;
+            text-align: center;
+        }
+    }
+}
+.transition-to-transparent {
+    background-color: rgb(0 0 0 / 0%);
+    transition: background-color 1000ms ease-in-out
+}
+
+.rotate {
+
+}
+
+#canvasRenderer,.obit-controls-gizmo, .cameraContainer {
+    filter: blur(3px);
+}
+
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(255 255 255 / 80%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.loader-animation {
+    display: flex;
+    height: 3px;
+    background-color: rgb(255 255 255 / 23%);
+    flex-direction: row;
+    justify-content: center;
+    .loading-bar-left {
+        height: 3px;
+        background-color: rgba(0, 126, 255, 0.61);
+        display: flex;
+    }
+    .loading-bar-right {
+        height: 3px;
+        background-color: rgba(0, 126, 255, 0.61);
+        display: flex;
+    }
+}
+
+.loader {
+    width: 100px;
+    height: 100px;
+    position: relative;
+}
+
+.loader-text {
+    color: #1a1a1a;
+    font-weight: 300;
+    font-size: 35px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
 
 
 }
@@ -33,6 +325,31 @@ body {
 .box-shadow {
     -webkit-box-shadow: 0 0 50px -10px rgba(17,17,17,0.66);
     box-shadow: 0 0 50px -10px rgba(17,17,17,0.66);
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.darkToast {
+    background-color: #00000038;
+    border: 1px solid rgb(55 90 127);
+    .toast-header {
+        background-color: #00000057;
+        border-bottom: 1px solid rgb(55 90 127);
+        color: #FFF;
+    }
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: perspective(200px) rotateX(0) rotateY(0);
+    }
+    100% {
+        transform: perspective(200px) rotateX(360deg) rotateY(360deg);
+    }
 }
 
 .sm-icons{
@@ -54,3 +371,4 @@ body {
         color: rgba(241,241,233);
     }
 }
+

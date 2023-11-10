@@ -26,7 +26,7 @@ export default class Scene {
         this.newScene = this.scene();
         this.addPlane(this.newScene);
         this.spotlight(this.newScene);
-        this.hexagon(this.newScene, this.camera);
+        //this.hexagon(this.newScene, this.camera);
         this.html(this.newScene);
         return this.newScene;
     }

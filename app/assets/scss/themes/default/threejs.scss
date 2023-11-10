@@ -316,6 +316,11 @@
   top: calculate-top(800px);
 }
 
+.overlay{
+  position: absolute;
+  z-index: 1;
+}
+
 @keyframes rotate {
   0% {
     transform: perspective(200px) rotateX(0) rotateY(0);

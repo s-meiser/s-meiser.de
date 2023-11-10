@@ -4,49 +4,71 @@ import {Toast} from 'bootstrap';
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
 
+    maxDegrees = 10;
     connect() {
 
-        const animateDiv = document.getElementById('animateDiv')
-        const divHeight = animateDiv.offsetHeight;
-        const divWidth = animateDiv.offsetWidth;
-        const maxDeg = 13;
+        const animateDiv = document.querySelectorAll('#animateDiv')
 
-        animateDiv.addEventListener("mouseleave", (event) => {
-            document.getElementById('animateDiv').style.transition =
-                "all 0.3s ease-in-out";
-            document.getElementById('animateDiv').style.transform =
-                "perspective(700px) rotateX(0deg) rotateY(0deg)";
-        });
-        animateDiv.addEventListener("mouseenter", (event) => {
-            document.getElementById('animateDiv').style.removeProperty('transition');
-        });
-        animateDiv.addEventListener("mousemove", (event) => {
-            this.setTransformRotation(event, divWidth, divHeight, maxDeg)
-        });
+        animateDiv.forEach((div) => {
+            const divHeight = div.offsetHeight;
+            const divWidth = div.offsetWidth;
 
+            div.addEventListener("mouseleave", (event) => {
+                div.style.transition =
+                    "all 0.3s ease-in-out";
+                div.style.transform =
+                    "perspective(700px) rotateX(0deg) rotateY(0deg)";
+            });
+            div.addEventListener("mouseenter", (event) => {
+                div.style.removeProperty('transition');
+            });
+            div.addEventListener("mousemove", (mouseEvent) => {
+                this.setTransformRotation(mouseEvent, div, divWidth, divHeight)
+            });
+        });
     }
 
 
-    setTransformRotation(event, width, height, maxDeg) {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
+    setTransformRotation = (mouseEvent, div, width, height) => {
+        const mouseX = mouseEvent.clientX;
+        const mouseY = mouseEvent.clientY;
 
         // Get the position of the div
-        const divRect= event.target.getBoundingClientRect();
+        const divRect= mouseEvent.target.getBoundingClientRect();
         const divX= mouseX - divRect.left;
         const divY= mouseY - divRect.top;
-        const divXCenter= divX-(width/2);
-        const divYCenter= divY-(height/2);
 
-        let divXInPercent=  (((divX-(width/2))*100)/width)*2
-        let divYInPercent=  (((divY-(height/2))*100)/height)*2
+        let divXInPercent = (((divX - (width / 2)) * 100) / width) * 2;
+        let divYInPercent = (((divY - (height / 2)) * 100) / height) * 2;
 
-        //max 13 degrees
-        let rotX = parseFloat((divXInPercent*maxDeg)/100).toFixed(2);
-        let rotY = parseFloat((divYInPercent*maxDeg)/100).toFixed(2);
+        let rotX, rotY;
 
-        // transform: perspective(700px) rotateX(0deg) rotateY(0deg);
-        document.getElementById('animateDiv').style.transform =
+        if (divXInPercent < 0) {
+            rotY = this.convertToDegrees(divXInPercent * -1);
+        } else if (divXInPercent > 0) {
+            rotY = this.convertToDegrees(divXInPercent * -1);
+        } else {
+            rotY = 0;
+        }
+
+        if (divYInPercent < 0) {
+            rotX = this.convertToDegrees(divYInPercent);
+        } else if (divYInPercent > 0) {
+            rotX = this.convertToDegrees(divYInPercent);
+        } else {
+            rotX = 0;
+        }
+
+        this.setCSSTransform(div, rotX, rotY);
+
+    }
+
+    convertToDegrees = (percent) => {
+        return parseFloat((percent*this.maxDegrees)/100).toFixed(2);
+    }
+
+    setCSSTransform = (div, rotX, rotY) => {
+        div.style.transform =
             "perspective(700px) rotateX("+rotX+"deg) rotateY("+rotY+"deg)";
     }
 }

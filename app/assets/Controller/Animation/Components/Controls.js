@@ -30,8 +30,8 @@ const Controls = (camera, renderer, CSSRenderer, configuration) => {
      * set ControlsSettings
      */
     const controlsSettings = new ControlSettings(controls);
-    //controlsSettings.setPolarAngle()
-    //controlsSettings.setAzimuthAngle()
+    controlsSettings.setPolarAngle()
+    controlsSettings.setAzimuthAngle()
     //controls.enableZoom = false;
     //controls.enablePan = false;
 

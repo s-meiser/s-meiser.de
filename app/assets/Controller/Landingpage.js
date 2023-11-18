@@ -17,7 +17,7 @@ export default class extends Controller {
                 div.style.transition =
                     "all 0.3s ease-in-out";
                 div.style.transform =
-                    "perspective(700px) rotateX(0deg) rotateY(0deg)";
+                    "perspective(338px) rotateX(0deg) rotateY(0deg)";
             });
             div.addEventListener("mouseenter", (event) => {
                 div.style.removeProperty('transition');
@@ -69,6 +69,6 @@ export default class extends Controller {
 
     setCSSTransform = (div, rotX, rotY) => {
         div.style.transform =
-            "perspective(700px) rotateX("+rotX+"deg) rotateY("+rotY+"deg)";
+            "perspective(435px) rotateX("+rotX+"deg) rotateY("+rotY+"deg)";
     }
 }

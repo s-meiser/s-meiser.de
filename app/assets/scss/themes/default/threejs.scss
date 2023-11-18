@@ -68,6 +68,10 @@
   }
 }
 
+.content-subject {
+  min-width: 800px;
+}
+
 .credit-box {
   background-color: rgba(253, 253, 253, 0.88);
   -webkit-border-radius: 10px;
@@ -319,6 +323,27 @@
 .overlay{
   position: absolute;
   z-index: 1;
+}
+
+.btn-orange {
+
+}
+
+.btn-orange {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #ff7a1f;
+  --bs-btn-border-color: #ff7a1f;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #ff8e42;
+  --bs-btn-hover-border-color: #fa914b;
+  --bs-btn-focus-shadow-rgb: 225, 83, 97;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #ff7a1f;
+  --bs-btn-active-border-color: #ff7a1f;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #ff7a1f;
+  --bs-btn-disabled-border-color: #ff7a1f;
 }
 
 @keyframes rotate {

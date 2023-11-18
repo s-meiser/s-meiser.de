@@ -58,6 +58,7 @@ Encore
     .addEntry('app', './assets/app-frontend.js')
     .addEntry('landingpage', './assets/Entity/Landingpage.js')
     .addEntry('threeDimensional', './assets/Entity/ThreeDimensional.js')
+    .addEntry('flat', './assets/Entity/Flat.js')
 
     /*.addEntry('app', './assets/app.js')*/
 

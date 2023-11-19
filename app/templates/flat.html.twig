@@ -1,39 +1,64 @@
 {% extends 'html_header.html.twig' %}
 
 {% block body %}
-    <div data-controller="flat"></div>
-    <div class="d-flex justify-content-between sm-icons ">
-        <div class="col-3 margin-left mt-5">
-            <div class="m-3 fs-4">
-                <a class="d-inline-block me-4" href="{{ path('index') }}">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </a>
-                <a class="d-inline-block" href="https://github.com/s-meiser" target="_blank">
-                    <i class="fa-brands fa-github"></i>
-                </a>
-                <a class="mx-2 d-inline-block" href="https://www.linkedin.com/in/sebastian-meiser/" target="_blank">
-                    <i class="fa-brands fa-linkedin"></i>
-                </a>
-                <a class="mx-2 d-inline-block" href="mailto:sebastian.meiser@gmail.com" target="_blank">
-                    <i class="fa-regular fa-envelope"></i>
-                </a>
-            </div>
-        </div>
-        <div class="col-3 margin-right mt-5">
-            <div class="p-3 border ">
-                <div class="d-flex justify-content-between">
-                    <div class="col text-uppercase text-end">
-                        Hi, my name is Sebastian
-                    </div>
+    {{ encore_entry_link_tags('css-flat') }}
+    <div data-controller="flat">
+        <div class="d-flex justify-content-between sm-icons ">
+            <div class="col-3 margin-left mt-5">
+                <div class="m-3 fs-4">
+                    <a class="d-inline-block me-4" href="{{ path('index') }}">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </a>
+                    <a class="d-inline-block" href="https://github.com/s-meiser" target="_blank">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a class="mx-2 d-inline-block" href="https://www.linkedin.com/in/sebastian-meiser/" target="_blank">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                    <a class="mx-2 d-inline-block" href="mailto:sebastian.meiser@gmail.com" target="_blank">
+                        <i class="fa-regular fa-envelope"></i>
+                    </a>
                 </div>
+            </div>
+            <div class="col-3 margin-right mt-5">
+                <div class="p-3 border ">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="col text-uppercase text-end ">
+                            Hi, my name is Sebastian
+                        </div>
+                        <div id="menu-button" class="d-flex col-2 text-end justify-content-end ">
+                            <nav class="navbar" >
+                                <button class="navbar-toggler"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#navbarSupportedContent"
+                                        aria-controls="navbarSupportedContent"
+                                        aria-expanded="false"
+                                        aria-label="Toggle navigation"
+                                        data-action="click->flat#navbar"
+                                >
+                                    <div class="menu-button-bar"></div>
+                                    <div class="menu-button-bar"></div>
+                                    <div class="menu-button-bar"></div>
+                                </button>
+                            </nav>
+                        </div>
 
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col">
-                Content
+        <div class="container-fluid d-flex justify-content-end p-0">
+            <div class="menu-container col-4 ">
+                menu-content
+            </div>
+        </div>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                    Content
+                </div>
             </div>
         </div>
     </div>

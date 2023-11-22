@@ -59,6 +59,7 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn install
+      - run: npx update-browserslist-db@latest
       - run: yarn encore production
 
       # Git add commit and push

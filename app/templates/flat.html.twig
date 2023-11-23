@@ -3,7 +3,7 @@
 {% block body %}
     {{ encore_entry_link_tags('css-flat') }}
     <div data-controller="flat">
-        <div class="d-flex justify-content-between sm-icons ">
+        <div class="d-flex justify-content-between sm-icons position-relative z-1">
             <div class="col-3 margin-left mt-5">
                 <div class="m-3 fs-4">
                     <a class="d-inline-block me-4" href="{{ path('index') }}">
@@ -56,11 +56,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="navbar-container">
-                    <div class="row p-0 m-0">
-                        <div class="menu-container col">
-                            menu-content
-                        </div>
+                <div class="navbar-container p-0 m-0 vh-100">
+                    <div class="menu-container col">
+                        menu-content
                     </div>
                 </div>
 

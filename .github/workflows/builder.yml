@@ -23,7 +23,8 @@ jobs:
         working-directory: ./app
     steps:
       # checkout default branch
-      - uses: actions/checkout@latest
+      # see https://github.com/actions/checkout to set version
+      - uses: actions/checkout@v4
 
       # check if staging branch exist
       # If yes -> remove branch and create staging branch
@@ -50,14 +51,17 @@ jobs:
           fi
 
       # checkout branch staging
-      - uses: actions/checkout@v3
+      # see https://github.com/actions/checkout to set version
+      - uses: actions/checkout@v4
         with:
           ref: staging
 
       # build js/css files
-      - uses: actions/setup-node@latest
+      # see https://github.com/actions/setup-node to set version
+      - uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: 20
+          check-latest: true
       - run: yarn install
       - run: npm update
       - run: yarn encore production

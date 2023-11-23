@@ -17,23 +17,28 @@ jobs:
         working-directory: ./app
     steps:
 
-      #get staging branch
-      - uses: actions/checkout@v3
+      # get staging branch
+      # see https://github.com/actions/checkout to set version
+      - uses: actions/checkout@v4
         with:
           ref: staging
 
       # build js/css files
-      - uses: actions/setup-node@v3
+      # see https://github.com/actions/setup-node to set version
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20
+          check-latest: true
       - run: yarn install
+      - run: npm update
       - run: yarn encore production
 
       # install php
       - name: Setup PHP
+        # see https://github.com/shivammathur/setup-php to set version
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: '8.2'
           coverage: none
           tools: composer:v2
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
@@ -47,7 +52,8 @@ jobs:
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache composer dependencies
-        uses: actions/cache@v1
+        # https://github.com/actions/cache to set version
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -58,7 +64,8 @@ jobs:
 
       # Prepare .env file for production
       - name: Make production envfile
-        uses: SpicyPizza/create-envfile@v1
+        # see https://github.com/SpicyPizza/create-envfile to set version
+        uses: SpicyPizza/create-envfile@v2
         with:
           envkey_APP_ENV: prod
           envkey_APP_DEBUG: false

@@ -15,8 +15,12 @@ export default class extends Controller {
      */
     navbar(event) {
         const navbarToggle = document.querySelector('.navbar-container')
+
         navbarToggle.classList.toggle('show');
         navbarToggle.classList.toggle('column');
+
+        const contentContainer = document.querySelector('.content-container')
+        contentContainer.classList.toggle('position-relative')
 
         const navbarGridEffect = document.querySelector('.navbar-grid-effect')
         navbarGridEffect.classList.toggle('grid-effect-show');
@@ -33,6 +37,16 @@ export default class extends Controller {
             if (key === 2) {
                 value.classList.toggle('menu-bar-2');
             }
+        });
+    }
+
+    navLink(event) {
+        const navLinks = document.querySelectorAll('.navbar-nav li a');
+        navLinks.forEach(function(link) {
+            document.querySelectorAll('.navbar-nav li > a.active').forEach(function(item) {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
         });
     }
 }

@@ -20,6 +20,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="col-3 margin-right mt-5">
                 <div class="p-3 border ">
                     <div class="d-flex justify-content-between align-items-center">
@@ -39,29 +40,47 @@
                                 </button>
                             </nav>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
-        <div class="container-fluid content-container p-0 m-0">
+
+        <div class="container-fluid content-container p-0 m-0 position-relative">
             <div class="row p-0 m-0">
                 <div class="border navbar-grid-effect">
                     <div class="container">
-                        <div class="row">
+                        <div id="home" class="row" style="height:800px">
+                                <div class="col ">
+                                    Content
+                                </div>
+                        </div>
+                        <div id="about" class="row">
                             <div class="col">
-                                Content
+                                About
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="navbar-container p-0 m-0 vh-100">
                     <div class="menu-container col">
-                        menu-content
+                        <ul class="navbar-nav fs-4 fw-medium"
+                            data-action="click->flat#navLink">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#about">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#work">Work</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="#contact">Contact</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

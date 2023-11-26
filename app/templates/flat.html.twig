@@ -2,8 +2,8 @@
 
 {% block body %}
     {{ encore_entry_link_tags('css-flat') }}
-    <div data-controller="flat">
-        <div class="d-flex justify-content-between sm-icons position-relative z-1">
+    <div {#class="position-relative overflow-hidden"#} data-controller="flat">
+        <div class="nav-top d-flex justify-content-between sm-icons position-sticky z-1 top-0">
             <div class="col-3 margin-left mt-5">
                 <div class="m-3 fs-4">
                     <a class="d-inline-block me-4" href="{{ path('index') }}">
@@ -45,40 +45,47 @@
             </div>
         </div>
 
-        <div class="container-fluid content-container p-0 m-0 position-relative">
-            <div class="row p-0 m-0">
-                <div class="border navbar-grid-effect">
-                    <div class="container">
-                        <div id="home" class="row" style="height:800px">
-                                <div class="col ">
-                                    Content
+        <div class="position-relative overflow-hidden">
+            <div class="container-fluid content-container p-0 m-0">
+                <div class="row p-0 m-0 ">
+                    <div class="border navbar-grid-effect">
+                        <div class="container">
+                            <section id="home" class="row" style="height:800px">
+                                    <div class="col ">
+                                        Content
+                                    </div>
+                            </section>
+                            <section id="about" class="row" style="height:800px">
+                                <div class="col">
+                                    About
                                 </div>
-                        </div>
-                        <div id="about" class="row">
-                            <div class="col">
-                                About
-                            </div>
-                        </div>
+                            </section>
 
+                            <section id="work" class="row" style="height:555px">
+                                <div class="col">
+                                    asd
+                                </div>
+                            </section>
+                        </div>
                     </div>
-                </div>
-                <div class="navbar-container p-0 m-0 vh-100">
-                    <div class="menu-container col">
-                        <ul class="navbar-nav fs-4 fw-medium"
-                            data-action="click->flat#navLink">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#home">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="#about">About</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="#work">Work</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="#contact">Contact</a>
-                            </li>
-                        </ul>
+                    <div class="navbar-container p-0 m-0 h-100">
+                        <div class="menu-container col">
+                            <ul class="navbar-nav fs-4 fw-medium"
+                                data-action="click->flat#navLink">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-href="#home" aria-current="page">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-href="#about">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-href="#work">Work</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-href="#contact">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

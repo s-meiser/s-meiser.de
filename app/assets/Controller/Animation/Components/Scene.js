@@ -240,7 +240,7 @@ export default class Scene {
 
         const content = new CSSObject( contentHtml )
         content.position.x = 0;
-        content.position.y = 600;
+        content.position.y = 680;
         content.position.z = 0;
 
         const creditTree = new CSSObject( creditTreeHtml )

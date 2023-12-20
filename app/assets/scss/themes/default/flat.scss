@@ -2,6 +2,9 @@ body {
   overflow: visible;
 }
 
+#home {
+  height: 100dvh;
+}
 
 #menu-button {
   @media (min-width: 992px) {

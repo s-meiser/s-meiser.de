@@ -1,12 +1,6 @@
-@import "~@fontsource/roboto/100.css";
-@import "~@fontsource/roboto/300.css";
-@import "~@fontsource/roboto/400.css";
-@import "~@fontsource/roboto/500.css";
-@import "~@fontsource/roboto/700.css";
-@import "~@fontsource/roboto/900.css";
-
 body {
   overflow: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 
 .obit-controls-gizmo {
@@ -297,7 +291,6 @@ body {
   font-weight: 300;
   font-size: 35px;
   text-align: center;
-  font-family: 'Noto Sans', sans-serif;
 }
 
 .content {
@@ -354,4 +347,3 @@ body {
     transform: scale(0.8);
   }
 }
-

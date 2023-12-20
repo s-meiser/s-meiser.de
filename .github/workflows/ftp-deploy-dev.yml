@@ -101,7 +101,7 @@ jobs:
 
       # Sync files
       - name: Sync files
-        run: lftp -e "open $FTP_HOST; user $FTP_USER $FTP_PASS; set ftp:ssl-allow no; mirror -R --ignore-time --parallel=10 -v" /
+        run: lftp -e "open $FTP_HOST; user $FTP_USER '$FTP_PASS'; set ftp:ssl-allow no; mirror -R --ignore-time --parallel=10 -v" /
         env:
           FTP_HOST: ${{ secrets.FTP_DEV_HOST }}
           FTP_USER: ${{ secrets.FTP_DEV_USER }}

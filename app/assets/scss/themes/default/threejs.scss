@@ -34,6 +34,12 @@ body {
   overflow: hidden;
   touch-action: none;
 }
+
+#versionNotification {
+  position: absolute;
+  z-index: 1;
+}
+
 .cameraContainer {
   position: absolute; // google chrome reload bugfix
   z-index: 1;

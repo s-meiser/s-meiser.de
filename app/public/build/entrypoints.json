@@ -1,0 +1,67 @@
+{
+  "entrypoints": {
+    "bootstrap-framework": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/bootstrap-framework.c1f9fa54.js"
+      ],
+      "css": [
+        "/build/bootstrap-framework.a4d80a66.css"
+      ]
+    },
+    "css-theme-default": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/css-theme-default.c4318545.js"
+      ],
+      "css": [
+        "/build/69.67587c92.css",
+        "/build/css-theme-default.0a3a5ea0.css"
+      ]
+    },
+    "css-flat": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/css-flat.c1083c60.js"
+      ],
+      "css": [
+        "/build/css-flat.e110d217.css"
+      ]
+    },
+    "app": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/138.d04a449d.js",
+        "/build/576.1b8a855f.js",
+        "/build/718.6aa65455.js",
+        "/build/app.5df9b29f.js"
+      ]
+    },
+    "landingpage": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/138.d04a449d.js",
+        "/build/576.1b8a855f.js",
+        "/build/718.6aa65455.js",
+        "/build/landingpage.d9750f62.js"
+      ]
+    },
+    "threeDimensional": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/138.d04a449d.js",
+        "/build/576.1b8a855f.js",
+        "/build/718.6aa65455.js",
+        "/build/threeDimensional.5d098559.js"
+      ]
+    },
+    "flat": {
+      "js": [
+        "/build/runtime.fe0da06d.js",
+        "/build/576.1b8a855f.js",
+        "/build/718.6aa65455.js",
+        "/build/flat.ae47bf1f.js"
+      ]
+    }
+  }
+}

@@ -107,6 +107,23 @@ jobs:
           FTP_USER: ${{ secrets.FTP_DEV_USER }}
           FTP_PASS: ${{ secrets.FTP_DEV_PASS }}
 
+      # Create .htaccess file locally
+      - name: Create .htaccess file
+        run: echo "RewriteEngine on\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^ index.php [L]" > .htaccess
+
+      # add .htaccess file
+      - name: add .htaccess file
+        run: |
+          lftp -u "$FTP_USER","$FTP_PASS" $FTP_HOST <<EOF
+            set ftp:ssl-allow no
+            put -O /public/.htaccess  .htaccess
+            quit
+          EOF
+        env:
+          FTP_HOST: ${{ secrets.FTP_DEV_HOST }}
+          FTP_USER: ${{ secrets.FTP_DEV_USER }}
+          FTP_PASS: ${{ secrets.FTP_DEV_PASS }}
+
       # Clear cache hack
       - name: Clear cache hack
         run: |

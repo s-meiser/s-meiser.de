@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   php-fpm:
-    container_name: app-php-fpm
+    container_name: website-app-php-fpm
     build:
       context: ./docker/php-fpm
     environment:
@@ -12,7 +12,7 @@ services:
       - ./app/:/var/www
 
   nginx:
-    container_name: app-nginx
+    container_name: website-app-nginx
     build:
       context: ./docker/nginx
     env_file:

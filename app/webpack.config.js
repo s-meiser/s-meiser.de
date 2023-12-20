@@ -51,7 +51,6 @@ Encore
     .addEntry('bootstrap-framework', './assets/scss/component/bootstrap-framework.scss')
     .addEntry('css-theme-default', './assets/scss/themes/default/index.scss')
     .addEntry('css-flat', './assets/scss/themes/default/flat.scss')
-    .addEntry('css-theme-light', './assets/scss/themes/light/index.scss')
 
     /**
      * Frontend Javascript

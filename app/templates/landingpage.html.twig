@@ -1,22 +1,22 @@
 {% extends 'html_header.html.twig' %}
 
 {% block body %}
-	<div data-controller="landingpage" class="">
+	<div  id="landingpage" data-controller="landingpage">
 		<div class="d-flex justify-content-between sm-icons ">
 			<div class="col-3 margin-left mt-5">
-				<div class="m-3 fs-4">
-					<a class="d-inline-block" href="https://github.com/s-meiser" target="_blank">
+				<div class="m-3 fs-4 sm-icon-container">
+					<a class="d-inline-block github" href="https://github.com/s-meiser" target="_blank">
 						<i class="fa-brands fa-github"></i>
 					</a>
-					<a class="mx-2 d-inline-block" href="https://www.linkedin.com/in/sebastian-meiser/" target="_blank">
+					<a class="mx-2 d-inline-block linkedin" href="https://www.linkedin.com/in/sebastian-meiser/" target="_blank">
 						<i class="fa-brands fa-linkedin"></i>
 					</a>
-					<a class="mx-2 d-inline-block" href="mailto:sebastian.meiser@gmail.com" target="_blank">
+					<a class="mx-2 d-inline-block e-mail" href="mailto:sebastian.meiser@gmail.com" target="_blank">
 						<i class="fa-regular fa-envelope"></i>
 					</a>
 				</div>
 			</div>
-			<div class="col-3 margin-right mt-5">
+			<div class="col-sm-3 margin-right mt-5 catchphrase">
 				<div class="p-3 border ">
 					<div class="d-flex justify-content-between">
 						<div class="col text-uppercase text-end">
@@ -29,16 +29,16 @@
 		</div>
 		<div class="d-flex justify-content-center align-items-center align-self-center px-4 vh-75 lp-box">
 			<div class="row gx-5 font d-flex align-items-center">
-				<div class="col text-center">
+				<div class="col-sm text-center">
 					<a class="link-unstyled" href="{{ path('flat') }}">
-						<div id="animateDiv" class="p-3 border bg-creme box-shadow min-height d-flex align-items-center">
+						<div id="animateDiv" class="p-3 border bg-creme box-shadow min-height d-flex align-items-center justify-content-center">
 							Enter Website in 2D
 						</div>
 					</a>
 				</div>
-				<div class="col ">
+				<div class="col-sm text-center">
 					<a class="link-unstyled" href="{{ path('threeDimensional') }}">
-						<div id="animateDiv" class="p-3 border bg-creme box-shadow min-height d-flex align-items-center">
+						<div id="animateDiv" class="p-3 border bg-creme box-shadow min-height d-flex align-items-center justify-content-center">
 							Enter Website in 3D
 						</div>
 					</a>

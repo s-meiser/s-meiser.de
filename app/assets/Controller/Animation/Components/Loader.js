@@ -1,9 +1,5 @@
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import $ from 'jquery'
-import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
-import * as THREE from 'three';
-import Utility from "./Utility";
-import {MeshLine, MeshLineMaterial} from "../Mesh/THREE.MeshLine";
 
 const ExternalLoader = async (scene, configuration) => {
 

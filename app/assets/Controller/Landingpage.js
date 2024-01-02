@@ -1,5 +1,4 @@
 import {Controller} from '@hotwired/stimulus';
-import {Toast} from 'bootstrap';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -26,6 +25,15 @@ export default class extends Controller {
                 this.setTransformRotation(mouseEvent, div, divWidth, divHeight)
             });
         });
+
+        // Check if the landing page div exists and screen width is <= 576px
+        const landingPage = document.getElementById('landingpage');
+        const isSmallScreen = window.matchMedia('(max-width: 576px)').matches;
+
+        // If the landing page div exists and it's a small screen, set body overflow to visible
+        if (landingPage && isSmallScreen) {
+            document.body.style.overflow = 'visible';
+        }
     }
 
 
@@ -64,7 +72,7 @@ export default class extends Controller {
     }
 
     convertToDegrees = (percent) => {
-        return parseFloat((percent*this.maxDegrees)/100).toFixed(2);
+        return parseFloat(( percent * this.maxDegrees ) / 100).toFixed(2);
     }
 
     setCSSTransform = (div, rotX, rotY) => {

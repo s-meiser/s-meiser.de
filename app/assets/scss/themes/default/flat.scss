@@ -2,8 +2,16 @@ body {
   overflow: visible;
 }
 
-#home {
+#home,  {
   height: 100dvh;
+}
+
+.sm-icon-container {
+  display: flex;
+}
+
+.nav-top-height {
+    margin-top: 154px;
 }
 
 #menu-button {
@@ -141,5 +149,23 @@ body {
     margin-right: 13px;
     display: inline-block;
     content: '';
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .nav-top-height {
+    margin-top: 100px;
+  }
+  .sm-icon-container {
+    .back-button {
+      margin-bottom: 0.5rem;
+    }
+  }
+  .navbar-container:is(.column) {
+    width: calc(100%);
+  }
+  .navbar-grid-effect:is(.grid-effect-show) {
+    width: calc(0%);
+    transition: all 1s ease-in 0s;
   }
 }

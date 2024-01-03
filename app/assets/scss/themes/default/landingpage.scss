@@ -79,7 +79,32 @@ body {
     }
 }
 
+.commandLineToolTip {
+    z-index: 1;
+    border: 1px solid rgb(0 0 0 / 21%);
+    background-color: rgb(255 255 255 / 8%);
+    margin-top: -15px;
+    margin-left: -82px;
+    font-size: 12px;
+
+    code {
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .commandLineToolTip-arrow {
+        position: absolute;
+        margin-top: 17px;
+        font-size: 24px;
+        color: rgb(255 152 0 / 72%);
+        rotate: 66deg;
+    }
+}
+
 @media only screen and (max-width: 576px) {
+    .commandLineToolTip {
+        display: none;
+    }
     .sm-icon-container {
         display: flex;
         flex-direction: column;

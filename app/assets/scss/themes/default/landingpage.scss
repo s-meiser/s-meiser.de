@@ -124,4 +124,36 @@ body {
     .lp-box {
         height: unset !important;
     }
+
+    .lp-box-flat {
+        animation: lp-box-flat 5s infinite alternate;
+    }
+
+    .lp-box-threejs{
+        animation: lp-box-threejs 5s infinite alternate;
+    }
+}
+
+@keyframes lp-box-flat {
+    0% {
+        transform: perspective(338px) rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+        transform: perspective(435px) rotateX(10.2deg) rotateY(9.84deg)
+    }
+    100% {
+        transform: perspective(435px) rotateX(-9.63deg) rotateY(-10.12deg)
+    }
+}
+
+@keyframes lp-box-threejs {
+    0% {
+        transform: perspective(338px) rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+        transform: perspective(435px) rotateX(-9.63deg) rotateY(-10.12deg)
+    }
+    100% {
+        transform: perspective(435px) rotateX(10.2deg) rotateY(9.84deg)
+    }
 }

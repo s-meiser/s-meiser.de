@@ -29,13 +29,13 @@ services:
       - "5546:80"
       - "543:443"
 
-  encore:
-    image: node:19-alpine
-    volumes:
-      - ./app/:/var/www
-    working_dir: /var/www
-    command: >
-      sh -c "
-      npm install
-      && yarn encore dev
-      "
+#  encore:
+#    image: node:19-alpine
+#    volumes:
+#      - ./app/:/var/www
+#    working_dir: /var/www
+#    command: >
+#      sh -c "
+#      npm install
+#      && yarn encore dev
+#      "

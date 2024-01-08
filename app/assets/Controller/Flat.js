@@ -1,4 +1,6 @@
 import {Controller} from '@hotwired/stimulus';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -11,6 +13,9 @@ export default class extends Controller {
      *
      */
     connect() {
+
+
+
         const navbarToggle = document.querySelector('.navbar-container')
         const links = document.querySelectorAll('a[href^="#"]');
         const navTop = document.querySelectorAll('.nav-top');
@@ -41,6 +46,19 @@ export default class extends Controller {
                 }
             });
         });
+
+        const editorContent = 'const foo = () => 0;\n' +
+            '\n' +
+            '// You can edit me\n' +
+            '// Click indise of me and wirte some stuff\n' +
+            '// Don\'t worry, nothing will happen with that code'
+
+        monaco.editor.create(document.getElementById('monacoBox'), {
+            value: editorContent,
+            language: 'javascript',
+            theme: 'vs-dark'
+        });
+
     }
 
     /**

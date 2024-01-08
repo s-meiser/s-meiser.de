@@ -152,6 +152,28 @@ body {
   }
 }
 
+.monacoBoxColumn {
+  top: 15%;
+
+}
+
+#monacoBox {
+  min-height: 250px;
+  -webkit-box-shadow: 0 0 15px 5px rgba(0,0,0,0.35);
+  box-shadow: 0 0 15px 5px rgba(0,0,0,0.35);
+
+  .monaco-editor {
+    border-radius: 0.375rem;
+    .overflow-guard {
+      border-radius: 0.375rem;
+
+      .minimap {
+        z-index: 0;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 576px) {
   .nav-top-height {
     margin-top: 100px;

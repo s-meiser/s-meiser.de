@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -107,6 +108,26 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+    // .addLoader({
+    //     test: /\.css$/,
+    //     use: ['style-loader', 'css-loader']
+    // })
+    // .addLoader({
+    //     test: /\.ttf$/,
+    //     use: ['file-loader']
+    // })
+    //
+    //  .addPlugin(new MonacoWebpackPlugin({
+    //      languages: ['typescript', 'javascript', 'css']
+    //  }))
+
+
+    // Add Monaco Editor plugin
+    .addPlugin(new MonacoWebpackPlugin({
+      languages: ['typescript', 'javascript', 'css']
+    }))
 ;
+
+
 
 module.exports = Encore.getWebpackConfig();

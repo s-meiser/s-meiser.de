@@ -53,10 +53,20 @@ export default class extends Controller {
             '// Click indise of me and wirte some stuff\n' +
             '// Don\'t worry, nothing will happen with that code'
 
+        monaco.editor.defineTheme('myCustomTheme', {
+            base: 'vs-dark',
+            inherit: true,
+            colors: {
+                'editor.background': '#1A1A1A'
+            }
+        });
+
+        monaco.editor.setTheme('vs-dark-custom');
+
         monaco.editor.create(document.getElementById('monacoBox'), {
             value: editorContent,
             language: 'javascript',
-            theme: 'vs-dark'
+            theme: 'vs-dark-custom'
         });
 
     }

@@ -194,7 +194,7 @@ body {
 
 @media only screen and (max-width: 576px) {
   .nav-top-height {
-    margin-top: 100px;
+    margin-top: 50px;
   }
   .sm-icon-container {
     .back-button {
@@ -207,5 +207,8 @@ body {
   .navbar-grid-effect:is(.grid-effect-show) {
     width: calc(0%);
     transition: all 1s ease-in 0s;
+  }
+  .monacoBoxColumn {
+    top: 0;
   }
 }
